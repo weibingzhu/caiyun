@@ -1,4 +1,15 @@
 <template>
+
+<!--
+  TODO
+  1 跟进权限显示
+  2 APP 和 WEB的切换
+  3 默认时间排序
+  4 分页
+  5 搜索功能完整
+  6 任务历史显示
+  7 图片预览 闭关bug
+ -->
   <div class="task-index">
     <!-- 图片预览 -->
     <e-preview v-if="imgSrc" :visible.sync="visible" :src="imgSrc"></e-preview>
@@ -19,6 +30,11 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="任务状态">
+                <el-select placeholder="状态" size="small" filterable multiple v-model="query.status">
+                  <el-option v-for="item in znData.autoTaskStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="操作员">
                 <el-select placeholder="状态" size="small" filterable multiple v-model="query.status">
                   <el-option v-for="item in znData.autoTaskStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -66,7 +82,11 @@
             <el-tag size="mini" v-else>小规模</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作员" prop="operator.name"></el-table-column>
+        <el-table-column label="操作员" prop="operator.name">
+          <template slot-scope="scope">
+            <span>{{scope.row.operator.name}} 管理员权限</span>
+          </template>
+        </el-table-column>
         <el-table-column label="任务类型" prop="classify" />
         <el-table-column label="任务状态" prop="status">
           <template slot-scope="scope">
@@ -82,7 +102,7 @@
         <el-table-column label="任务历史" prop="history" />
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
-            <el-button type="text" @click="$router.push({path: ''})">二次请求</el-button>
+            <el-button type="text" @click="$router.push({path: ''})">再来</el-button>
           </template>
         </el-table-column>
       </el-table>
