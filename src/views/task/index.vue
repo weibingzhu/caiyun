@@ -9,7 +9,7 @@
   5 搜索功能完整
   6 任务历史显示
   7 图片预览 闭关bug
- -->
+  -->
   <div class="task-index">
     <!-- 图片预览 -->
     <e-preview v-if="imgSrc" :visible.sync="visible" :src="imgSrc"></e-preview>
