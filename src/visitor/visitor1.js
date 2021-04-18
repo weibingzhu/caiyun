@@ -19,57 +19,32 @@ export default {
     {
       title: '初值化管理',
       index: '02',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       route: '/init/index'
     },
     {
       title: '数据采集',
-      index: '03',
-      icon: '&#xe604;',
-      // route: '/data/adopt'
-      options: [{
-        title: '个税',
-        index: '03-01',
-        route: '/data/adopt'
-      },
-      {
-        title: '一般人增值税',
-        index: '03-02',
-        route: '/tax/index'
-      },
-      {
-        title: '小规模增值税',
-        index: '03-03',
-        route: '/tax/index'
-      },
-      {
-        title: '企业所得',
-        index: '03-04',
-        route: '/tax/index'
-      },
-      {
-        title: '汇算清缴',
-        index: '04-05',
-        route: '/tax/index'
-      }]
+      index: '0113',
+      icon: '&#xe609;',
+      route: '/data/adopt'
     },
 
     {
       title: '税务进度',
       index: '0114',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       route: '/tax/progress'
     },
     {
       title: '账务进度',
       index: '0115',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       route: '/acc/progress'
     },
     {
       title: '统计管理',
       index: '0116',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       options: [{
         title: '账税统计',
         index: '0116-01',
@@ -89,7 +64,7 @@ export default {
     {
       title: '个税管理',
       index: '0117',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       options: [{
         title: '人员信息采集',
         index: '0116-01',
@@ -124,7 +99,7 @@ export default {
     {
       title: '资产管理',
       index: '0113',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       options: [{
         title: '固定资产购买',
         index: '0113-01',
@@ -139,7 +114,7 @@ export default {
     {
       title: '系统配置',
       index: '0153',
-      icon: '&#xe604;',
+      icon: '&#xe609;',
       options: [{
         title: '货币汇率',
         index: '0153-01',
@@ -150,18 +125,6 @@ export default {
         index: '0153-01',
         route: '/setting/system'
       }]
-    },
-    {
-      title: 'testPage',
-      index: '0115',
-      icon: '&#xe604;',
-      route: '/test/sheetjs'
-    },
-    {
-      title: '任务列表',
-      index: '010015',
-      icon: '&#xe604;',
-      route: '/task/index'
     }
   ]
 }

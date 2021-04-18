@@ -23,7 +23,6 @@ module.exports = {
     proxyTable: {
       '/api': { // 进出口B端api
         target: 'http://localhost:3333/',
-        // target: 'http://192.168.1.109:3333/',
         changeOrigin: true,
         pathRewrite: {'^/api/': '/api/'}
       }
@@ -31,7 +30,7 @@ module.exports = {
 
     // Various Dev Server settings
     host: HOST || 'localhost', // can be overwritten by process.env.HOST
-    port: 8088, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,

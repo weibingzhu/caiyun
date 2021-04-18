@@ -58,12 +58,12 @@
           </el-badge>
           <el-badge :value="12" class="item">
             <el-button
-              ref="btnManualBil"
-              v-bind:class="{selectModeule: selectModules === 'ManualBil'}"
+              ref="btnSalesCustoms"
+              v-bind:class="{selectModeule: selectModules === 'SalesCustoms'}"
               size="small"
-              @click="handleClickModule('ManualBil')"
-              @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
-            >手工票据</el-button>
+              @click="handleClickModule('SalesCustoms')"
+              @dblclick.native="handleDblClickModule('SalesCustoms','海关报关单')"
+            >费用</el-button>
           </el-badge>
           <el-badge :value="12" class="item">
             <el-button
@@ -72,7 +72,7 @@
               size="small"
               @click="handleClickModule('ManualBil')"
               @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
-            >费用</el-button>
+            >手工票据</el-button>
           </el-badge>
           <span>
             <icon class="el-icon-caret-right" />

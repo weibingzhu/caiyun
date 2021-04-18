@@ -6,6 +6,9 @@ let routes = [
   {
     path: '/',
     component: () => import('@/views/index.vue'),
+    meta: {
+      title: 'test'
+    },
     children: [
       {
         path: '/developing/:id',
@@ -29,7 +32,10 @@ let routes = [
       },
       {
         path: '/data/adopt',
-        component: () => import('@/views/data/adopt.vue')
+        component: () => import('@/views/data/adopt.vue'),
+        meta: {
+          title: '数据采集'
+        }
       },
       {
         path: '/data/personal',
@@ -124,14 +130,6 @@ let routes = [
       {
         path: '/setting/system',
         component: () => import('@/views/setting/system.vue')
-      },
-      // {
-      //   path: '/test/sheetjs',
-      //   component: () => import('@/test/sheetjs.vue')
-      // },
-      {
-        path: '/task/index',
-        component: () => import('@/views/task/index.vue')
       }
     ]
   },
@@ -139,7 +137,6 @@ let routes = [
     path: '/signin',
     component: () => import('@/views/signin.vue')
   }
-
 ]
 
 export default new Router({

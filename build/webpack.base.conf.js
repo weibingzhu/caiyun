@@ -5,6 +5,7 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const os = require('os')
+const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -41,7 +42,8 @@ module.exports = {
       '@axios': resolve('src/axios'),
       '@areaJSON': resolve('static/area.json'),
       '@element-ui': resolve('src/element-ui'),
-      'e-ui': resolve('static/e-ui')
+      'e-ui': resolve('static/e-ui'),
+      'ms': resolve('src/ms.js')
     }
   },
   module: {
@@ -102,6 +104,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      ms: ['ms', 'default']
+    }),
     new VueLoaderPlugin()
   ],
   node: {

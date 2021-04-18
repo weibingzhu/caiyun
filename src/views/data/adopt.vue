@@ -1,429 +1,92 @@
 <template>
-  <!-- 第一次视界页面 -->
-  <e-page-list-layout class="data-adopt">
-    <template slot="search">
-      <el-tabs v-model="taxType" type="card" @tab-click="handleTab">
-        <el-tab-pane label="个税" name="taxPersonal"></el-tab-pane>
-        <el-tab-pane label="增值税(一般纳税人)" name="taxGeneral"></el-tab-pane>
-        <el-tab-pane label="增值税(小规模)" name="taxSmall"></el-tab-pane>
-        <el-tab-pane label="企业所得税" name="taxCompany"></el-tab-pane>
-      </el-tabs>
-      <el-row type="flex" align="middle">
-        <el-col>
-          <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
-            <el-form-item label="状态">
-              <el-select placeholder="状态" size="small" filterable multiple v-model="query.qualification">
-                <el-option v-for="item in znData.declareStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <!-- <el-form-item label="时间">
+    <!-- 第一次视界页面 -->
+    <e-page-list-layout class="data-adopt">
+      <template slot="search">
+        <el-tabs v-model="taxType" type="card" @tab-click="handleTab">
+          <el-tab-pane label="个税" name="taxPersonal"></el-tab-pane>
+          <el-tab-pane label="增值税(一般纳税人)" name="taxGeneral"></el-tab-pane>
+          <el-tab-pane label="增值税(小规模)" name="taxSmall"></el-tab-pane>
+          <el-tab-pane label="企业所得税" name="taxCompany"></el-tab-pane>
+        </el-tabs>
+        <el-row type="flex" align="middle">
+          <el-col>
+            <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
+              <el-form-item label="状态">
+                <el-select placeholder="状态" size="small" filterable multiple v-model="query.qualification">
+                  <el-option v-for="item in znData.declareStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+              <!-- <el-form-item label="时间">
             <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-            </el-form-item>-->
-            <el-form-item label="搜索">
-              <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
-            </el-form-item>
-            <el-button size="small">搜索</el-button>
-          </el-form>
-        </el-col>
-        <span class="operating-area" v-if="taxType === 'taxPersonal'">
-          <el-button size="small">复制上月</el-button>
-          <el-button size="small">执行规则</el-button>
-          <el-button size="small">一键报税</el-button>
-        </span>
-        <span class="operating-area" v-else-if="taxType === 'taxCompany'">
-          <el-button size="small">yyy</el-button>
-          <el-button size="small">yyy</el-button>
-          <el-button size="small">yyy</el-button>
-          <el-button size="small">yyy</el-button>
-        </span>
-        <span class="operating-area" v-else-if="taxType === 'taxGeneral'">
-          <el-button size="small">提取状态</el-button>
-          <el-button size="small">进项项提取</el-button>
-          <el-button size="small">一键报税</el-button>
-        </span>
-        <span class="operating-area" v-else-if="taxType === 'taxSmall'">
-          <el-button size="small">提取税表</el-button>
-          <el-button size="small">xxxx</el-button>
-          <el-button size="small">xxxx</el-button>
-          <el-button size="small">xxxx</el-button>
-        </span>
-      </el-row>
-    </template>
-    <!-- 个税 -->
-    <!-- <div> -->
-    <el-table
-      v-if="taxType === 'taxPersonal'"
-      slot="table"
-      style="width: 100%"
-      stripe
-      v-bind="getTableProps()"
-      v-on="getTableListeners()"
-      highlight-current-row
-      :cell-class-name="tablePersonalCellClassName"
-      @row-dblclick="handleRowDblclick"
-      :data="tableData"
-      :row-key="getRowKeys"
-      :expand-row-keys="expands"
-      @expand-change="exChangeHeandler"
-    >
-      <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
-      <el-table-column
-        label="公司"
-        prop="qualification"
-        fixed
-        :filters="[{text: '一般纳税人', value: 1}, {text: '小规模', value: 2}]"
-        :filter-method="filterHandler"
-        min-width="120"
-      >
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
-            <a
-              v-bind:style="{ color: $store.state.selectCompanyIds.includes(scope.row.companyId)? '#00000088' : 'back' }"
-              @click="handleClickCompanyName(scope.row)"
-            >{{scope.row.companyName | filterName}}</a>
-          </el-tooltip>
-          <el-tag size="mini" v-if="scope.row.qualification === 1">一般</el-tag>
-          <el-tag size="mini" v-else type="success">小规模</el-tag>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-              <div style=" font-weight: bolder">
-                个税税款
-                <span>1000,</span>
-                增值税税款
-                <span>申报成功,</span>
-                企业所得税款
-                <span>1000;</span>
-              </div>
-              <div>
-                <span style=" font-weight: bolder;">进项:</span>
-                金额
-                <span>100</span>
-                税额
-                <span>10</span>
-                缴款书
-                <span>10</span>
-                报关单
-                <span>10</span>
-                留底
-                <span>125</span>
-                ;
-                <span style=" font-weight: bolder;">销项:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">银行对账单:</span>
-                <span>4515</span>
-                ;
-                <span style=" font-weight: bolder;">工资:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">费用:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">手工票据:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-              </div>
+              </el-form-item>-->
+              <el-form-item label="搜索">
+                <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
+              </el-form-item>
+              <el-button size="small">搜索</el-button>
             </el-form>
-          </template>
-      </el-table-column>-->
-      <el-table-column label="报税通知" prop="qualification">通知</el-table-column>
-      <el-table-column label="客户回复" prop="qualification">OK</el-table-column>
-      <el-table-column label="人数" prop="qualification">3</el-table-column>
-      <el-table-column label="状态" prop="taxPersonal">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="成功申报家数/成功扣款家数" placement="top-start">
-            <span>状态{{total.p.curr}}/{{total.p.pay}}</span>
-          </el-tooltip>
-        </template>
-        <template slot-scope="scope">{{znData.taxStatus[scope.row.taxPersonal] }}</template>
-      </el-table-column>
-      <el-table-column label="状态时间" prop="qualification" sortable>
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
-            <span>2020-20-10</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="其他税" prop="qualification">
-        <template slot-scope="scope">3/2</template>
-      </el-table-column>
-      <el-table-column label="操作员" prop="operatorNames">
-        <template slot-scope="scope">
-          <multi-name :namesStr="scope.row.operatorNames"></multi-name>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" prop="qualification">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="作废 | 返回 | 强行处理" placement="top-start">
-            <el-button type="text" @click="handleUpdate(scope.row)">操作</el-button>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- <div slot="pagination"></div> -->
-    <!-- </div> -->
-    <!-- 增值税(一般纳税人) -->
-    <el-table
-      v-if="taxType === 'taxGeneral'"
-      slot="table"
-      style="width: 100%"
-      v-bind="getTableProps()"
-      v-on="getTableListeners()"
-      highlight-current-row
-      :cell-class-name="tableGeneralCellClassName"
-      :data="tableData"
-    >
-      <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
-      <el-table-column label="公司" min-width="90">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
-            <a
-              v-bind:style="{ color: $store.state.selectCompanyIds.includes(scope.row.companyId)? '#00000088' : 'back' }"
-              @click="handleClickCompanyName(scope.row)"
-            >{{scope.row.companyName | filterName}}</a>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-              <div style=" font-weight: bolder">
-                个税税款
-                <span>1000,</span>
-                增值税税款
-                <span>申报成功,</span>
-                企业所得税款
-                <span>1000;</span>
-              </div>
-              <div>
-                <span style=" font-weight: bolder;">进项:</span>
-                金额
-                <span>100</span>
-                税额
-                <span>10</span>
-                缴款书
-                <span>10</span>
-                报关单
-                <span>10</span>
-                留底
-                <span>125</span>
-                ;
-                <span style=" font-weight: bolder;">销项:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">银行对账单:</span>
-                <span>4515</span>
-                ;
-                <span style=" font-weight: bolder;">工资:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">费用:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">手工票据:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-              </div>
-            </el-form>
-          </template>
-      </el-table-column>-->
-      <el-table-column label="报税通知">通知</el-table-column>
-      <el-table-column label="客户回复">OK</el-table-column>
-      <el-table-column label="进项" sortable>
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
-            <span>提取中</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="销项" sortable>234567.13/已清卡</el-table-column>
-      <el-table-column label="零申报">
-        <template slot-scope="scope">
-          <el-checkbox></el-checkbox>
-        </template>
-      </el-table-column>
-      <el-table-column label="状态">
-        <template slot="header" slot-scope="scope">状态{{total.a.curr}}/{{total.a.pay}}</template>
-        <template slot-scope="scope">{{znData.taxStatus[scope.row.addTax.taxGeneral] }}</template>
-      </el-table-column>
-      <el-table-column label="状态时间">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
-            <span>2020-20-10</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="其他税" prop="qualification">
-        <template slot-scope="scope">3/1</template>
-      </el-table-column>
-      <el-table-column label="操作员" prop="operatorNames">
-        <template slot-scope="scope">
-          <multi-name :namesStr="scope.row.operatorNames"></multi-name>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" prop="qualification">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="作废 | 返回 | 强行处理" placement="top-start">
-            <el-button type="text">操作</el-button>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 增值税(小规模) -->
-    <el-table
-      v-if="taxType === 'taxSmall'"
-      slot="table"
-      style="width: 100%"
-      v-bind="getTableProps()"
-      v-on="getTableListeners()"
-      highlight-current-row
-      :cell-class-name="tableSmallCellClassName"
-      :data="tableData"
-    >
-      <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
-      <el-table-column label="公司">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
-            <a @click="handleClickCompanyName(scope.row)">{{scope.row.companyName | filterName}}</a>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-              <div style=" font-weight: bolder">
-                个税税款
-                <span>1000,</span>
-                增值税税款
-                <span>申报成功,</span>
-                企业所得税款
-                <span>1000;</span>
-              </div>
-              <div>
-                <span style=" font-weight: bolder;">进项:</span>
-                金额
-                <span>100</span>
-                税额
-                <span>10</span>
-                缴款书
-                <span>10</span>
-                报关单
-                <span>10</span>
-                留底
-                <span>125</span>
-                ;
-                <span style=" font-weight: bolder;">销项:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">银行对账单:</span>
-                <span>4515</span>
-                ;
-                <span style=" font-weight: bolder;">工资:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">费用:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">手工票据:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-              </div>
-            </el-form>
-          </template>
-      </el-table-column>-->
-      <el-table-column label="报税通知">通知</el-table-column>
-      <el-table-column label="客户回复">OK</el-table-column>
-
-      <el-table-column label="税表提取" prop="qualification">成功</el-table-column>
-      <el-table-column label="状态" prop="taxPersonal">
-        <template slot="header" slot-scope="scope">状态{{total.p.curr}}/{{total.p.pay}}</template>
-        <template slot-scope="scope">{{znData.taxStatus[scope.row.addTax.taxSmall] }}</template>
-      </el-table-column>
-      <el-table-column label="状态时间">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
-            <span>2020-20-10</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="其他税">
-        <template slot-scope="scope">3/2</template>
-      </el-table-column>
-      <el-table-column label="操作员" prop="operatorNames">
-        <template slot-scope="scope">
-          <multi-name :namesStr="scope.row.operatorNames"></multi-name>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 企业所得税 -->
-    <el-table
-      v-if="taxType === 'taxCompany'"
-      slot="table"
-      style="width: 100%"
-      v-bind="getTableProps()"
-      v-on="getTableListeners()"
-      highlight-current-row
-      :cell-class-name="tableCompanyCellClassName"
-      :data="tableData"
-    >
-      <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
-      <el-table-column
-        label="公司"
-        prop="qualification"
-        fixed
-        :filters="[{text: '有限', value: 1}, {text: '个体', value: 2}]"
-        :filter-method="filterHandler"
-      >
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
-            <a @click="handleClickCompanyName(scope.row)">{{scope.row.companyName | filterName}}</a>
-          </el-tooltip>
-          <span v-if="taxType === 'taxCompany'">
-            <el-tag size="mini" v-if="scope.row.qualification === 1">有限</el-tag>
-            <el-tag size="mini" v-else type="success">个体</el-tag>
+          </el-col>
+          <span class="operating-area" v-if="taxType === 'taxPersonal'">
+            <el-button size="small">复制上月</el-button>
+            <el-button size="small">执行规则</el-button>
+            <el-button size="small">一键报税</el-button>
           </span>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column type="expand">
+          <span class="operating-area" v-else-if="taxType === 'taxCompany'">
+            <el-button size="small">yyy</el-button>
+            <el-button size="small">yyy</el-button>
+            <el-button size="small">yyy</el-button>
+            <el-button size="small">yyy</el-button>
+          </span>
+          <span class="operating-area" v-else-if="taxType === 'taxGeneral'">
+            <el-button size="small">提取状态</el-button>
+            <el-button size="small">进项项提取</el-button>
+            <el-button size="small">一键报税</el-button>
+          </span>
+          <span class="operating-area" v-else-if="taxType === 'taxSmall'">
+            <el-button size="small">提取税表</el-button>
+            <el-button size="small">xxxx</el-button>
+            <el-button size="small">xxxx</el-button>
+            <el-button size="small">xxxx</el-button>
+          </span>
+        </el-row>
+      </template>
+      <!-- 个税 -->
+      <!-- <div> -->
+        <el-table
+          v-if="taxType === 'taxPersonal'"
+          slot="table"
+          style="width: 100%"
+          stripe
+          v-bind="getTableProps()"
+          v-on="getTableListeners()"
+          highlight-current-row
+          :cell-class-name="tablePersonalCellClassName"
+          @row-dblclick="handleRowDblclick"
+          :data="tableData"
+          :row-key="getRowKeys"
+          :expand-row-keys="expands"
+          @expand-change="exChangeHeandler"
+        >
+          <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
+          <el-table-column
+            label="公司"
+            prop="qualification"
+            fixed
+            :filters="[{text: '一般纳税人', value: 1}, {text: '小规模', value: 2}]"
+            :filter-method="filterHandler"
+            min-width="120"
+          >
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
+                <a
+                  v-bind:style="{ color: $store.state.selectCompanyIds.includes(scope.row.companyId)? '#00000088' : 'back' }"
+                  @click="handleClickCompanyName(scope.row)"
+                >{{scope.row.companyName | filterName}}</a>
+              </el-tooltip>
+              <el-tag size="mini" v-if="scope.row.qualification === 1">一般</el-tag>
+              <el-tag size="mini" v-else type="success">小规模</el-tag>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
               <div style=" font-weight: bolder">
@@ -477,32 +140,369 @@
               </div>
             </el-form>
           </template>
-      </el-table-column>-->
-      <el-table-column label="报税通知" prop="qualification">通知</el-table-column>
-      <el-table-column label="客户回复" prop="qualification">OK</el-table-column>
-      <el-table-column label="状态" prop="taxPersonal">
-        <template slot="header" slot-scope="scope">状态{{total.p.curr}}/{{total.p.pay}}</template>
-        <template slot-scope="scope">{{znData.taxStatus[scope.row.taxCompany] }}</template>
-      </el-table-column>
-      <el-table-column label="状态时间">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
-            <span>2020-20-10</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="其他税">
-        <template slot-scope="scope">3/2</template>
-      </el-table-column>
-      <el-table-column label="操作员" prop="operatorNames">
-        <template slot-scope="scope">
-          <!-- {{scope.row.operatorNames}} -->
-          <multi-name :namesStr="scope.row.operatorNames"></multi-name>
-        </template>
-      </el-table-column>
-    </el-table>
+          </el-table-column>-->
+          <el-table-column label="报税通知" prop="qualification">通知</el-table-column>
+          <el-table-column label="客户回复" prop="qualification">OK</el-table-column>
+          <el-table-column label="人数" prop="qualification">3</el-table-column>
+          <el-table-column label="状态" prop="taxPersonal">
+            <template slot="header" slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="成功申报家数/成功扣款家数" placement="top-start">
+                <span>状态{{total.p.curr}}/{{total.p.pay}}</span>
+              </el-tooltip>
+            </template>
+            <template slot-scope="scope">{{znData.taxStatus[scope.row.taxPersonal] }}</template>
+          </el-table-column>
+          <el-table-column label="状态时间" prop="qualification" sortable>
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
+                <span>2020-20-10</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="其他税" prop="qualification">
+            <template slot-scope="scope">3/2</template>
+          </el-table-column>
+          <el-table-column label="操作员" prop="operatorNames">
+            <template slot-scope="scope">
+              <multi-name :namesStr="scope.row.operatorNames"></multi-name>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" prop="qualification">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" content="作废 | 返回 | 强行处理" placement="top-start">
+                <el-button type="text" @click="handleUpdate(scope.row)">操作</el-button>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- <div slot="pagination"></div> -->
+      <!-- </div> -->
+      <!-- 增值税(一般纳税人) -->
+      <el-table
+        v-if="taxType === 'taxGeneral'"
+        slot="table"
+        style="width: 100%"
+        v-bind="getTableProps()"
+        v-on="getTableListeners()"
+        highlight-current-row
+        :cell-class-name="tableGeneralCellClassName"
+        :data="tableData"
+      >
+        <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
+        <el-table-column label="公司" min-width="90">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
+              <a
+                v-bind:style="{ color: $store.state.selectCompanyIds.includes(scope.row.companyId)? '#00000088' : 'back' }"
+                @click="handleClickCompanyName(scope.row)"
+              >{{scope.row.companyName | filterName}}</a>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <div style=" font-weight: bolder">
+                个税税款
+                <span>1000,</span>
+                增值税税款
+                <span>申报成功,</span>
+                企业所得税款
+                <span>1000;</span>
+              </div>
+              <div>
+                <span style=" font-weight: bolder;">进项:</span>
+                金额
+                <span>100</span>
+                税额
+                <span>10</span>
+                缴款书
+                <span>10</span>
+                报关单
+                <span>10</span>
+                留底
+                <span>125</span>
+                ;
+                <span style=" font-weight: bolder;">销项:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">银行对账单:</span>
+                <span>4515</span>
+                ;
+                <span style=" font-weight: bolder;">工资:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">费用:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">手工票据:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+              </div>
+            </el-form>
+          </template>
+        </el-table-column>-->
+        <el-table-column label="报税通知">通知</el-table-column>
+        <el-table-column label="客户回复">OK</el-table-column>
+        <el-table-column label="进项" sortable>
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
+              <span>提取中</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="销项" sortable>234567.13/已清卡</el-table-column>
+        <el-table-column label="零申报">
+          <template slot-scope="scope">
+            <el-checkbox></el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态">
+          <template slot="header" slot-scope="scope">状态{{total.a.curr}}/{{total.a.pay}}</template>
+          <template slot-scope="scope">{{znData.taxStatus[scope.row.addTax.taxGeneral] }}</template>
+        </el-table-column>
+        <el-table-column label="状态时间">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
+              <span>2020-20-10</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="其他税" prop="qualification">
+          <template slot-scope="scope">3/1</template>
+        </el-table-column>
+        <el-table-column label="操作员" prop="operatorNames">
+          <template slot-scope="scope">
+            <multi-name :namesStr="scope.row.operatorNames"></multi-name>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" prop="qualification">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="作废 | 返回 | 强行处理" placement="top-start">
+              <el-button type="text">操作</el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 增值税(小规模) -->
+      <el-table
+        v-if="taxType === 'taxSmall'"
+        slot="table"
+        style="width: 100%"
+        v-bind="getTableProps()"
+        v-on="getTableListeners()"
+        highlight-current-row
+        :cell-class-name="tableSmallCellClassName"
+        :data="tableData"
+      >
+        <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
+        <el-table-column label="公司">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
+              <a @click="handleClickCompanyName(scope.row)">{{scope.row.companyName | filterName}}</a>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <div style=" font-weight: bolder">
+                个税税款
+                <span>1000,</span>
+                增值税税款
+                <span>申报成功,</span>
+                企业所得税款
+                <span>1000;</span>
+              </div>
+              <div>
+                <span style=" font-weight: bolder;">进项:</span>
+                金额
+                <span>100</span>
+                税额
+                <span>10</span>
+                缴款书
+                <span>10</span>
+                报关单
+                <span>10</span>
+                留底
+                <span>125</span>
+                ;
+                <span style=" font-weight: bolder;">销项:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">银行对账单:</span>
+                <span>4515</span>
+                ;
+                <span style=" font-weight: bolder;">工资:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">费用:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">手工票据:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+              </div>
+            </el-form>
+          </template>
+        </el-table-column>-->
+        <el-table-column label="报税通知">通知</el-table-column>
+        <el-table-column label="客户回复">OK</el-table-column>
 
-    <!-- 确认强行操作窗口 -->
+        <el-table-column label="税表提取" prop="qualification">成功</el-table-column>
+        <el-table-column label="状态" prop="taxPersonal">
+          <template slot="header" slot-scope="scope">状态{{total.p.curr}}/{{total.p.pay}}</template>
+          <template slot-scope="scope">{{znData.taxStatus[scope.row.addTax.taxSmall] }}</template>
+        </el-table-column>
+        <el-table-column label="状态时间">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
+              <span>2020-20-10</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="其他税">
+          <template slot-scope="scope">3/2</template>
+        </el-table-column>
+        <el-table-column label="操作员" prop="operatorNames">
+          <template slot-scope="scope">
+            <multi-name :namesStr="scope.row.operatorNames"></multi-name>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 企业所得税 -->
+      <el-table
+        v-if="taxType === 'taxCompany'"
+        slot="table"
+        style="width: 100%"
+        v-bind="getTableProps()"
+        v-on="getTableListeners()"
+        highlight-current-row
+        :cell-class-name="tableCompanyCellClassName"
+        :data="tableData"
+      >
+        <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
+        <el-table-column
+          label="公司"
+          prop="qualification"
+          fixed
+          :filters="[{text: '有限', value: 1}, {text: '个体', value: 2}]"
+          :filter-method="filterHandler"
+        >
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.companyName" placement="top-start">
+              <a @click="handleClickCompanyName(scope.row)">{{scope.row.companyName | filterName}}</a>
+            </el-tooltip>
+            <span v-if="taxType === 'taxCompany'">
+              <el-tag size="mini" v-if="scope.row.qualification === 1">有限</el-tag>
+              <el-tag size="mini" v-else type="success">个体</el-tag>
+            </span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <div style=" font-weight: bolder">
+                个税税款
+                <span>1000,</span>
+                增值税税款
+                <span>申报成功,</span>
+                企业所得税款
+                <span>1000;</span>
+              </div>
+              <div>
+                <span style=" font-weight: bolder;">进项:</span>
+                金额
+                <span>100</span>
+                税额
+                <span>10</span>
+                缴款书
+                <span>10</span>
+                报关单
+                <span>10</span>
+                留底
+                <span>125</span>
+                ;
+                <span style=" font-weight: bolder;">销项:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">银行对账单:</span>
+                <span>4515</span>
+                ;
+                <span style=" font-weight: bolder;">工资:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">费用:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+                <span style=" font-weight: bolder;">手工票据:</span>
+                金额
+                <span>4515</span>
+                税额
+                <span>1245</span>
+                ;
+              </div>
+            </el-form>
+          </template>
+        </el-table-column>-->
+        <el-table-column label="报税通知" prop="qualification">通知</el-table-column>
+        <el-table-column label="客户回复" prop="qualification">OK</el-table-column>
+        <el-table-column label="状态" prop="taxPersonal">
+          <template slot="header" slot-scope="scope">状态{{total.p.curr}}/{{total.p.pay}}</template>
+          <template slot-scope="scope">{{znData.taxStatus[scope.row.taxCompany] }}</template>
+        </el-table-column>
+        <el-table-column label="状态时间">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="2020-20-10 12:12:45" placement="top-start">
+              <span>2020-20-10</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="其他税">
+          <template slot-scope="scope">3/2</template>
+        </el-table-column>
+        <el-table-column label="操作员" prop="operatorNames">
+          <template slot-scope="scope">
+            <!-- {{scope.row.operatorNames}} -->
+            <multi-name :namesStr="scope.row.operatorNames"></multi-name>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 确认强行操作窗口 -->
     <el-dialog title="强行处理" :visible.sync="forciblyDialogVisible">
       <el-form :model="formForcibly" inline>
         <el-form-item label="申报状态">
@@ -522,7 +522,7 @@
         <el-button type="primary" size="small" @click="handleForciblyStatus">确 定</el-button>
       </div>
     </el-dialog>
-  </e-page-list-layout>
+    </e-page-list-layout>
 </template>
 
 <script>

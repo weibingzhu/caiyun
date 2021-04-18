@@ -32,9 +32,9 @@ export default {
         let _areaJSON = []
         data.forEach(e => {
           let children = []
-          _areaJSON.push({ label: e.label, value: e.value, children: children })
+          _areaJSON.push({label: e.label, value: e.value, children: children})
           e.children.forEach(ee => {
-            children.push({ label: ee.label, value: ee.value })
+            children.push({label: ee.label, value: ee.value})
           })
         })
         return _areaJSON
@@ -85,9 +85,9 @@ export default {
       },
 
       strTime2PeriodObj (period) {
-        if (!period) return { y: new Date().getFullYear(), m: new Date().getMonth() }
+        if (!period) return {y: new Date().getFullYear(), m: new Date().getMonth()}
         let index = period.indexOf('-')
-        return { y: parseInt(period.substring(0, index)), m: parseInt(period.substring(index + 1)) }
+        return {y: parseInt(period.substring(0, index)), m: parseInt(period.substring(index + 1))}
       },
       /**
        * 获取 store 里面的 period 的对象 '2020-10' => {y:2020,m:10}
@@ -95,10 +95,10 @@ export default {
       getStorePeriodObj (thiss) {
         let period = thiss.$store.state.period
         if (thiss._.isDate(period)) {
-          return { y: period.getFullYear(), m: period.getMonth() + 1 }
+          return {y: period.getFullYear(), m: period.getMonth() + 1}
         } else if (thiss._.isString(period)) {
           let index = period.indexOf('-')
-          return { y: parseInt(period.substring(0, index)), m: parseInt(period.substring(index + 1)) }
+          return {y: parseInt(period.substring(0, index)), m: parseInt(period.substring(index + 1))}
         } else {
           let date = new Date()
           let y = date.getFullYear()
@@ -108,7 +108,7 @@ export default {
             m = 12
           }
           thiss.$store.commit('PERIOD', y + '-' + m)
-          return { y, m }
+          return {y, m}
         }
       },
 
@@ -127,7 +127,7 @@ export default {
         thiss.$store.commit('SELECT_COMPANY_ID', selectCompanyId)
 
         let routerPath = thiss.$route.path
-        thiss.$router.push({ path: routerPath, query: { companyId: selectCompanyId } })
+        thiss.$router.push({ path: routerPath, query: {companyId: selectCompanyId} })
 
         return currIndex
       },
@@ -332,25 +332,25 @@ export default {
         taxCompany: 'taxCompany'
       },
       declareStatus: [
-        { value: '1', label: '未申报' },
-        { value: '2', label: '已申报' },
-        { value: '3', label: '申报异常' },
-        { value: '4', label: '未扣款' },
-        { value: '5', label: '已扣款' },
-        { value: '6', label: '扣款异常' }
+        {value: '1', label: '未申报'},
+        {value: '2', label: '已申报'},
+        {value: '3', label: '申报异常'},
+        {value: '4', label: '未扣款'},
+        {value: '5', label: '已扣款'},
+        {value: '6', label: '扣款异常'}
       ],
 
       bookkeepingType: [
-        { value: '2', label: '按月' },
-        { value: '3', label: '按季' },
-        { value: '4', label: '半年' },
-        { value: '5', label: '一年' },
-        { value: '6', label: '不计' }
+        {value: '2', label: '按月'},
+        {value: '3', label: '按季'},
+        {value: '4', label: '半年'},
+        {value: '5', label: '一年'},
+        {value: '6', label: '不计'}
       ],
       qualificationItem: [
-        { value: '1', label: '一般纳税人' },
-        { value: '2', label: '小规模纳税人' },
-        { value: '0', label: '未知' }
+        {value: '1', label: '一般纳税人'},
+        {value: '2', label: '小规模纳税人'},
+        {value: '0', label: '未知'}
       ],
       // 申报状态对应的文字
       declareStatusTxt: {
@@ -387,49 +387,7 @@ export default {
         'pay-success': 'primary',
 
         'completed': 'primary'
-      },
-      // 自动化任务状态
-      autoTaskStatus: [
-        { value: 'queue-up', label: '排队中' },
-        { value: 'processing', label: '处理中' },
-        { value: 'fail', label: '失败' },
-        { value: 'timeout', label: '超时' },
-        { value: 'success', label: '成功' },
-        { value: 'cancel', label: '取消' }
-      ],
-      // 一般纳税人增值税
-      APP_CLASSIFY_GENERAL: {
-        normal_declare: 'normal_declare',
-        normal_declare_off: 'normal_declare_off',
-        normal_zero_declare: 'normal_zero_declare',
-        normal_pay: 'normal_pay',
-        normal_cancel: 'normal_cancel',
-
-        general_declare: 'general_declare',
-        general_zero_declare: 'general_zero_declare',
-        general_pay: 'general_pay',
-        general_cancel: 'general_cancel',
-        general_result: 'general_result'
-      },
-      // 个税的
-      APP_CLASSIFY_PERSONAL: {
-        personal_declare_status: 'personal_declare_status',
-        personal_declare_off: 'personal_declare_off',
-
-        personal_declare: 'personal_declare',
-        personal_pay: 'personal_pay',
-        personal_cancel: 'personal_cancel',
-        personal_result: 'personal_result'
-      },
-      // APP_CLASSIFY: Object.assign(JSON.parse(JSON.stringify(APP_CLASSIFY_GENERAL)), APP_CLASSIFY_PERSONAL),
-      APP_CLASSIFY_STATUS: [
-        { value: 'general_pay', label: 'TODO1' },
-        { value: 'general_declare', label: 'TODO2' }
-      ],
-      WEB_CLASSIFY_STATUS: [
-        { value: 'general_pay', label: 'TODO11' },
-        { value: 'general_declare', label: 'TODO22' }
-      ]
+      }
     }
   }
 }

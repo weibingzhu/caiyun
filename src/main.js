@@ -15,7 +15,7 @@ import '@/directives'
 import DomPortal from 'vue-dom-portal'
 import axios from '@axios'
 import mixins from 'e-ui/lib/mixins'
-// import * as MS from '../packages'
+import * as MS from '../packages'
 
 import common from '@/utils/common.js'
 import _ from 'lodash'
@@ -28,7 +28,7 @@ Vue.config.productionTip = false
 Vue.use(DomPortal)
 Vue.use(ElementUI)
 Vue.use(common)
-// Vue.use(MS)
+Vue.use(MS)
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
@@ -73,6 +73,7 @@ initRootFontSize()
 if (window.top !== window) {
   document.body.classList.add('is-iframe')
 }
+window.Vue = Vue
 /* eslint-disable no-new */
 window.$$root = new Vue({
   el: '#app',

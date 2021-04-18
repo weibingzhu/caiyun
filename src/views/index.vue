@@ -1,7 +1,7 @@
+<!--
 <template>
   <e-frame-layout class="main-index" :key="JSON.stringify($store.state.user)" :menus="menus" title="自能财税后台管理">
     <template v-slot:logo="scope">
-      <!-- <img src="/static/images/logo.png" style="margin:auto;height:36px"/> -->
     </template>
     <div slot="title" class="e-frame-layout--nav-item">
       <el-tag size="small" v-if="qualification === 1">一般</el-tag>
@@ -47,11 +47,6 @@
       <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch>
     </div>
     <div slot="nav" class="nav">
-      <!-- <div class="e-frame-layout--nav-item">
-        <router-link class="e-frame-layout--nav-trigger" :to="{path:'/', query: {state: '1'}}">
-          <icon>&#xe6e1;</icon>统计台
-        </router-link>
-      </div>-->
       <div class="e-frame-layout--nav-item">
         <router-link class="e-frame-layout--nav-trigger" :to="{path:'/message', query: {state: '1'}}">
           <icon>&#xe60c;</icon>消息
@@ -71,6 +66,20 @@
     </div>
     <router-view :key="$route.path"></router-view>
   </e-frame-layout>
+</template>
+-->
+<template>
+  <ms-frame-layout
+    title="后台管理系统"
+    :menus="menus">
+    <template slot="logo" slot-scope="scope">
+      <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
+    </template>
+    <div slot="nav" class="actions">
+      <router-link to="/profile">个人中心</router-link>
+      <router-link to="/message">消息</router-link>
+    </div>
+  </ms-frame-layout>
 </template>
 
 <script>
@@ -177,6 +186,10 @@ export default {
 </script>
 
 <style lang="scss">
+.ms-frame-layout{
+  height:100vh;
+  max-height:100vh;
+}
 .main-index {
   .main-period {
     max-width: 114px;
