@@ -1,0 +1,42 @@
+  1 大弹框，显示发票，提取状态                ! 直接用element组件
+  2 表 '..' 问题，加了 min-width有了，        ! 先所有的都不加，个别加就可以了，把padding left righh 都弄成0
+  3 fixed 切换table有问题 ! 页面搞错了
+
+4 operating-area ， 样式问题                  ！(各占一半) 或 <el-row type="flex" align="middle"><el-col><这里的内容自动挤到后面><el-row><el-col>
+6 星星 紧凑一点                               ! style 作用域
+  7 人员创建和编辑又bug                       ？不是数据传过去的问题
+  8 公司参数什么布局好看                      ！不要用 e-page-list
+9 想在 ‘申报’ 哪里播放一个纯js动画
+  10 单击显示图片 （个税问题那里）            !OK e-preview
+11 增值税进去的界面有滚动条(个税页面没有)     ! 不用路由，用组件
+12 进项页面的select框很费空间
+13 excel 预览
+    14 右边媒体查询，右边icon                 ! icon: '&#xe604;',
+15 有单击 又有双击的问题
+16 离开时，如果又修改提示‘保存’or‘放弃’       ！ beforeRouteLeave
+  17 字体变小时 ，右边的菜单大一些            ！style.inde.css 加
+  18 1440px下 字体在大一点，右边要协调        ! 可以了，
+19 列表中选过的变色，（往哪里存好）           ! (sessionStroage)
+20 公司参数不显示滚动条,                      ！用错e-list-page
+
+101 iconfont的使用
+102 e-ui 只用
+
+
+
+一月份问题：
+登录 401 没有提示
+和原生的html混合只用问题，税表那里
+<el-form @submit.native.prevent>
+chart-pie 的 tip 显示位置 税务进度页面第一个圈圈
+
+
+为什么这里需要 -2px
+.el-button-group{
+        margin-left: -5px;
+        margin-top: -2px;
+      }
+
+按两下 esc 才关掉 e-preview ；task/index 关不了
+
+

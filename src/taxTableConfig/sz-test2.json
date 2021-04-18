@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "name": "xxxxx"
+  },
+  "config": [
+    {
+      "A": {
+        "value": "增值税纳税申报表附列资料(四)",
+        "colspan": 8,
+        "editable": false,
+        "align": "center"
+      }
+    },
+    {
+      "A": {
+        "value": "一、税额抵减情况",
+        "colspan": 8,
+        "editable": false,
+        "align": "center"
+      }
+    },
+    {
+      "A": {
+        "value": "序号",
+        "rowspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "B": {
+        "value": "抵减项目",
+        "rowspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "C": "期初余额",
+      "D": "本期发生额",
+      "E": "本期应抵减税额",
+      "F": "本期实际抵减税额",
+      "G": {
+        "value": "期末余额",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      }
+    },
+    {
+      "C": "1",
+      "D": "2",
+      "E": "3=1+2",
+      "F": "4≤3",
+      "G": {
+        "value": "5=3-4",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      }
+    },
+    {
+      "A": "11111111111",
+      "B": "增值税税控系统专用设备费及技术维护费",
+      "C": "--",
+      "D": {
+        "value": "asdf",
+        "type": "select",
+        "editable": true
+      },
+      "E": "--",
+      "F": {
+        "value": null,
+        "editable": true
+      },
+      "G": {
+        "value": "--",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "_": "1"
+    },
+    {
+      "A": "2",
+      "B": "分支机构预征缴纳税款",
+      "C": "--",
+      "D": "--",
+      "E": "--",
+      "F": "--",
+      "G": {
+        "value": "--",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "_": "2"
+    },
+    {
+      "A": "3",
+      "B": "建筑服务预征缴纳税款",
+      "C": "--",
+      "D": "--",
+      "E": "--",
+      "F": "--",
+      "G": {
+        "value": "--",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "_": "3"
+    },
+    {
+      "A": "4",
+      "B": "销售不动产预征缴纳税款",
+      "C": "--",
+      "D": "--",
+      "E": "--",
+      "F": "--",
+      "G": {
+        "value": "--",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "_": "4"
+    },
+    {
+      "A": "5",
+      "B": "出租不动产预征缴纳税款",
+      "C": "--",
+      "D": "--",
+      "E": "--",
+      "F": "--",
+      "G": {
+        "value": "--",
+        "colspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "_": "5"
+    },
+    {
+      "A": {
+        "value": "二、加计抵减情况",
+        "colspan": 8,
+        "editable": false,
+        "align": "center"
+      }
+    },
+    {
+      "A": {
+        "value": "序号",
+        "rowspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "B": {
+        "value": "加计抵减项目",
+        "rowspan": 2,
+        "editable": false,
+        "align": "center"
+      },
+      "C": "期初余额",
+      "D": "本期发生额",
+      "E": "本期调减额",
+      "F": "本期可抵减税额",
+      "G": "本期实际抵减税额",
+      "H": "期末余额"
+    },
+    {
+      "C": "1",
+      "D": "2",
+      "E": "3",
+      "F": "4=1+2-3",
+      "G": "5",
+      "H": "6=4-5"
+    },
+    {
+      "A": "6",
+      "B": "一般项目加计抵减额计算",
+      "C": "--",
+      "D": {
+        "value": null,
+        "editable": true
+      },
+      "E": "--",
+      "F": "--",
+      "G": {
+        "value": "asdf",
+        "editable": true
+      },
+      "H": "--",
+      "_": "6"
+    },
+    {
+      "A": "7",
+      "B": "即征即退项目加计抵减额计算",
+      "C": "--",
+      "D": "--",
+      "E": "--",
+      "F": "--",
+      "G": "--",
+      "H": "--",
+      "_": "7"
+    },
+    {
+      "A": "8",
+      "B": "合计",
+      "C": "--",
+      "D": "--",
+      "E": "--",
+      "F": "--",
+      "G": "--",
+      "H": "--",
+      "_": "8"
+    }
+  ]
+}

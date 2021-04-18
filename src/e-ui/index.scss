@@ -1,0 +1,7 @@
+@import 'e-ui/lib/style/src/theme/management.scss';
+.e-section{
+  &--title{
+    border-left:4px solid $color-primary;
+    padding-left:10px;
+  }
+}

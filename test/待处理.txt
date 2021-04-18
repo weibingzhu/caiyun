@@ -1,0 +1,31 @@
+登录 401 没有提示
+和原生的html混合只用问题，税表那里
+ <el-dropdown-item>加入观察</el-dropdown-item> 存在本地，在列表中用颜色表明，   !（被单击过10家颜色不一样）
+ 支持拼音zhoum搜索                                                              !注意選中后重新賦值回綁定的數組
+
+ 右边的添加和编辑问题
+ 滚动通知问题（手机验证码）
+
+
+翻页处理(延迟下载，当会面临搜索很卡！)
+个人页面统计今天操作过哪些（何时爬取了什么，何时报了什么税，记账关键动作）
+
+合同业务：
+公司交接需要哪些资料
+进度页面用颜色来区分哪些是左边的圈圈，哪些是右边的圈圈
+记账页面要知道该公司是否报税成功（个税增值税等）
+给统计界面添加 文字底图 background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='14' fill-opacity='0.5' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 100 100)'%3Ezhangxinxu.com%3C/text%3E%3C/svg%3E");
+
+解析excel的功能：
+能不能拖到body 就弹出一个窗口，如果失败，
+  解决1 提示可以拖到头部（对应的公司），再选择对应的模块
+  解决2 提示托多body后， 再选择对应的模块
+
+如果还是失败，就给出对应模块的模板形式和下载=上传excel的区别（颜色区分出不一样的地方）
+任务列表显示：
+
+把静态数据的枚举分离出来 Vue.prototype.znData
+
+
+
+
