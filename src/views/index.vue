@@ -1,7 +1,7 @@
-<!--
 <template>
-  <e-frame-layout class="main-index" :key="JSON.stringify($store.state.user)" :menus="menus" title="自能财税后台管理">
-    <template v-slot:logo="scope">
+  <ms-frame-layout title="后台管理系统" :menus="menus">
+    <template slot="logo" slot-scope="scope">
+      <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
     </template>
     <div slot="title" class="e-frame-layout--nav-item">
       <el-tag size="small" v-if="qualification === 1">一般</el-tag>
@@ -63,21 +63,6 @@
           <icon>&#xe6a9;</icon>退出
         </span>
       </div>
-    </div>
-    <router-view :key="$route.path"></router-view>
-  </e-frame-layout>
-</template>
--->
-<template>
-  <ms-frame-layout
-    title="后台管理系统"
-    :menus="menus">
-    <template slot="logo" slot-scope="scope">
-      <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
-    </template>
-    <div slot="nav" class="actions">
-      <router-link to="/profile">个人中心</router-link>
-      <router-link to="/message">消息</router-link>
     </div>
   </ms-frame-layout>
 </template>

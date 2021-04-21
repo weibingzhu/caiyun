@@ -31,10 +31,38 @@ let routes = [
         component: () => import('@/views/message/index.vue')
       },
       {
-        path: '/data/adopt',
-        component: () => import('@/views/data/adopt.vue'),
+        path: '/data/personal/adopt',
+        component: () => import('@/views/data/personal/adopt.vue'),
         meta: {
-          title: '数据采集'
+          title: '个税采集'
+        }
+      },
+      {
+        path: '/data/company/adopt',
+        component: () => import('@/views/data/company/adopt.vue'),
+        meta: {
+          title: '企业所得采集'
+        }
+      },
+      {
+        path: '/data/general/adopt',
+        component: () => import('@/views/data/general/adopt.vue'),
+        meta: {
+          title: '一般人采集'
+        }
+      },
+      {
+        path: '/data/small/adopt',
+        component: () => import('@/views/data/small/adopt.vue'),
+        meta: {
+          title: '小规模采集'
+        }
+      },
+      {
+        path: '/data/year/adopt',
+        component: () => import('@/views/data/year/adopt.vue'),
+        meta: {
+          title: '汇算清缴'
         }
       },
       {

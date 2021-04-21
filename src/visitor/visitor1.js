@@ -30,27 +30,27 @@ export default {
       options: [{
         title: '个税',
         index: '03-01',
-        route: '/data/adopt'
+        route: '/data/personal/adopt'
       },
       {
         title: '一般人增值税',
         index: '03-02',
-        route: '/tax/index'
+        route: '/data/general/adopt'
       },
       {
         title: '小规模增值税',
         index: '03-03',
-        route: '/tax/index'
+        route: '/data/small/adopt'
       },
       {
         title: '企业所得',
         index: '03-04',
-        route: '/tax/index'
+        route: '/data/company/adopt'
       },
       {
         title: '汇算清缴',
         index: '04-05',
-        route: '/tax/index'
+        route: '/data/year/adopt'
       }]
     },
 
