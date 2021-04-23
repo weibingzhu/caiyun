@@ -68,7 +68,7 @@
           <slot v-else name="header"></slot>
         </el-row>
         <div class="ms-frame-layout--tabs" v-if="apps.length">
-          <el-tabs :value="currentAppIndex + ''" @tab-click="handleTab" editable @edit="handleTabsEdit">
+          <el-tabs :value="currentAppIndex + ''" @tab-click="handleTab" size="small" type="card" editable @edit="handleTabsEdit">
             <el-tab-pane v-for="(item,index) in apps" :label="item.title" :name="index + ''" :key="index"></el-tab-pane>
           </el-tabs>
           <el-dropdown trigger="click" @command="handleCommand">
@@ -528,8 +528,8 @@ export default {
           display: none;
         }
         &__item{
-          line-height: 38px;
-          height:38px;
+          // line-height: 38px;
+          // height:38px;
           .el-icon-close{
             opacity: 0;
             position: absolute;
@@ -539,6 +539,8 @@ export default {
             font-size:14px;
           }
           &:hover, &.is-active{
+            background-color: #409EFF;
+             color: white;  //修改激活表头字体颜色，默认是蓝色
             .el-icon-close{
               opacity: 1;
             }
@@ -555,7 +557,7 @@ export default {
       line-height:$frame-layout--header-height;
       display:inline-block;
       vertical-align:middle;
-      padding-left:10px;
+      // padding-left:10px;
     }
     &--body{
       position:relative;
@@ -654,7 +656,7 @@ export default {
       background-clip: content-box;
       position: absolute;
       width: 100%;
-      padding: 10px;
+      // padding: 6px; //
       left:0;
       top:0;
     }

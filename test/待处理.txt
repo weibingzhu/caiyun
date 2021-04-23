@@ -26,6 +26,13 @@
 
 把静态数据的枚举分离出来 Vue.prototype.znData
 
+tab都被关了时显示 console  不要显示 '/x'
+二级路由显示到 tab 把一级给替换了
+刷新 tab 显示不对
+
+
+把 pdf 放在前端处理
+把 excel下载放在前端处理
 
 
 

@@ -3,7 +3,7 @@
     <template slot="logo" slot-scope="scope">
       <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
     </template>
-    <div slot="title" class="e-frame-layout--nav-item">
+    <div slot="title" class="tittle">
       <el-tag size="small" v-if="qualification === 1">一般</el-tag>
       <el-tag size="small" v-if="qualification === 2">小规模</el-tag>
       {{selectCompanyId}}
@@ -175,19 +175,23 @@ export default {
   height:100vh;
   max-height:100vh;
 }
-.main-index {
-  .main-period {
-    max-width: 114px;
-  }
-  .el-popover-title {
-    text-align: right !important;
-  }
-  .nav {
-    .e-frame-layout--nav-item {
-      .e-frame-layout--nav-trigger {
-        padding: 0 2px;
-      }
-    }
-  }
+
+.nav, .title {
+  padding: 10px 0;
 }
+// .main-index {
+//   .main-period {
+//     max-width: 114px;
+//   }
+//   .el-popover-title {
+//     text-align: right !important;
+//   }
+//   .nav {
+//     .e-frame-layout--nav-item {
+//       .e-frame-layout--nav-trigger {
+//         padding: 0 2px;
+//       }
+//     }
+//   }
+// }
 </style>
