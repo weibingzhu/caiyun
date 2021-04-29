@@ -130,6 +130,17 @@ export default {
       } else {
         this.allCompanies = this.$store.state.allCompanies
       }
+    },
+
+    handleEvent (event) {
+      debugger
+      if (event.ctrlKey && event.shiftKey && event.altKey && event.keyCode === 13) {
+        console.log('三个')
+      } else if (event.ctrlKey && event.shiftKey && event.keyCode === 13) {
+        console.log('2个')
+      } else if (event.ctrlKey && event.keyCode === 13) {
+        console.log('1个')
+      }
     }
   },
   computed: {
@@ -166,17 +177,25 @@ export default {
       this.qualification = this._.get(arr[0], 'item.category.qualification')
       if (!this.qualification) this.qualification = this._.get(arr[0], 'item.qualification')
     }
+  },
+
+  created () {
+    document.addEventListener('keyup', this.handleEvent)
+  },
+  beforeDestroy () {
+    document.removeEventListener('keyup', this.handleEvent)
   }
 }
 </script>
 
 <style lang="scss">
-.ms-frame-layout{
-  height:100vh;
-  max-height:100vh;
+.ms-frame-layout {
+  height: 100vh;
+  max-height: 100vh;
 }
 
-.nav, .title {
+.nav,
+.title {
   padding: 10px 0;
 }
 // .main-index {

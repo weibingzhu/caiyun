@@ -258,10 +258,6 @@ export default {
       }
       this.multipleSelection = value
     },
-    parseResponse (res) {
-      this.pageData = res.data
-      return res
-    },
     fetch (query) {} // 需要被重写， 初始化会执行，路由参数变化也会执行
   },
   beforeRouteUpdate (to, from, next) { // 监听route地址变化

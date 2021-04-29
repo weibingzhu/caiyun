@@ -37,6 +37,10 @@ chart-pie 的 tip 显示位置 税务进度页面第一个圈圈
         margin-top: -2px;
       }
 
-按两下 esc 才关掉 e-preview ；task/index 关不了
+按两下 esc 才关掉 e-preview ；
+task/index 关不了
+
+列表 height：200px （不知道写在哪里）
+列表没有出来
 
 

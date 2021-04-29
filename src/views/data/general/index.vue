@@ -1,7 +1,7 @@
 <template>
   <div class="general-inex">
     <e-page-list-layout>
-      <el-breadcrumb slot="breadcrumb" separator-class="el-icon-arrow-right" style="top: -26px; border-top-color: white;">
+      <!-- <el-breadcrumb slot="breadcrumb" separator-class="el-icon-arrow-right" style="top: -26px; border-top-color: white;">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/data/adopt', query:{taxType: 'taxGeneral'}}">数据采取</el-breadcrumb-item>
         <el-breadcrumb-item>
@@ -17,7 +17,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </el-breadcrumb-item>
-      </el-breadcrumb>
+      </el-breadcrumb> -->
       <template slot="search">
         <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="display:flex; padding: 10px">
           <el-badge :value="12" class="item">

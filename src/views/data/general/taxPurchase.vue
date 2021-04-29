@@ -34,12 +34,6 @@
               </el-dropdown-menu>
             </el-dropdown>
           </span>
-          <!-- <div class="div-statistics">
-            <span>统计</span>: 一共
-            <em>{{total.count}}</em>张,总金额:
-            <em>{{total.amount | formatMoney}}</em>,总税额:
-            <em>{{total.tax | formatMoney}}</em>
-          </div> -->
           <invoice-statistics :count="total.count" :amount="total.amount" :tax="total.tax"></invoice-statistics>
         </el-form>
       </template>

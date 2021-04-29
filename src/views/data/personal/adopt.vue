@@ -1,6 +1,5 @@
 <template>
-  <!-- 第一次视界页面 -->
-  <e-page-list-layout class="personal-adopt">
+  <ms-page-list-layout class="personal-adopt">
     <template slot="search">
       <el-row type="flex" align="middle">
         <el-col>
@@ -10,9 +9,6 @@
                 <el-option v-for="item in znData.declareStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
-            <!-- <el-form-item label="时间">
-            <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-            </el-form-item>-->
             <el-form-item label="搜索">
               <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
             </el-form-item>
@@ -37,9 +33,9 @@
       @row-dblclick="handleRowDblclick"
       :data="tableData"
       :row-key="getRowKeys"
-      :expand-row-keys="expands"
-      @expand-change="exChangeHeandler"
     >
+      <!-- :expand-row-keys="expands"
+      @expand-change="exChangeHeandler"-->
       <el-table-column type="selection" class-name="table-column-padding"></el-table-column>
       <el-table-column
         label="公司"
@@ -60,61 +56,6 @@
           <el-tag size="mini" v-else type="success">小规模</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-              <div style=" font-weight: bolder">
-                个税税款
-                <span>1000,</span>
-                增值税税款
-                <span>申报成功,</span>
-                企业所得税款
-                <span>1000;</span>
-              </div>
-              <div>
-                <span style=" font-weight: bolder;">进项:</span>
-                金额
-                <span>100</span>
-                税额
-                <span>10</span>
-                缴款书
-                <span>10</span>
-                报关单
-                <span>10</span>
-                留底
-                <span>125</span>
-                ;
-                <span style=" font-weight: bolder;">销项:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">银行对账单:</span>
-                <span>4515</span>
-                ;
-                <span style=" font-weight: bolder;">工资:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">费用:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-                <span style=" font-weight: bolder;">手工票据:</span>
-                金额
-                <span>4515</span>
-                税额
-                <span>1245</span>
-                ;
-              </div>
-            </el-form>
-          </template>
-      </el-table-column>-->
       <el-table-column label="报税通知" prop="qualification">通知</el-table-column>
       <el-table-column label="客户回复" prop="qualification">OK</el-table-column>
       <el-table-column label="人数" prop="qualification">3</el-table-column>
@@ -149,6 +90,10 @@
         </template>
       </el-table-column>
     </el-table>
+    <template slot="action">
+      <el-button size="small">导入</el-button>
+      <el-button :disabled="multipleSelectionAll.length==0" size="small" @click="handleExport">导出</el-button>
+    </template>
     <el-dialog title="强行处理" :visible.sync="forciblyDialogVisible">
       <el-form :model="formForcibly" inline>
         <el-form-item label="申报状态">
@@ -168,18 +113,17 @@
         <el-button type="primary" size="small" @click="handleForciblyStatus">确 定</el-button>
       </div>
     </el-dialog>
-  </e-page-list-layout>
+  </ms-page-list-layout>
 </template>
 
 <script>
 import MultiName from '@/views/components/MultiName'
 import pyfl from 'pyfl'
-// import Form from './components/Form'
 
 export default {
   mixins: [
-    $mixins.pageList
-    // ms.mixins.pageList
+    // $mixins.pageList
+    ms.mixins.pageList
   ],
   components: {
     MultiName
@@ -210,13 +154,18 @@ export default {
       keyWork: '',
       time: new Date(),
       znDataTaxType: this.znData.taxType,
-      query: this.getQuery({
-        qualification: '全部',
-        name: '',
-        operator: false,
-        select: '_id person status declareType company isCurrent errorNum',
+      query: this.getQuery({ // 初始化query查询条件数据，查询表单数据要绑定到query对象
+        active: 'first',
+        keyword: '',
+        status: '',
+        start: null,
+        end: null,
+        datetime: null,
+        start_time: '',
+        end_time: '',
         ...this.$route.query
       }),
+      multipleSelectionProp: 'asdfasdf',
 
       expands: [],
       expandsTestIndex: -1,
@@ -282,13 +231,10 @@ export default {
           this.total.a.curr = (this.znData.declareSuccessStatus.includes(taxStatusAG) || this.znData.declareSuccessStatus.includes(taxStatusAS)) ? ++aCurr : aCurr
           this.total.a.pay = (this.znData.paySuccessStatus.includes(taxStatusAG) || this.znData.paySuccessStatus.includes(taxStatusAS)) ? ++aPay : aPay
         }
-        res.data.length = 50
+        res.data.length = 50 // TODO
         this.pageData.data = res.data
+        this.pageData.count = 100
       }, params)
-    },
-    parseResponse (res) {
-      this.pageData.count = 100
-      this.pageData.data = res.data
     },
     // 强行处理状态
     handleForciblyStatus (row) {
@@ -353,6 +299,10 @@ export default {
       } else {
         that.expands = []
       }
+    },
+
+    handleExport () {
+
     }
   },
 
@@ -387,9 +337,6 @@ export default {
   .operating-area {
     padding-right: 10px;
   }
-  .e-page-list-layout--table {
-    margin-top: -10px;
-  }
 
   .el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
   .el-table__body tr.current-row > td {
@@ -397,15 +344,17 @@ export default {
     font-weight: bolder;
     // background-color: #E1FFFF!important;
   }
-
-  .el-table .declaresuccess {
-    background: #d6f3f4;
-    opacity: 0.9;
-  }
-  .el-table .paysuccess {
-    margin-left: 2px;
-    background: #32c1ca;
-    opacity: 0.9;
+  .el-table {
+    height: 100%;
+    .declaresuccess {
+      background: #d6f3f4;
+      opacity: 0.9;
+    }
+    .paysuccess {
+      margin-left: 2px;
+      background: #32c1ca;
+      opacity: 0.9;
+    }
   }
   .demo-table-expand div {
     margin: 6px;
