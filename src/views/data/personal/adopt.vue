@@ -90,10 +90,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <template slot="action">
-      <el-button size="small">导入</el-button>
-      <el-button :disabled="multipleSelectionAll.length==0" size="small" @click="handleExport">导出</el-button>
-    </template>
     <el-dialog title="强行处理" :visible.sync="forciblyDialogVisible">
       <el-form :model="formForcibly" inline>
         <el-form-item label="申报状态">
@@ -122,7 +118,6 @@ import pyfl from 'pyfl'
 
 export default {
   mixins: [
-    // $mixins.pageList
     ms.mixins.pageList
   ],
   components: {

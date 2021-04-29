@@ -1,6 +1,5 @@
 <template>
-  <!-- 第一次视界页面 -->
-  <e-page-list-layout class="small-adopt">
+  <ms-page-list-layout class="small-adopt">
     <template slot="search">
       <el-row type="flex" align="middle">
         <el-col>
@@ -143,7 +142,7 @@
         <el-button type="primary" size="small" @click="handleForciblyStatus">确 定</el-button>
       </div>
     </el-dialog>
-  </e-page-list-layout>
+  </ms-page-list-layout>
 </template>
 
 <script>
@@ -153,8 +152,7 @@ import pyfl from 'pyfl'
 
 export default {
   mixins: [
-    $mixins.pageList
-    // ms.mixins.pageList
+    ms.mixins.pageList
   ],
   components: {
     MultiName
@@ -254,13 +252,10 @@ export default {
 
           item['qualification'] === 1 ? ++this.total.gSum : ++this.total.sSum
         }
+        this.pageData.count = res.data.length
         res.data.length = 50
         this.pageData.data = res.data
       }, params)
-    },
-    parseResponse (res) {
-      this.pageData.count = 100
-      this.pageData.data = res.data
     },
     // 强行处理状态
     handleForciblyStatus (row) {

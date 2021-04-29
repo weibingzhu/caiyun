@@ -133,7 +133,6 @@ export default {
     },
 
     handleEvent (event) {
-      debugger
       if (event.ctrlKey && event.shiftKey && event.altKey && event.keyCode === 13) {
         console.log('三个')
       } else if (event.ctrlKey && event.shiftKey && event.keyCode === 13) {
