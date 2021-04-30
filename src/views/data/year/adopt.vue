@@ -9,9 +9,6 @@
                 <el-option v-for="item in znData.declareStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
-            <!-- <el-form-item label="时间">
-            <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-            </el-form-item>-->
             <el-form-item label="搜索">
               <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
             </el-form-item>

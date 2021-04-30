@@ -8,37 +8,37 @@
         </e-section>
       </el-col>
       <el-col :span="10" class="statis-box">
-        <el-divider content-position="center">本年累计</el-divider>
+        <el-divider content-position="center">本月统计</el-divider>
         <el-row class="statis-box-1">
           <el-col :span="12">
-            <div class="statis-item">
+            <div class="statis-item text-align-right">
               报税
               <br />
-              <em>3000</em>
+              <em>300</em>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="statis-item">
               记账
               <br />
-              <em>205000</em>
+              <em>20500</em>
             </div>
           </el-col>
         </el-row>
-        <el-divider content-position="center">本月统计</el-divider>
+        <el-divider content-position="center">本年累计</el-divider>
         <el-row class="statis-box-2">
           <el-col :span="12">
-            <div class="statis-item">
+            <div class="statis-item text-align-right">
               报税
               <br />
-              <em>3000</em>
+              <em>3000万</em>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="statis-item">
               记账
               <br />
-              <em>2000万</em>
+              <em>1500万</em>
             </div>
           </el-col>
         </el-row>
@@ -94,15 +94,20 @@
 import ChartPieDoughnut from '@/views/components/chart/PieDoughnut'
 import ChartAreaStack from '@/views/components/chart/AreaStack'
 import ChartPolyline from '@/views/components/chart/Polyline'
+import Invoice from '@/views/components/Invoice'
+
 export default {
   components: {
     ChartPieDoughnut,
     ChartAreaStack,
+    Invoice,
     ChartPolyline
   },
   data () {
     return {
+      namess: '林春燕,何冰心,卢秀花',
       month: null,
+      tableData: [],
       chart: {
         optionTotal: {},
         optionAccEachDay: {
@@ -249,25 +254,26 @@ export default {
 .console {
   padding: 10px;
   .statis-box {
-    // max-height: 280px;
-    .el-divider {
-      font-size: 2.4em;
+    background-color: white;
+    max-height: 280px;
+    .el-divider__text {
+      font-size: 1.8em;
+      background-color:unset;
     }
     .statis-box-1 {
-      background: rgba(247, 111, 134, 1);
+      background: rgba(0, 167, 236, 1);
     }
     .statis-box-2 {
       margin-top: 20px;
-      background: rgba(42, 209, 172, 1);
+      background: rgba(106, 167, 96, 1);
     }
     .el-col {
       div {
-        font-size: 1.6em;
+        font-size: 1.4em;
         color: #fff;
-        // border-radius:12px;
         em {
           display: block;
-          font-size: 2.4em;
+          font-size: 2.2em;
           line-height: 1.4;
         }
         padding: 10px;

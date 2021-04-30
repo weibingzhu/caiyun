@@ -172,16 +172,6 @@ export default {
   },
 
   methods: {
-    // handleUpdate (params) {
-    //   let self = this
-    //   ms.navigator.push(this, Form, {
-    //     params,
-    //     title: params ? '编辑' : '创建',
-    //     done () {
-    //       ms.navigator.pop(self)
-    //     }
-    //   })
-    // },
     fetch (query = {}) {
       let params = JSON.parse(JSON.stringify(query))
       params.period = params.period || this.Utils.getStorePeriodObj(this)

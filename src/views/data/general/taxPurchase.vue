@@ -3,7 +3,7 @@
     <el-dialog :visible="isShowInvoiceDialog" width="80%" @close='handleCloseDialog'>
       <invoice :invioceId='selectInvioceId' :selectCompanyId="this.selectCompanyId"></invoice>
     </el-dialog>
-    <e-page-list-layout>
+    <ms-page-list-layout>
       <template slot="search">
         <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
@@ -69,7 +69,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </e-page-list-layout>
+    </ms-page-list-layout>
   </div>
 </template>
 
@@ -86,7 +86,7 @@ export default {
     Invoice
   },
   mixins: [
-    $mixins.pageList
+    ms.mixins.pageList
   ],
   data () {
     return {
