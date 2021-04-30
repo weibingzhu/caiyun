@@ -40,7 +40,10 @@ chart-pie 的 tip 显示位置 税务进度页面第一个圈圈
 按两下 esc 才关掉 e-preview ；
 task/index 关不了
 
-列表 height：200px （不知道写在哪里）
-列表没有出来
+tab都被关了时显示 console  不要显示 '/x'
+二级路由显示到 tab 把一级给替换了
+刷新 tab 显示不对
+tab 会挺破右边
+
 
 

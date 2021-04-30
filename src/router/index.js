@@ -150,10 +150,24 @@ let routes = [
         }
       },
       {
-        path: '/tax/progress',
-        component: () => import('@/views/tax/progress.vue'),
+        path: '/member/index',
+        component: () => import('@/views//member/index.vue'),
         meta: {
-          title: '税务进度'
+          title: '成员管理'
+        }
+      },
+      {
+        path: '/permission/index',
+        component: () => import('@/views/permission/index.vue'),
+        meta: {
+          title: '权限设置'
+        }
+      },
+      {
+        path: '/customer/contract',
+        component: () => import('@/views/customer/contract.vue'),
+        meta: {
+          title: '合同管理'
         }
       },
       {
