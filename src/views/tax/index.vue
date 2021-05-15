@@ -111,6 +111,7 @@ export default {
   data () {
     return {
       tableData: [{ a: 12, b: 23, c: 333, d: 2, e: 3, f: 1 }, { a: 12, b: 23, c: 333, d: 2, e: 3, f: 1 }, { a: 12, b: 23, c: 333, d: 2, e: 3, f: 1 }, { a: 12, b: 23, c: 333, d: 2, e: 3, f: 1 }, { a: 12, b: 23, c: 333, d: 2, e: 3, f: 1 }],
+      value1: 5,
       chart: {
         optionTotal: {},
         optionDay: {

@@ -1,5 +1,5 @@
 <template>
-  <ms-frame-layout title="后台管理系统" :menus="menus">
+  <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index">
     <template slot="logo" slot-scope="scope">
       <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
     </template>
@@ -53,10 +53,10 @@
         </router-link>
       </div>
       <div class="e-frame-layout--nav-item">
-        <a class="e-frame-layout--nav-trigger">
+        <router-link class="e-frame-layout--nav-trigger" :to="{path:'/php', query: {state: '1'}}" >
           <icon>&#xe604;</icon>
           {{$store.state.user? ($store.state.user.person ? $store.state.user.person.name: '请登录') : '请登录'}}
-        </a>
+        </router-link>
       </div>
       <div class="e-frame-layout--nav-item">
         <span class="e-frame-layout--nav-trigger" @click="handleLogout">
@@ -192,24 +192,15 @@ export default {
   height: 100vh;
   max-height: 100vh;
 }
-
-.nav,
-.title {
-  padding: 10px 0;
+.home-index {
+  .el-date-editor{
+    max-width: 110px;
+  }
 }
-// .main-index {
-//   .main-period {
-//     max-width: 114px;
-//   }
-//   .el-popover-title {
-//     text-align: right !important;
-//   }
-//   .nav {
-//     .e-frame-layout--nav-item {
-//       .e-frame-layout--nav-trigger {
-//         padding: 0 2px;
-//       }
-//     }
-//   }
+
+// .nav,
+// .title {
+//   padding: 10px 0;
+
 // }
 </style>

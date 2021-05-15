@@ -31,7 +31,17 @@ let routes = [
       },
       {
         path: '/message',
+        meta: {
+          title: '信息页面'
+        },
         component: () => import('@/views/message/index.vue')
+      },
+      {
+        path: '/php',
+        meta: {
+          title: '个人主页'
+        },
+        component: () => import('@/views/php.vue')
       },
       {
         path: '/data/personal/adopt',
