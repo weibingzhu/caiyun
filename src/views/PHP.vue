@@ -3,67 +3,63 @@
     <template slot="search">
       <el-row>
         <el-col :span="14">
-          <e-section title="个人信息">
+          <e-section title="个人统计">
             <el-row>
               <el-col :span="8">
-                <el-avatar :size="80" :src="circleUrl"></el-avatar>
-                韦小宝 <span>总监</span>
+                <el-avatar :size="80" :src="circleUrl"></el-avatar>韦小宝
+                <span>报税专员</span>
               </el-col>
               <el-col :span="8">
                 历史数据：
                 <el-row>
                   <el-col :span="12">个税</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">1245万家</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">一般人增值税</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">1245万家</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">小规模增值税</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">1245万家</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">企业季报</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124万家</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">企业年报</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124万家</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 本月数据：
                 <el-row>
                   <el-col :span="12">个税</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124家已报（12未报）</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">一般人增值税</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124家已报（12未报）</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">小规模增值税</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124家已报（12未报）</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">企业季报</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124家已报（12未报）</el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">企业年报</el-col>
-                  <el-col :span="12">个人信息</el-col>
+                  <el-col :span="12">124家已报（12未报）</el-col>
                 </el-row>
               </el-col>
             </el-row>
           </e-section>
         </el-col>
-        <!-- <el-col :span="6" >
-        历史统计
-        <br/>
-        </el-col>-->
         <el-col :span="10">
-          <e-section title="单月统计">
+          <e-section title="每天统计">
             <div slot="action">
               <el-date-picker slot="action" class="main-period" v-model="month" size="small" type="month" placeholder="属期"></el-date-picker>
             </div>
@@ -75,7 +71,9 @@
 
     <e-section title="我的客户" slot="table">
       <div slot="action">
-        <el-select placeholder="状态" size="small" filterable multiple v-model="query.status">
+        <!-- <el-input placeholder="请输入关键字" ></el-input> -->
+        <el-switch size="mini" active-text="已报" inactive-text="未报"></el-switch>
+        <el-select placeholder="关键字" size="small" filterable multiple v-model="query.status">
           <el-option v-for="item in znData.autoTaskStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
         <el-date-picker slot="action" class="main-period" v-model="month" size="small" type="month" placeholder="属期"></el-date-picker>
@@ -211,14 +209,32 @@ export default {
         lineSmoothMonth: {
           xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: ['1号', '2号', '3号', '4号', '5号', '6号', '7号']
+          },
+          // title: {
+          //   text: '每天数据'
+          // },
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            data: ['个税', '增值税']
+          },
+          grid: {
+            top: '4%',
+            left: '0%',
+            right: '0%',
+            bottom: '0%',
+            containLabel: true
           },
           series: [{
+            name: '个税',
             data: [20, 32, 91, 34, 20, 30, 20],
             type: 'line',
             smooth: true
           },
           {
+            name: '增值税',
             data: [20, 12, 61, 34, 90, 30, 12],
             type: 'line',
             smooth: true
