@@ -233,8 +233,9 @@ export default {
       // this.expandsTestIndex = --this.expandsTestIndex < 0 ? 0 : this.expandsTestIndex
     },
     handleClickCompanyName (row) {
-      let type = this.$store.state.tax_or_acc ? 'tax' : 'acc'
-      this.$router.push({ path: `/data/general/${type}Purchase`, query: { companyId: row.company._id } })
+      let tax_or_acc = this.$store.state.tax_or_acc
+      let moduleName = 'Purchase'
+      this.$router.push({ path: `/data/${moduleName}`, query: { companyId: row.company._id, tax_or_acc } })
     },
     tablePersonalCellClassName ({ row, column, rowIndex, columnIndex }) {
       if (row && columnIndex === 6 && this.znData.paySuccessStatus.includes(row.taxPersonal)) {

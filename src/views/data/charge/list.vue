@@ -1,30 +1,26 @@
 <template>
-  <div class="general-taxSalesCustoms">
+  <div class="charge-list">
     <e-page-list-layout>
       <template slot="search">
         <el-form slot="search" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
             <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
           </el-form-item>
-          <pg-up :selectCompanyId="selectCompanyId"></pg-up>
           <span class="operating-area">
-            <el-button size="small">新加发票</el-button>
-            <el-button size="small">提取发票</el-button>
-            <el-button size="small" @click="handleShowCrawlerStatus">提取状态</el-button>
+            <el-button size="small">确认无数据</el-button>
+            <el-button size="small">添加费用</el-button>
             <el-button size="small">执行规则</el-button>
-            <span v-if="$store.state.tax_or_acc">
-              <!-- <el-button size="small" @click="headleCreateTabale">生成税表</el-button> -->
-            </span>
             <el-dropdown size="small" @command="handleCommand">
               <el-button type="primary" size="small">
                 更多操作
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad="asdf" v-if="$store.state.tax_or_acc" >一键报税</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item>双皮奶</el-dropdown-item>
-                <el-dropdown-item>蚵仔煎</el-dropdown-item>
+                <el-dropdown-item commonad="asdf" v-if="$store.state.tax_or_acc" >导出数据</el-dropdown-item>
+                <el-dropdown-item>上传数据</el-dropdown-item>
+                <el-dropdown-item>模板下载</el-dropdown-item>
+                <el-dropdown-item>已删除数据</el-dropdown-item>
+                <el-dropdown-item>删除数据</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </span>
@@ -206,7 +202,7 @@ export default {
 </script>
 
 <style lang="scss">
-.general-taxSalesCustoms {
+.charge-list {
   .all-module {
     display: flex;
     .el-badge {

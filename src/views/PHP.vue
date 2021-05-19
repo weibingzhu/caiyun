@@ -1,4 +1,8 @@
 <template>
+<!--
+  单击‘本月数据’客户的未报数据 ， 刷新下面的‘我的客户’，再在‘我的客户’列表中，单击调到对应模块
+  切换报税和会计的页面
+-->
   <ms-page-list-layout class="data-adopt">
     <template slot="search">
       <el-row>

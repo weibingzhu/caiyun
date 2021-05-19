@@ -1,32 +1,17 @@
 <template>
-  <div class="general-taxManualBil">
+  <div class="pruchaseCustoms-list">
     <e-page-list-layout>
       <template slot="search">
-        <el-form slot="search" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
+        <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
             <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
           </el-form-item>
           <pg-up :selectCompanyId="selectCompanyId"></pg-up>
-          <span class="operating-area">
-            <el-button size="small">新加发票</el-button>
-            <el-button size="small">提取发票</el-button>
+          <span class="operating-area" >
+            <el-button size="small">新加</el-button>
+            <el-button size="small">提取缴款书</el-button>
             <el-button size="small" @click="handleShowCrawlerStatus">提取状态</el-button>
-            <el-button size="small">执行规则</el-button>
-            <span v-if="$store.state.tax_or_acc">
-              <!-- <el-button size="small" @click="headleCreateTabale">生成税表</el-button> -->
-            </span>
-            <el-dropdown size="small" @command="handleCommand">
-              <el-button type="primary" size="small">
-                更多操作
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad="asdf" v-if="$store.state.tax_or_acc" >一键报税</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item>双皮奶</el-dropdown-item>
-                <el-dropdown-item>蚵仔煎</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <el-button size="small" >执行规则</el-button>
           </span>
         </el-form>
       </template>
@@ -37,26 +22,33 @@
         v-on="getTableListeners()"
         highlight-current-row
         :row-key="getRowKeys"
-        :expand-row-keys="expands"
-        @expand-change="exChangeHeandler"
-        :cell-class-name="tableCellClassName"
         :data="tableData"
       >
-        <el-table-column type="selection" />
-        <el-table-column label="发票类型" prop="invoice.type">
-          <template slot-scope="scope">{{scope.row.invoice.type}}</template>
-        </el-table-column>
-        <el-table-column label="认证日期" prop="date" sortable>
+        <el-table-column type="selection" width="50" />
+        <el-table-column label="发票代码" prop="invoice.no"></el-table-column>
+        <el-table-column label="发票号码" prop="invoice.no"></el-table-column>
+        <el-table-column label="开票日期" prop="date" sortable>
           <template slot-scope="scope">
             {{scope.row.date ? scope.row.date.substr(0,10) : ''}}
           </template>
         </el-table-column>
-        <el-table-column label="发票代码" prop="invoice.code" sortable></el-table-column>
-        <el-table-column label="发票号码" prop="invoice.no" sortable></el-table-column>
+        <el-table-column label="销行名称" prop="provider.name"></el-table-column>
         <el-table-column label="金额" prop="total.amount"></el-table-column>
-        <el-table-column label="税额" prop="total.tax"></el-table-column>
-        <el-table-column label="销行名称" prop="buyer.name"></el-table-column>
-        <el-table-column label="发票状态" prop="invoice.status"></el-table-column>
+        <el-table-column label="税额(有效税额)" prop="total.tax">
+          <template slot-scope="scope">
+            {{scope.row.total.tax}}({{scope.row.total.tax}})
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="有效税额" prop="total.tax"></el-table-column> -->
+        <el-table-column label="勾选日期" prop="date" sortable>
+          <template slot-scope="scope">
+            {{scope.row.date ? scope.row.date.substr(0,10) : ''}}
+          </template>
+        </el-table-column>
+        <el-table-column label="发票类型" prop="invoice.type" sortable>
+          <template slot-scope="scope">{{scope.row.invoice.type}}</template>
+        </el-table-column>
+        <el-table-column label="状态" prop="provider.name"></el-table-column>
       </el-table>
     </e-page-list-layout>
   </div>
@@ -74,7 +66,31 @@ export default {
   data () {
     return {
       selectCompanyId: '',
+      isShowCrawlerList: false,
+      selectModules: this.znData.modulesMapping.AccauxPurchase,
+
+      total: {
+        sum: 0,
+        gSum: 100,
+        sSum: 100,
+        p: {
+          curr: 0,
+          pay: 0
+        },
+        a: { // 增值税（一般纳税人和小规模）
+          curr: 10,
+          pay: 0
+        },
+        c: {
+          curr: 10,
+          pay: 0
+        }
+
+      },
       keyWork: '',
+      time: new Date(),
+      znDataTaxType: this.znData.taxType,
+      taxType: this.znData.taxType.taxPersonal,
       query: this.getQuery({
         qualification: '全部',
         name: '',
@@ -83,6 +99,7 @@ export default {
         select: '_id person status declareType company isCurrent errorNum',
         ...this.$route.query
       }),
+
       expands: [],
       expandsTestIndex: -1,
       pageData: {
@@ -96,16 +113,17 @@ export default {
     fetch (query) {
       this.selectCompanyId = query.companyId
       let period = query.period || this.Utils.getStorePeriodObj(this)
-      let params = { cond: { 'period.y': period.y, 'period.m': period.m },
-        select: 'date payType result buyer.name buyer.xname invoice insteadService total productName productVer softAmount collectionRetreat invokingAPI.status accFold goodsType goodsEntries manual active taxInfo' }
+      let params = { cond: { 'period.y': period.y, 'period.m': period.m }, select: 'deduction period date payType result provider.name provider.xname invoice.no invoice.currency invoice.type invoice.status invoice.remarks entries accClass utag total other.check evaluated collectionRetreat insteadService accInfo error manual active' }
       this._fetch(params)
     },
     _fetch (p) {
-      let url = `/api/yzh/accaux/sales/search?owner=${this.selectCompanyId}`
+      let url = `/api/yzh/accaux/purchase/search?owner=${this.selectCompanyId}`
       return this.UtilsAxios.handleFetchPost(url, (res) => {
+        this.total.sum = res.data.length
         this.pageData = res
       }, p)
     },
+
     handleShowCrawlerStatus () {
       this.isShowCrawlerList = !this.isShowCrawlerList
     },
@@ -119,22 +137,6 @@ export default {
     },
     handleCommand (command) {
       this.$message('click on item ' + command)
-    },
-
-    tableCellClassName ({ row, column, rowIndex, columnIndex }) {
-      // if (row && columnIndex === 7 && this.znData.paySuccessStatus.includes(row.taxCompany)) {
-      //   return 'paysuccess'
-      // } else if (row && columnIndex === 6 && (this.znData.paySuccessStatus.includes(row.addTax.taxGeneral) || this.znData.paySuccessStatus.includes(row.addTax.taxSmall))) {
-      //   return 'paysuccess'
-      // } else if (row && columnIndex === 5 && this.znData.paySuccessStatus.includes(row.taxPersonal)) {
-      //   return 'paysuccess'
-      // } else if (row && columnIndex === 5 && this.znData.declareSuccessStatus.includes(row.taxPersonal)) {
-      //   return 'declaresuccess'
-      // } else if (row && columnIndex === 6 && (this.znData.declareSuccessStatus.includes(row.addTax.taxGeneral) || this.znData.declareSuccessStatus.includes(row.addTax.taxSmall))) {
-      //   return 'declaresuccess'
-      // } else if (row && columnIndex === 7 && this.znData.declareSuccessStatus.includes(row.taxCompany)) {
-      //   return 'declaresuccess'
-      // }
     },
     handleTab (tab, event) {
       this.taxType = tab.name
@@ -206,7 +208,12 @@ export default {
 </script>
 
 <style lang="scss">
-.general-taxManualBil {
+.pruchaseCustoms-list {
+
+  .form-search {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
   .all-module {
     display: flex;
     .el-badge {

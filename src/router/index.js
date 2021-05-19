@@ -86,55 +86,39 @@ let routes = [
         }
       },
       {
-        path: '/data/general',
+        path: '/data',
         component: () => import('@/views/data/general/index.vue'),
         meta: {
           title: '一般人数据'
         },
         children: [
           {
-            path: 'accPurchase',
-            component: () => import('@/views/data/general/accPurchase.vue')
+            path: 'Sales',
+            component: () => import('@/views/data/sales/list.vue')
           },
           {
-            path: 'accSales',
-            component: () => import('@/views/data/general/accSales.vue')
+            path: 'Purchase',
+            component: () => import('@/views/data/purchase/list.vue')
           },
           {
-            path: 'taxPurchase',
-            component: () => import('@/views/data/general/taxPurchase.vue')
+            path: 'PurchaseCustoms',
+            component: () => import('@/views/data/purchaseCustoms/list.vue')
           },
           {
-            path: 'taxSales',
-            component: () => import('@/views/data/general/taxSales.vue')
+            path: 'SalesCustoms',
+            component: () => import('@/views/data/salesCustoms/list.vue')
           },
           {
-            path: 'accPurchaseCustoms',
-            component: () => import('@/views/data/general/accPurchaseCustoms.vue')
-          },
-          {
-            path: 'accSalesCustoms',
-            component: () => import('@/views/data/general/accSalesCustoms.vue')
-          },
-          {
-            path: 'taxPurchaseCustoms',
-            component: () => import('@/views/data/general/taxPurchaseCustoms.vue')
-          },
-          {
-            path: 'taxSalesCustoms',
-            component: () => import('@/views/data/general/taxSalesCustoms.vue')
-          },
-          {
-            path: 'accManualBil',
-            component: () => import('@/views/data/general/accManualBil.vue')
-          },
-          {
-            path: 'taxManualBil',
-            component: () => import('@/views/data/general/taxManualBil.vue')
+            path: 'manualBill',
+            component: () => import('@/views/data/manualBill/list.vue')
           },
           {
             path: 'tableGeneral',
             component: () => import('@/views/data/general/tableGeneral.vue')
+          },
+          {
+            path: 'Charge',
+            component: () => import('@/views/data/charge/list.vue')
           }
         ]
       },

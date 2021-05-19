@@ -20,7 +20,7 @@
       </el-breadcrumb> -->
       <template slot="search">
         <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="display:flex; padding: 10px">
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button
               v-bind:class="{selectModeule: selectModules === 'Purchase'}"
               ref="btnPurchase"
@@ -29,7 +29,7 @@
               @dblclick.native="handleDblClickModule('Purchase','进项')"
             >进项</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button
               ref="btnSales"
               v-bind:class="{selectModeule: selectModules === 'Sales'}"
@@ -38,7 +38,7 @@
               @dblclick.native="handleDblClickModule('Sales','销项')"
             >销项</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button
               ref="btnPurchaseCustoms"
               v-bind:class="{selectModeule: selectModules === 'PurchaseCustoms'}"
@@ -47,7 +47,7 @@
               @dblclick.native="handleDblClickModule('PurchaseCustoms','海关缴款书')"
             >海关缴款书</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button
               ref="btnSalesCustoms"
               v-bind:class="{selectModeule: selectModules === 'SalesCustoms'}"
@@ -56,7 +56,7 @@
               @dblclick.native="handleDblClickModule('SalesCustoms','海关报关单')"
             >海关报关单</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button
               ref="btnManualBil"
               v-bind:class="{selectModeule: selectModules === 'ManualBil'}"
@@ -65,13 +65,13 @@
               @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
             >手工票据</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button
-              ref="btnManualBil"
-              v-bind:class="{selectModeule: selectModules === 'ManualBil'}"
+              ref="btnCharge"
+              v-bind:class="{selectModeule: selectModules === 'Charge'}"
               size="small"
-              @click="handleClickModule('ManualBil')"
-              @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
+              @click="handleClickModule('Charge')"
+              @dblclick.native="handleDblClickModule('Charge','手工票据')"
             >费用</el-button>
           </el-badge>
           <span>
@@ -84,34 +84,34 @@
           </el-badge>
         </el-button-group>
         <el-button-group v-else class="all-module" style="display:flex; padding: 10px">
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="width: 100%" ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnBank" size="small">银行对账单</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnPayroll" size="small">工资</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnSalesCustoms" size="small">海关报关单</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnCharge" size="small">费用</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnFixedAsset" size="small">固定资产</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnManualBil" size="small">手工票据</el-button>
           </el-badge>
-          <el-badge :value="12" class="item">
+          <el-badge class="item">
             <el-button class="w-100" ref="btnTicket" size="small">银行承兑汇票</el-button>
           </el-badge>
         </el-button-group>
@@ -163,10 +163,9 @@ export default {
       clearTimeout(this.isDbClick) // 首先清除计时器
       this.isDbClick = setTimeout(() => {
         this.selectModules = moduleName
-        console.log('moduleName', moduleName)
-        let type = this.$store.state.tax_or_acc ? 'tax' : 'acc'
-        let path = `/data/general/${type}${moduleName}`
-        let query = { companyId: this.selectCompanyId, module: moduleName }
+        let tax_or_acc = this.$store.state.tax_or_acc
+        let path = `/data/${moduleName}`
+        let query = { companyId: this.selectCompanyId, module: moduleName, tax_or_acc }
         this.$router.push({ path, query })
       }, 300) // 大概时间300ms
     },
