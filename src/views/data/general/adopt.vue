@@ -1,5 +1,4 @@
 <template>
-  <!-- 第一次视界页面 -->
   <ms-page-list-layout class="general-adopt">
     <template slot="search">
       <el-row type="flex" align="middle">

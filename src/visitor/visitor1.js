@@ -26,7 +26,18 @@ export default {
       title: '数据采集',
       index: '03',
       icon: '&#xe604;',
-      // route: '/data/adopt'
+      route: '/data/adopt'
+    },
+    {
+      title: '提取列表',
+      index: '019',
+      icon: '&#xe604;',
+      route: '/task/index'
+    },
+    {
+      title: '税务管理',
+      index: '04',
+      icon: '&#xe604;',
       options: [{
         title: '个税',
         index: '03-01',
@@ -54,41 +65,50 @@ export default {
       }]
     },
     {
-      title: '任务列表',
-      index: '019',
+      title: '账务管理',
+      index: '05',
       icon: '&#xe604;',
-      route: '/task/index'
+      options: [{
+        title: '凭证账簿',
+        index: '05-01',
+        route: '/acc/voucherBook'
+      },
+      {
+        title: '报表管理',
+        index: '05-02',
+        route: '/acc/report'
+      }]
     },
-    {
-      title: '税务进度',
-      index: '0114',
-      icon: '&#xe604;',
-      route: '/tax/progress'
-    },
-    {
-      title: '账务进度',
-      index: '0115',
-      icon: '&#xe604;',
-      route: '/acc/progress'
-    },
+    // {
+    //   title: '税务进度',
+    //   index: '0114',
+    //   icon: '&#xe604;',
+    //   route: '/tax/progress'
+    // },
+    // {
+    //   title: '账务进度',
+    //   index: '0115',
+    //   icon: '&#xe604;',
+    //   route: '/acc/progress'
+    // },
     {
       title: '统计管理',
       index: '0116',
       icon: '&#xe604;',
       options: [{
-        title: '账税统计',
-        index: '0116-01',
-        route: '/statistics'
-      },
-      {
         title: '税务统计',
         index: '0116-02',
-        route: '/tax/index'
+        route: '/tax/statistics'
       },
       {
         title: '账务统计',
         index: '0116-03',
-        route: '/acc/index'
+        route: '/acc/statistics'
+      },
+      {
+        title: '账税统计',
+        index: '0116-01',
+        route: '/statistics'
       }]
     },
     // {

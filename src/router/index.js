@@ -44,6 +44,13 @@ let routes = [
         component: () => import('@/views/php.vue')
       },
       {
+        path: '/data/adopt',
+        meta: {
+          title: '数据采集'
+        },
+        component: () => import('@/views/data/adopt.vue')
+      },
+      {
         path: '/data/personal/adopt',
         component: () => import('@/views/data/personal/adopt.vue'),
         meta: {
@@ -123,15 +130,22 @@ let routes = [
         ]
       },
       {
-        path: '/tax/index',
-        component: () => import('@/views/tax/index.vue'),
+        path: '/tax/progress',
+        component: () => import('@/views/tax/progress.vue'),
+        meta: {
+          title: '账务进度'
+        }
+      },
+      {
+        path: '/tax/statistics',
+        component: () => import('@/views/tax/statistics.vue'),
         meta: {
           title: '税务统计'
         }
       },
       {
-        path: '/acc/index',
-        component: () => import('@/views/acc/index.vue'),
+        path: '/acc/statistics',
+        component: () => import('@/views/acc/statistics.vue'),
         meta: {
           title: '账务统计'
         }
@@ -204,6 +218,20 @@ let routes = [
         component: () => import('@/views/setting/system.vue'),
         meta: {
           title: '系统配置'
+        }
+      },
+      {
+        path: '/acc/voucherBook',
+        component: () => import('@/views/acc/voucherBook.vue'),
+        meta: {
+          title: '凭证账簿'
+        }
+      },
+      {
+        path: '/acc/report',
+        component: () => import('@/views/acc/report.vue'),
+        meta: {
+          title: '报表管理'
         }
       },
       // {

@@ -1,20 +1,6 @@
 <template>
-
-<!--
-  任务页面
-  TODO
-  1 跟进权限显示
-  2 APP 和 WEB的切换
-  3 默认时间排序
-  4 分页
-  5 搜索功能完整
-  6 任务历史显示
-  7 图片预览 闭关bug
-  -->
   <div class="task-index">
-    <!-- 图片预览 -->
     <e-preview v-if="imgSrc" :visible.sync="visible" :src="imgSrc"></e-preview>
-
     <e-page-list-layout>
       <template slot="search">
         <el-row type="flex" align="middle">
