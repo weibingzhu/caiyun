@@ -28,23 +28,6 @@
     </el-dialog>
     <!-- 第一次视界页面 -->
     <e-page-list-layout>
-      <el-breadcrumb slot="breadcrumb" separator-class="el-icon-arrow-right" style="top: -26px; border-top-color: white;">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/data/adopt', query:{taxType: 'taxPersonal'} }">数据采取</el-breadcrumb-item>
-        <el-breadcrumb-item>
-          <el-dropdown @command="handleTaxCommand">
-            <span class="el-dropdown-link">
-              个税数据确认
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="/data/general/">一般纳税人</el-dropdown-item>
-              <el-dropdown-item>小规模</el-dropdown-item>
-              <el-dropdown-item>企业所得</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
       <template slot="search">
         <el-row type="flex" align="middle">
           <el-col>

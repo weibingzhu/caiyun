@@ -153,7 +153,7 @@ export default {
 
   methods: {
     fetch (query) {
-      let params = { period: { y: 2021, m: 3 } } // JSON.parse(JSON.stringify(query))
+      let params = { period: { y: 2021, m: 4 } } // JSON.parse(JSON.stringify(query))
       let type = this.app_web ? 'puppeteer' : 'sikulix'
       return this.UtilsAxios.handleFetchPost(`/api/yzh/${type}/list`, (res) => {
         res.data.length = 100 // TODO 分页

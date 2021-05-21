@@ -2,12 +2,6 @@
   <div class="tax-propress">
     <e-page-list-layout>
       <template slot="search">
-        <el-tabs v-model="taxType" type="card" @tab-click="handleTab">
-          <el-tab-pane label="个税" name="taxPersonal"></el-tab-pane>
-          <el-tab-pane label="增值税(一般纳税人)" name="taxGeneral"></el-tab-pane>
-          <el-tab-pane label="增值税(小规模)" name="taxSmall"></el-tab-pane>
-          <el-tab-pane label="企业所得税" name="taxCompany"></el-tab-pane>
-        </el-tabs>
         <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <div class="step">
             <div class="left unSuccess">

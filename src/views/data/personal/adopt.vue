@@ -1,6 +1,191 @@
 <template>
   <ms-page-list-layout class="personal-adopt">
     <template slot="search">
+      <el-row>
+        <div class="step">
+          <div class="left unSuccess">
+            <chart-pie-doughnut :option="chart.optionTotal" style="height:110px" />
+          </div>
+          <div class="center">
+            <el-row type="flex" align="middle">
+              <el-col :span="6">
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <el-row class="item-status unSuccessLeft" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>未通知</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>通知</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status unSuccessLeft" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>已通知</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>再通知</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status unSuccessLeft" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>未回复</span>
+                      </el-col>
+                      <el-col :span="8">112</el-col>
+                      <el-col :span="8">
+                        <span>再通知</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status unSuccessLeft" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>已回复</span>
+                      </el-col>
+                      <el-col :span="8">1258</el-col>
+                      <el-col :span="8">
+                        <span>报税</span>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                  <icon class="el-icon-arrow-right" />
+                </el-row>
+              </el-col>
+              <el-col :span="6">
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <el-row class="item-status" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>未报税</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>报税</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>排队中</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>撤回</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status success" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>已报税</span>
+                      </el-col>
+                      <el-col :span="8">112</el-col>
+                      <el-col :span="8">
+                        <span>作废</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>报异常</span>
+                      </el-col>
+                      <el-col :span="8">1258</el-col>
+                      <el-col :span="8">
+                        <span>再报</span>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                  <icon class="el-icon-arrow-right" />
+                </el-row>
+              </el-col>
+              <el-col :span="6">
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <el-row class="item-status" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>处理中</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span></span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status success" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>作废中</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>撤回</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>已成功</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>再报</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status success" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>报异常</span>
+                      </el-col>
+                      <el-col :span="8">112</el-col>
+                      <el-col :span="8">
+                        <span>再作废</span>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                  <icon class="el-icon-arrow-right" />
+                </el-row>
+              </el-col>
+              <el-col :span="6">
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <el-row class="item-status success successRigth" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>未扣款</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>报税</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status success successRigth" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>排队中</span>
+                      </el-col>
+                      <el-col :span="8">1</el-col>
+                      <el-col :span="8">
+                        <span>撤回</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status success successRigth" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>已扣款</span>
+                      </el-col>
+                      <el-col :span="8">112</el-col>
+                      <el-col :span="8">
+                        <span>作废</span>
+                      </el-col>
+                    </el-row>
+                    <el-row class="item-status success successRigth" type="flex" justify="space-between">
+                      <el-col :span="8">
+                        <span>扣异常</span>
+                      </el-col>
+                      <el-col :span="8">1258</el-col>
+                      <el-col :span="8">
+                        <span>再报</span>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="right success">
+            <chart-pie-doughnut :option="chart.optionDeclare" style="height:110px" />
+          </div>
+        </div>
+      </el-row>
       <el-row type="flex" align="middle">
         <el-col>
           <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
@@ -115,13 +300,15 @@
 <script>
 import MultiName from '@/views/components/MultiName'
 import pyfl from 'pyfl'
+import ChartPieDoughnut from '@/views/components/chart/PieDoughnut'
 
 export default {
   mixins: [
     ms.mixins.pageList
   ],
   components: {
-    MultiName
+    MultiName,
+    ChartPieDoughnut
   },
   data () {
     return {
@@ -167,6 +354,80 @@ export default {
       pageData: {
         count: 0,
         data: []
+      },
+      chart: {
+        optionTotal: {
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            show: false,
+            top: '5%',
+            left: 'center'
+          },
+          series: [
+            {
+              // name: '访问来源',
+              type: 'pie',
+              radius: ['50%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                fontSize: '18',
+                position: 'center',
+                formatter: function (params) { // 默认显示第一个数据
+                  return '1245'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              data: [
+                { value: 1048, name: '未通知' },
+                { value: 735, name: '已通知' },
+                { value: 580, name: '未回复' },
+                { value: 484, name: '已回复' },
+                { value: 300, name: '排队中' },
+                { value: 300, name: '申报异常' }
+              ]
+            }
+          ]
+        },
+        optionDeclare: {
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            show: false,
+            top: '5%',
+            left: 'center'
+          },
+          series: [
+            {
+              // name: '访问来源',
+              type: 'pie',
+              radius: ['50%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                fontSize: '18',
+                position: 'center',
+                formatter: function (params) {
+                  return '1245'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              data: [
+                { value: 300, name: '申报成功' },
+                { value: 100, name: '扣款成功' },
+                { value: 2, name: '扣款异常' },
+                { value: 0, name: '作废异常' }
+              ]
+            }
+          ]
+        }
       }
     }
   },
@@ -312,6 +573,61 @@ export default {
   .fade-enter-active,
   .fade-leave-active {
     transition: transform 0.5s;
+  }
+  .step {
+    align-items: center; /* 垂直居中 */
+    display: flex;
+    height: 110px;
+    background-color: #a1e2e733;
+    background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='30%25' font-size='24' fill-opacity='0.5' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 100 100)'%3E文字底图%3C/text%3E%3C/svg%3E");
+    // & .el-col {
+    //   border-radius: 10px;
+    //   background-color: #32c1ca;
+    // }
+    .item-status {
+      background-color: #a1e2e766;
+      border-radius: 10px;
+      span {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      & div:nth-child(2) {
+        text-align: center;
+      }
+      & div:nth-child(3) {
+        text-align: center;
+      }
+    }
+    .unSuccess {
+      background-color: #a1e2e766;
+    }
+    .success {
+      background-color: #a1e2e7;
+    }
+    .successRigth {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .unSuccessLeft {
+      border-bottom-left-radius: 0px;
+      border-top-left-radius: 0px;
+    }
+
+    .el-icon-arrow-right {
+      font-size: 1.4rem;
+      font-weight: bolder;
+      padding: 0 6px;
+    }
+    .left,
+    .right {
+      width: 110px;
+    }
+    .center {
+      flex: 1;
+      text-align: center;
+      vertical-align: middle;
+    }
   }
 
   .fade-enter,
