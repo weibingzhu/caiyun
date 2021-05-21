@@ -1,3 +1,5 @@
+所有可以用快捷键操作的btn都要做成鼠标滑过显示tip
+
 登录 401 没有提示
 和原生的html混合只用问题，税表那里
  <el-dropdown-item>加入观察</el-dropdown-item> 存在本地，在列表中用颜色表明，   !（被单击过10家颜色不一样）
@@ -32,6 +34,8 @@
 把 excel下载放在前端处理
 
 还没做得页面：个人页面 ，上传页面，权限，固定资产，账务多个页面
+
+/api/yzh/puppeterr/list 可以了 ，，当是 /api/yzh/sikulix/list 还没有
 
 
 

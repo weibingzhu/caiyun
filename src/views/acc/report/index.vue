@@ -1,16 +1,16 @@
 <template>
-  <div class="data-adopt">
+  <div class="general-inex">
     <e-page-list-layout>
       <template slot="search">
-        <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="display:flex; padding: 10px">
+        <el-button-group class="all-module" style="display:flex; padding: 10px">
           <el-badge class="item">
             <el-button
-              v-bind:class="{selectModeule: selectModules === 'Purchase'}"
-              ref="btnPurchase"
+              v-bind:class="{selectModeule: selectModules === 'Purchase22'}"
+              ref="btnPurchase22"
               size="small"
               @click="handleClickModule('Purchase')"
               @dblclick.native="handleDblClickModule('Purchase','进项')"
-            >进项</el-button>
+            >表外数据录入</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -19,7 +19,7 @@
               size="small"
               @click="handleClickModule('Sales')"
               @dblclick.native="handleDblClickModule('Sales','销项')"
-            >销项</el-button>
+            >资产负债</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -28,7 +28,7 @@
               size="small"
               @click="handleClickModule('PurchaseCustoms')"
               @dblclick.native="handleDblClickModule('PurchaseCustoms','海关缴款书')"
-            >海关缴款书</el-button>
+            >利润表</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -37,7 +37,16 @@
               size="small"
               @click="handleClickModule('SalesCustoms')"
               @dblclick.native="handleDblClickModule('SalesCustoms','海关报关单')"
-            >海关报关单</el-button>
+            >现金流量表</el-button>
+          </el-badge>
+          <el-badge class="item">
+            <el-button
+              ref="btnSalesCustoms"
+              v-bind:class="{selectModeule: selectModules === 'SalesCustoms'}"
+              size="small"
+              @click="handleClickModule('SalesCustoms')"
+              @dblclick.native="handleDblClickModule('SalesCustoms','海关报关单')"
+            >应交税费报表</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -46,56 +55,7 @@
               size="small"
               @click="handleClickModule('ManualBil')"
               @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
-            >手工票据</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button
-              ref="btnCharge"
-              v-bind:class="{selectModeule: selectModules === 'Charge'}"
-              size="small"
-              @click="handleClickModule('Charge')"
-              @dblclick.native="handleDblClickModule('Charge','手工票据')"
-            >费用</el-button>
-          </el-badge>
-          <span>
-            <icon class="el-icon-caret-right" />
-          </span>
-          <el-badge value class="item">
-            <el-tooltip class="item" effect="dark" content="asd fjaldsfj asdfasdfasdfsa" placement="bottom-end">
-              <el-button class="w-100" ref="btnManualBil" size="small" type="primary" @click="headleCreateTabale">生成税表</el-button>
-            </el-tooltip>
-          </el-badge>
-        </el-button-group>
-        <el-button-group v-else class="all-module" style="display:flex; padding: 10px">
-          <el-badge class="item">
-            <el-button class="width: 100%" ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnBank" size="small">银行对账单</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnPayroll" size="small">工资</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnSalesCustoms" size="small">海关报关单</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnCharge" size="small">费用</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnFixedAsset" size="small">固定资产</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnManualBil" size="small">手工票据</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnTicket" size="small">银行承兑汇票</el-button>
+            >账务报告</el-button>
           </el-badge>
         </el-button-group>
       </template>
@@ -177,7 +137,7 @@ export default {
 </script>
 
 <style lang="scss">
-.data-adopt {
+.general-inex {
   .el-icon-caret-right {
     font-size: 1.6rem;
     line-height: 30px;

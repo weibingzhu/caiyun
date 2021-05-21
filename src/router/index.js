@@ -101,10 +101,16 @@ let routes = [
         children: [
           {
             path: 'Sales',
+            meta: {
+              title: '销项数据'
+            },
             component: () => import('@/views/data/sales/list.vue')
           },
           {
             path: 'Purchase',
+            meta: {
+              title: '进项数据'
+            },
             component: () => import('@/views/data/purchase/list.vue')
           },
           {
@@ -222,14 +228,14 @@ let routes = [
       },
       {
         path: '/acc/voucherBook',
-        component: () => import('@/views/acc/voucherBook.vue'),
+        component: () => import('@/views/acc/voucherBook/index.vue'),
         meta: {
           title: '凭证账簿'
         }
       },
       {
         path: '/acc/report',
-        component: () => import('@/views/acc/report.vue'),
+        component: () => import('@/views/acc/report/index.vue'),
         meta: {
           title: '报表管理'
         }

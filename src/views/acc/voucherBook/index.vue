@@ -14,12 +14,21 @@
           </el-badge>
           <el-badge class="item">
             <el-button
+              v-bind:class="{selectModeule: selectModules === 'Purchase11'}"
+              ref="btnPurchase11"
+              size="small"
+              @click="handleClickModule('Purchase')"
+              @dblclick.native="handleDblClickModule('Purchase','进项')"
+            >记账汇总</el-button>
+          </el-badge>
+          <el-badge class="item">
+            <el-button
               ref="btnSales"
               v-bind:class="{selectModeule: selectModules === 'Sales'}"
               size="small"
               @click="handleClickModule('Sales')"
               @dblclick.native="handleDblClickModule('Sales','销项')"
-            >凭证汇总表</el-button>
+            >会计分录序时簿</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -28,7 +37,7 @@
               size="small"
               @click="handleClickModule('PurchaseCustoms')"
               @dblclick.native="handleDblClickModule('PurchaseCustoms','海关缴款书')"
-            >e</el-button>
+            >明细账</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -37,7 +46,7 @@
               size="small"
               @click="handleClickModule('SalesCustoms')"
               @dblclick.native="handleDblClickModule('SalesCustoms','海关报关单')"
-            >海关报关单</el-button>
+            >多栏式明细账</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -46,7 +55,7 @@
               size="small"
               @click="handleClickModule('ManualBil')"
               @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
-            >手工票据</el-button>
+            >总账</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button
@@ -55,15 +64,7 @@
               size="small"
               @click="handleClickModule('Charge')"
               @dblclick.native="handleDblClickModule('Charge','手工票据')"
-            >费用</el-button>
-          </el-badge>
-          <span>
-            <icon class="el-icon-caret-right" />
-          </span>
-          <el-badge value class="item">
-            <el-tooltip class="item" effect="dark" content="asd fjaldsfj asdfasdfasdfsa" placement="bottom-end">
-              <el-button class="w-100" ref="btnManualBil" size="small" type="primary" @click="headleCreateTabale">生成税表</el-button>
-            </el-tooltip>
+            >科目余额表</el-button>
           </el-badge>
         </el-button-group>
       </template>

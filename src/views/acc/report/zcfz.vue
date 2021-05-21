@@ -1,8 +1,8 @@
 <template>
-  <div class="data-adopt">
+  <div class="general-inex">
     <e-page-list-layout>
       <template slot="search">
-        <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="display:flex; padding: 10px">
+        <el-button-group class="all-module" style="display:flex; padding: 10px">
           <el-badge class="item">
             <el-button
               v-bind:class="{selectModeule: selectModules === 'Purchase'}"
@@ -64,38 +64,6 @@
             <el-tooltip class="item" effect="dark" content="asd fjaldsfj asdfasdfasdfsa" placement="bottom-end">
               <el-button class="w-100" ref="btnManualBil" size="small" type="primary" @click="headleCreateTabale">生成税表</el-button>
             </el-tooltip>
-          </el-badge>
-        </el-button-group>
-        <el-button-group v-else class="all-module" style="display:flex; padding: 10px">
-          <el-badge class="item">
-            <el-button class="width: 100%" ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnBank" size="small">银行对账单</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnPayroll" size="small">工资</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnSalesCustoms" size="small">海关报关单</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnCharge" size="small">费用</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnFixedAsset" size="small">固定资产</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnManualBil" size="small">手工票据</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button class="w-100" ref="btnTicket" size="small">银行承兑汇票</el-button>
           </el-badge>
         </el-button-group>
       </template>
@@ -177,7 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
-.data-adopt {
+.general-inex {
   .el-icon-caret-right {
     font-size: 1.6rem;
     line-height: 30px;
