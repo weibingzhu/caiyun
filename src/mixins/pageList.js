@@ -79,7 +79,7 @@ export default {
         query
       })
     },
-    handleDateRangeInput (value, keys = ['start_time', 'end_time']) {
+    handleRangeInput (value, keys = ['start_time', 'end_time']) {
       if (value && value[0]) {
         this.query[keys[0]] = value[0]
         this.query[keys[1]] = value[1]
@@ -143,7 +143,7 @@ export default {
         let rows = query.rows ? Number(query.rows) : 20
         let page = query.page ? Number(query.page) : 1
         let layout = 'total, prev, pager, next, sizes, jumper'
-        let pagerCount = 7
+        let pagerCount = 5
         if (process.browser && document.ontouchstart !== undefined) {
           layout = 'total, prev, pager, next, sizes'
           pagerCount = 3
@@ -257,6 +257,10 @@ export default {
         }
       }
       this.multipleSelection = value
+    },
+    parseResponse (res) {
+      this.pageData = res.data
+      return res
     },
     fetch (query) {} // 需要被重写， 初始化会执行，路由参数变化也会执行
   },

@@ -127,6 +127,9 @@ let routes = [
           },
           {
             path: 'tableGeneral',
+            meta: {
+              title: 'qwe'
+            },
             component: () => import('@/views/data/general/tableGeneral.vue')
           },
           {

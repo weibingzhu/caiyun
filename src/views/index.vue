@@ -179,10 +179,10 @@ export default {
   },
 
   created () {
-    document.addEventListener('keyup', this.handleEvent)
+    // document.addEventListener('keyup', this.handleEvent)
   },
   beforeDestroy () {
-    document.removeEventListener('keyup', this.handleEvent)
+    // document.removeEventListener('keyup', this.handleEvent)
   }
 }
 </script>

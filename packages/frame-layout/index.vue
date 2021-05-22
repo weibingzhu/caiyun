@@ -57,7 +57,7 @@
         <el-row
           type="flex"
           align="middle">
-          <i title="收起/展开左侧菜单" class="ms-frame-layout--collapse" :class="!isCollapse ? 'el-icon-s-fold': 'el-icon-s-unfold'"  @click="isCollapse=!isCollapse"></i>
+          <i v-if="asideCollapse" title="收起/展开左侧菜单" class="ms-frame-layout--collapse" :class="!isCollapse ? 'el-icon-s-fold': 'el-icon-s-unfold'"  @click="isCollapse=!isCollapse"></i>
           <template v-if="!$slots['header']">
             <el-col>
               <slot name="title" v-if="$slots['title']"></slot>
@@ -68,7 +68,7 @@
           <slot v-else name="header"></slot>
         </el-row>
         <div class="ms-frame-layout--tabs" v-if="apps.length">
-          <el-tabs :value="currentAppIndex + ''" @tab-click="handleTab" size="small" type="card" editable @edit="handleTabsEdit">
+          <el-tabs :value="currentAppIndex + ''" @tab-click="handleTab" editable @edit="handleTabsEdit">
             <el-tab-pane v-for="(item,index) in apps" :label="item.title" :name="index + ''" :key="index"></el-tab-pane>
           </el-tabs>
           <el-dropdown trigger="click" @command="handleCommand">
@@ -104,8 +104,7 @@ export default {
       default: true
     },
     isCreateApp: {
-      type: Boolean,
-      default: false
+      type: Boolean
     },
     defaultRoute: {
       type: [Object],
@@ -126,11 +125,15 @@ export default {
     },
     iconClass: {
       default: 'iconfont'
+    },
+    asideCollapse: {
+      type:Boolean,
+      default: true
     }
   },
   watch: {
     $route (value) {
-      console.log('$route', value, this.$router)
+      console.log('$route', value)
       if (this.isTabs) {
         if (value.matched && value.matched.length) {
           if (this.apps.every(item => {
@@ -143,10 +146,23 @@ export default {
                 }
               }
               return true
+            } else {
+              return value.matched.every(item2 => {
+                return item.route.path !== (item2.path == '' ? value.path : item2.path)
+              })
             }
-            return item.route.path !== value.path
           })) {
-            this.createRouter(value)
+            if (this.isCreateApp) {
+              this.createRouter(value)
+            } else {
+              if (value && value.meta && value.meta.title) {
+                this.createRouter(value)
+              } else {
+                let currentApp = this.currentApp
+                currentApp.route = value
+                this.apps = [...this.apps]
+              }
+            }
           } else {
             let app = this.getAppByPath(value.path)
             if (app) {
@@ -234,6 +250,7 @@ export default {
     }
   },
   mounted () {
+    // console.log('fdasfdas', this.$router.resolve('/user2'))
     if (window.top !== window) {
       document.body.classList.add('is-iframe')
     }
@@ -247,8 +264,8 @@ export default {
           next()
         })
       } else {
-        if (window.Router) {
-          const Router = window.Router
+        const Router = this.findVueRouter()
+        if (Router) {
           const originalPush = Router.prototype.push
           Router.prototype.push = function push (location, onResolve, onReject) {
             if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
@@ -270,6 +287,9 @@ export default {
     }
   },
   methods: {
+    findVueRouter () {
+      return window.Vue._installedPlugins.find(item => item.name === 'VueRouter')
+    },
     createRouter (value) {
       let $vm = null
       if (this.isCreateApp) {
@@ -277,7 +297,6 @@ export default {
       } else {
         $vm = {show: false}
       }
-      console.log('sssssssssssssss', value)
       this.pushApp({
         vm: $vm,
         title: value.meta && value.meta.title ? typeof value.meta.title === 'function' ? value.meta.title(value) : value.meta.title : value.fullPath,
@@ -287,7 +306,8 @@ export default {
     createRouterApp (route) {
       let el = document.createElement('div')
       this.$el.querySelector('.ms-frame-layout--body').appendChild(el)
-      let router = new window.Router({
+      const Router = this.findVueRouter()
+      let router = new Router({
         routes: this.$router.options.routes.filter(item => {
           if (item.path === route.path) {
             return true
@@ -518,18 +538,24 @@ export default {
       }
       .el-tabs{
         flex:auto;
+        min-width: 0;
         &__header{
           margin-bottom:0;
         }
         &__new-tab{
           display:none;
+          visibility: hidden;
+          margin:9px 0 9px 10px;
+        }
+        &__nav-next,&__nav-prev{
+          padding-top:4px;
         }
         &__nav-wrap::after{
           display: none;
         }
         &__item{
-          // line-height: 38px;
-          // height:38px;
+          line-height: 38px;
+          height:38px;
           .el-icon-close{
             opacity: 0;
             position: absolute;
@@ -539,8 +565,6 @@ export default {
             font-size:14px;
           }
           &:hover, &.is-active{
-            background-color: #409EFF;
-             color: white;  //修改激活表头字体颜色，默认是蓝色
             .el-icon-close{
               opacity: 1;
             }
@@ -557,7 +581,7 @@ export default {
       line-height:$frame-layout--header-height;
       display:inline-block;
       vertical-align:middle;
-      // padding-left:10px;
+      padding-left:10px;
     }
     &--body{
       position:relative;
@@ -656,7 +680,7 @@ export default {
       background-clip: content-box;
       position: absolute;
       width: 100%;
-      // padding: 6px; //
+      padding: 10px;
       left:0;
       top:0;
     }

@@ -2,7 +2,7 @@
   <div class="data-adopt">
     <e-page-list-layout>
       <template slot="search">
-        <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="display:flex; padding: 10px">
+        <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="">
           <el-badge class="item">
             <el-button
               v-bind:class="{selectModeule: selectModules === 'Purchase'}"

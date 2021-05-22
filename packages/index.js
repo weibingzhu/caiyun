@@ -3,7 +3,7 @@ import Drawer from './drawer'
 import PageListLayout from './page-list-layout'
 import Preview from './preview'
 import {Form, FormItem} from './form'
-import QueryForm from './query-form'
+import SearchForm from './search-form'
 
 const components = [
   FrameLayout,
@@ -12,9 +12,10 @@ const components = [
   Preview,
   Form,
   FormItem,
-  QueryForm
+  SearchForm
 ]
 const install = (Vue) => {
+  window.Vue = Vue
   components.map(component => {
     component.componentName && Vue.component(component.componentName, component)
   })
@@ -25,5 +26,5 @@ export {
   FrameLayout,
   Drawer,
   PageListLayout,
-  QueryForm
+  SearchForm
 }

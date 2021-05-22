@@ -187,7 +187,7 @@ export default {
 
     // 税表
     headleCreateTabale () {
-      this.$router.push({ path: `/data/general/tableGeneral`, query: { companyId: this.selectCompanyId } })
+      this.$router.push({ path: `/data/tableGeneral`, query: { companyId: this.selectCompanyId } })
     }
   }
 }
