@@ -285,6 +285,7 @@ export default {
         })
       }
     }
+    let app = this.currentApp
   },
   methods: {
     findVueRouter () {

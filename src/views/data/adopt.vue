@@ -2,7 +2,7 @@
   <div class="data-adopt">
     <e-page-list-layout>
       <template slot="search">
-        <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="">
+        <el-button-group v-if="$store.state.tax_or_acc" class="all-module" style="display:flex; padding: 10px">
           <el-badge class="item">
             <el-button
               v-bind:class="{selectModeule: selectModules === 'Purchase'}"
@@ -101,17 +101,24 @@
       </template>
       <div slot="table">
         <router-view :key="$route.path" class="sub-view"></router-view>
+
       </div>
     </e-page-list-layout>
   </div>
 </template>
 
 <script>
+import PurchaseList from './purchase/list'
+import SalesList from './sales/list'
 
 export default {
   mixins: [
     $mixins.pageList
   ],
+  components: {
+    PurchaseList,
+    SalesList
+  },
   data () {
     return {
       isDbClick: '',

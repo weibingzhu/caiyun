@@ -1,5 +1,5 @@
 <template>
-  <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index">
+  <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index" :asideCollapse='false'>
     <template slot="logo" slot-scope="scope">
       <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
     </template>
