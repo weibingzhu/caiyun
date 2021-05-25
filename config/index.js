@@ -16,15 +16,15 @@ const HOST = Object.values(iptable)[0]
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': { // 进出口B端api
-        target: 'http://localhost:3333/',
+      '/api': {
+        target: 'http://localhost:3334',
+        // target: 'http://192.168.1.109:3334',
         changeOrigin: true,
-        pathRewrite: {'^/api/': '/api/'}
+        pathRewrite: {'^/api/': ''}
       }
     },
 

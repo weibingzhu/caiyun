@@ -100,8 +100,8 @@
         </el-button-group>
       </template>
       <div slot="table">
-        <router-view :key="$route.path" class="sub-view"></router-view>
-
+        <!-- <router-view :key="$route.path" class="sub-view"></router-view> -->
+        <sales-list></sales-list>
       </div>
     </e-page-list-layout>
   </div>

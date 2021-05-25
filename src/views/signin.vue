@@ -28,11 +28,11 @@
 
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
           <h3 class="login-title">欢迎登录</h3>
-          <el-form-item label="账号" prop="mobile">
-            <el-input type="text" placeholder="请输入账号" v-model="form.mobile" />
+          <el-form-item label="账号" prop="account">
+            <el-input type="text" placeholder="请输入账号" v-model="form.account" />
           </el-form-item>
-          <el-form-item label="验证码" prop="smsCode">
-            <el-input type="text" placeholder="请输入验证码" v-model="form.smsCode" />
+          <el-form-item label="密码" prop="pwd">
+            <el-input type="text" placeholder="请输入验证码" v-model="form.pwd" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
@@ -61,15 +61,15 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
-        smsCode: ''
+        account: '',
+        pwd: ''
       },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
-        mobile: [
+        account: [
           { required: true, message: '账号不可为空', trigger: 'blur' }
         ],
-        smsCode: [
+        pwd: [
           { required: true, message: '密码不可为空', trigger: 'blur' }
         ]
       },
@@ -83,10 +83,11 @@ export default {
   // },
   methods: {
     onSubmit (formName) {
-      this.form['device'] = { 'type': 'mozilla/5.0+(windows+nt+10.0;+win64;+x64)+applewebkit/537.36+(khtml,+like+gecko)+chrome/89.0.4389.114+safari/537.36', 'address': { 'ip': '113.118.227.107', 'location': { 'lat': 22.53332, 'lng': 113.93041 }, 'ad_info': { 'nation': '中国', 'province': '广东省', 'city': '深圳市', 'district': '南山区', 'adcode': 440305 } } }
+      // this.form['device'] = { 'type': 'mozilla/5.0+(windows+nt+10.0;+win64;+x64)+applewebkit/537.36+(khtml,+like+gecko)+chrome/89.0.4389.114+safari/537.36', 'address': { 'ip': '113.118.227.107', 'location': { 'lat': 22.53332, 'lng': 113.93041 }, 'ad_info': { 'nation': '中国', 'province': '广东省', 'city': '深圳市', 'district': '南山区', 'adcode': 440305 } } }
       this.$refs[formName].validate((valid) => { // 为表单绑定验证功能
         if (valid) {
-          this.UtilsAxios.handleFetch('/api/login', (res) => {
+          this.UtilsAxios.handleFetchPost('/api/admin/login', (res) => {
+            debugger
             this.logonSuccess(res)
           }, this.form)
         } else {
@@ -99,6 +100,7 @@ export default {
       this.$store.commit('USRE', res.data)
       this.$store.commit('SELECT_COMPANY_ID', '')
       this.$store.commit('SELECT_COMPANY_IDS', [])
+
       let month = new Date().getMonth()
       let year = new Date().getFullYear()
       if (month === 0) {
