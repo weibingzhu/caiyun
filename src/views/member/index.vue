@@ -36,7 +36,7 @@
       </template>
       <template slot="table">
         <el-row>
-          <el-col :span="4">
+          <el-col :span="3">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
             <el-tree
               :data="data"
@@ -55,7 +55,7 @@
               :allow-drag="allowDrag"
             ></el-tree>
           </el-col>
-          <el-col :span="20">
+          <el-col :span="21">
             <el-table v-bind="getTableProps()" v-on="getTableListeners()" :data="[{},{},{},{},{},{},{},{},{}]">
               <el-table-column type="selection" width="58"></el-table-column>
               <el-table-column label="成员昵称">
@@ -173,13 +173,11 @@ export default {
   },
   methods: {
     fetch (query) {
-      // let params = JSON.parse(JSON.stringify(query))
-      // return this.$axios({
-      //   url: '/v1/article',
-      //   params
-      // }).then(res => {
-      //   this.pageData = res
-      // })
+      debugger
+      let params = {page: 1, size: 20} // JSON.parse(JSON.stringify(query))
+      this.UtilsAxios.handleFetchPost('/api/admin/user/page', (res) => {
+        debugger
+      }, params)
     },
     filterNode (value, data) {
       if (!value) return true

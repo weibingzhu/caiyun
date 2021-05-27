@@ -87,7 +87,6 @@ export default {
       this.$refs[formName].validate((valid) => { // 为表单绑定验证功能
         if (valid) {
           this.UtilsAxios.handleFetchPost('/api/admin/login', (res) => {
-            debugger
             this.logonSuccess(res)
           }, this.form)
         } else {
@@ -97,6 +96,7 @@ export default {
       })
     },
     logonSuccess (res) {
+      debugger
       this.$store.commit('USRE', res.data)
       this.$store.commit('SELECT_COMPANY_ID', '')
       this.$store.commit('SELECT_COMPANY_IDS', [])
@@ -109,7 +109,7 @@ export default {
       }
       this.$store.commit('PERIOD', year + '-' + month)
       this.$store.commit('TAX_OR_ACC', true)
-      res.data && localStorage.setItem('token', res.data.token.token)
+      res.data && localStorage.setItem('token', res.data.token)
 
       // 登录成功直接获取该账号的所有公司
       this.UtilsAxios.handleFetchPost('/api/yzh/accaux/trace/agent', (res) => { // TODO url 该账号的所有用户
