@@ -4,9 +4,6 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item >账务管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <!-- <div class="title">
-      <h2>8月记账数据监控中心</h2>
-    </div> -->
     <el-row align="middle">
       <el-col :span="10">
         <e-section title="总进度">

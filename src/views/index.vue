@@ -1,5 +1,5 @@
 <template>
-  <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index" :asideCollapse='false'>
+  <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index" :asideCollapse="false">
     <template slot="logo" slot-scope="scope">
       <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
     </template>
@@ -53,7 +53,7 @@
         </router-link>
       </div>
       <div class="e-frame-layout--nav-item">
-        <router-link class="e-frame-layout--nav-trigger" :to="{path:'/php', query: {state: '1'}}" >
+        <router-link class="e-frame-layout--nav-trigger" :to="{path:'/php', query: {state: '1'}}">
           <icon>&#xe604;</icon>
           {{$store.state.user? ($store.state.user.person ? $store.state.user.person.name: '请登录') : '请登录'}}
         </router-link>
@@ -64,6 +64,105 @@
         </span>
       </div>
     </div>
+    <el-dialog :visible.sync="uploadDialog" width="88%">
+      <div slot="title">
+        <el-row type="flex" align="middle">
+          <el-col>
+            Excel上传:
+            <el-select placeholder="请选择要操作的公司" size="small" filterable :filter-method="filterMethod" v-model="selectCompanyId" @change="handleSelect">
+              <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+            <el-date-picker
+              @change="handleChangePeriod"
+              :clearable="false"
+              class="main-period"
+              v-model="period"
+              size="small"
+              type="month"
+              placeholder="操作属期"
+            ></el-date-picker>&nbsp;&nbsp;
+            <el-checkbox v-model="isPreview">直接上传</el-checkbox>
+            <el-tooltip class="item" effect="dark" placement="bottom">
+              <div slot="content">
+                上传Excel说明：
+                <br />1 有头Excel(excel中有公司名称或税号和月份的)
+                <br />2 无头Excel，必须选择公司，月份，种类
+                <br />3 '直接上传'上传时不在下面预览
+              </div>
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+          </el-col>
+          <span class="tilte-right-area">
+            <el-dropdown size="small" @command="handleCommand">
+              <el-button size="small">
+                模板下载
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item commonad="asdf">银行对账单</el-dropdown-item>
+                <el-dropdown-item commonad="asdf">海关报关单</el-dropdown-item>
+                <el-dropdown-item>海关缴款书</el-dropdown-item>
+                <el-dropdown-item>进项</el-dropdown-item>
+                <el-dropdown-item>销项</el-dropdown-item>
+                <el-dropdown-item>费用</el-dropdown-item>
+                <el-dropdown-item>个税人员信息</el-dropdown-item>
+                <el-dropdown-item>个税人员工资</el-dropdown-item>
+                <el-dropdown-item>银行汇票</el-dropdown-item>
+                <el-dropdown-item>固定资产</el-dropdown-item>
+                <el-dropdown-item>手工票据</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </span>
+        </el-row>
+      </div>
+      <!-- <el-row type="flex" align="middle"> -->
+        <!-- <el-col :span="3">其他费用</el-col>
+        <el-col :span="3">工资</el-col>
+        <el-col :span="3">报关单，缴款书</el-col>
+        <el-col :span="3">银行对账单</el-col>
+        <el-col :span="3">进项，销项</el-col>
+        <el-col :span="3">银行汇票</el-col>
+        <el-col :span="3">固定资产</el-col>
+        <el-col :span="3">手工票据</el-col> -->
+        <el-button-group style="display:flex; width:100%">
+            <el-button class="width: 100%" ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
+            <el-button class="w-100" ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
+            <el-button class="w-100" ref="btnBank" size="small">银行对账单</el-button>
+            <el-button class="w-100" ref="btnPayroll" size="small">工资</el-button>
+            <el-button class="w-100" ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
+            <el-button class="w-100" ref="btnSalesCustoms" size="small">海关报关单</el-button>
+            <el-button class="w-100" ref="btnCharge" size="small">费用</el-button>
+            <el-button class="w-100" ref="btnFixedAsset" size="small">固定资产</el-button>
+            <el-button class="w-100" ref="btnManualBil" size="small">手工票据</el-button>
+            <el-button class="item" ref="btnTicket" size="small">银行承兑汇票</el-button>
+        </el-button-group>
+      <!-- </el-row> -->
+      <el-row>
+        <el-upload class="upload-demo22" drag action="" multiple>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+            ，或单击上面对应类型上传
+          </div>
+        </el-upload>
+      </el-row>
+      <!-- <el-row>
+        内容table
+      </el-row> -->
+      <el-row>
+        <el-row type="flex" align="middle">
+          <el-col :span="24">
+            <el-button native-type="submit" size="small">重新上传</el-button>
+          </el-col>
+          <span>
+            <el-button native-type="submit" size="small">定位错误</el-button>
+            <el-button native-type="submit" size="small">上传该excel</el-button>
+            <el-button native-type="submit" size="small">放弃上传</el-button>
+          </span>
+        </el-row>
+      </el-row>
+    </el-dialog>
   </ms-frame-layout>
 </template>
 
@@ -74,6 +173,8 @@ import visitor from '@/visitor/index'
 export default {
   data () {
     return {
+      uploadDialog: false,
+      isPreview: true,
       allCompanies: this.$store.state.allCompanies,
       type: true,
       menus: visitor.visitor1.menus,
@@ -136,6 +237,7 @@ export default {
       if (event.ctrlKey && event.shiftKey && event.altKey && event.keyCode === 13) {
         console.log('三个')
       } else if (event.ctrlKey && event.shiftKey && event.keyCode === 13) {
+        this.uploadDialog = true
         console.log('2个')
       } else if (event.ctrlKey && event.keyCode === 13) {
         console.log('1个')
@@ -179,10 +281,10 @@ export default {
   },
 
   created () {
-    // document.addEventListener('keyup', this.handleEvent)
+    document.addEventListener('keydown', this.handleEvent)
   },
   beforeDestroy () {
-    // document.removeEventListener('keyup', this.handleEvent)
+    document.removeEventListener('keydown', this.handleEvent)
   }
 }
 </script>
@@ -193,14 +295,33 @@ export default {
   max-height: 100vh;
 }
 .home-index {
-  .el-date-editor{
+  .el-date-editor {
     max-width: 110px;
   }
+  .el-dialog {
+    // .el-dialog__header{
+    // }
+
+    .el-dialog__body {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #f6f3f3;
+    }
+    .el-button-group{
+      .el-button{
+        flex: 1;
+      }
+    }
+    .tilte-right-area {
+      padding-right: 36px;
+    }
+    .el-upload {
+      display: block;
+      padding: 10px 0;
+      .el-upload-dragger{
+        width: 100%;
+      }
+    }
+  }
 }
-
-// .nav,
-// .title {
-//   padding: 10px 0;
-
-// }
 </style>

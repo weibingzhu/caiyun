@@ -1,4 +1,5 @@
 <template>
+<!-- 发票统计数据 -->
   <div class="invoice-statistics-components">
     <span>统计</span>:
     一共<em>{{count}}</em>张,

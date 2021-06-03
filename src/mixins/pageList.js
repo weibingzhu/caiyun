@@ -140,7 +140,7 @@ export default {
       }
       if (data && data.total && this.query) {
         let query = this.query
-        let rows = query.rows ? Number(query.rows) : 20
+        let rows = query.rows ? Number(query.rows) : 50
         let page = query.page ? Number(query.page) : 1
         let layout = 'total, prev, pager, next, sizes, jumper'
         let pagerCount = 5
@@ -155,7 +155,7 @@ export default {
           pageSize: rows,
           currentPage: page,
           total: data.total,
-          pageSizes: [10, 15, 20, 30, 40, 50, 100]
+          pageSizes: [20, 30, 40, 50, 100]
         }
         return this.$paginationProps
       } else {

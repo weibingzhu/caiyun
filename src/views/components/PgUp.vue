@@ -1,4 +1,5 @@
 <template>
+<!-- 上一家，下一家 -->
     <el-button-group class="pgup">
       <el-button size="small" @click="handleLast" icon="el-icon-arrow-left">上家</el-button>
       <el-badge :value="sum+'/'+(curr+1)" type="info" class="pgup-badge">

@@ -1,4 +1,5 @@
 <template>
+<!-- 专员名称缩略显示 -->
   <span class="mutli-name">
     <el-tooltip class="item" effect="dark" :content="name" placement="top" v-for="name in namesStr.split(',')" :key="name">
       <span>

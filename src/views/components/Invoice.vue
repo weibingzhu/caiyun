@@ -1,4 +1,5 @@
 <template>
+<!-- 发票 -->
   <div class="invoice-components">
     <div></div>
     <div></div>
