@@ -5,7 +5,15 @@
       <el-row>
         <el-col :span="3">
           <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input>
-          <el-tree :data="data" node-key="id" ref="tree" default-expand-all :filter-node-method="filterNode"></el-tree>
+          <el-tree
+            :data="data"
+            node-key="id"
+            ref="tree"
+            default-expand-all
+            :filter-node-method="filterNode"
+            show-checkbox
+            @check-change="handleCheckChange"
+          ></el-tree>
         </el-col>
         <el-col :span="21">
           <el-row type="flex" align="middle">
@@ -40,19 +48,11 @@
 </template>
 
 <script>
-const Form = () => import('./components/Form')
-const CreateFormPopup = $mixins.popupManager.$('create', Form)
-const UpdateFormPopup = $mixins.popupManager.$('update', Form)
-
 export default {
   mixins: [
     $mixins.pageList,
     $mixins.popupManager
   ],
-  components: {
-    CreateFormPopup,
-    UpdateFormPopup
-  },
   data () {
     return {
       query: this.getQuery({
@@ -124,6 +124,9 @@ export default {
       // }).then(res => {
       //   this.pageData = res
       // })
+    },
+    handleCheckChange (data, checked, indeterminate) {
+      console.log(data, checked, indeterminate)
     },
     filterNode (value, data) {
       if (!value) return true
