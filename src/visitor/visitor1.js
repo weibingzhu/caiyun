@@ -111,41 +111,21 @@ export default {
         route: '/statistics'
       }]
     },
-    // {
-    //   title: '个税管理',
-    //   index: '0117',
-    //   icon: '&#xe604;',
-    //   options: [{
-    //     title: '人员信息采集',
-    //     index: '0117-01',
-    //     route: '/statistics'
-    //   },
-    //   {
-    //     title: '专项附加扣除',
-    //     index: '0117-02',
-    //     route: '/tax/index'
-    //   },
-    //   {
-    //     title: '综合所得申报',
-    //     index: '0117-03',
-    //     route: '/tax/declare'
-    //   },
-    //   {
-    //     title: '非居民所得申报',
-    //     index: '0117-04',
-    //     route: '/tax/declareNonResident'
-    //   },
-    //   {
-    //     title: '申报扣款',
-    //     index: '0117-05',
-    //     route: '/tax/pay'
-    //   },
-    //   {
-    //     title: '作废修改',
-    //     index: '0117-06',
-    //     route: '/tax/fix'
-    //   }]
-    // },
+    {
+      title: '个税管理',
+      index: '0117',
+      icon: '&#xe604;',
+      options: [{
+        title: '非居民所得申报',
+        index: '0117-04',
+        route: '/tax/declareNonResident'
+      },
+      {
+        title: '往期修改',
+        index: '0117-06',
+        route: '/tax/fix'
+      }]
+    },
     {
       title: '资产管理',
       index: '0113',

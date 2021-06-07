@@ -58,7 +58,9 @@ tab 会挺破右边
 
 // data-adopt 和 tab的结合，二级路由不行，得换组件拉
 
+el-scrollbar/index: el-scrollbar 无效
 
+/api/yzh/puppeterr/list 可以了 ，，当是 /api/yzh/sikulix/list 还没有
 
 
 

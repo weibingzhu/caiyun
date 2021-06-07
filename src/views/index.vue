@@ -115,30 +115,21 @@
           </span>
         </el-row>
       </div>
-      <!-- <el-row type="flex" align="middle"> -->
-        <!-- <el-col :span="3">其他费用</el-col>
-        <el-col :span="3">工资</el-col>
-        <el-col :span="3">报关单，缴款书</el-col>
-        <el-col :span="3">银行对账单</el-col>
-        <el-col :span="3">进项，销项</el-col>
-        <el-col :span="3">银行汇票</el-col>
-        <el-col :span="3">固定资产</el-col>
-        <el-col :span="3">手工票据</el-col> -->
-        <el-button-group style="display:flex; width:100%">
-            <el-button class="width: 100%" ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
-            <el-button class="w-100" ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
-            <el-button class="w-100" ref="btnBank" size="small">银行对账单</el-button>
-            <el-button class="w-100" ref="btnPayroll" size="small">工资</el-button>
-            <el-button class="w-100" ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
-            <el-button class="w-100" ref="btnSalesCustoms" size="small">海关报关单</el-button>
-            <el-button class="w-100" ref="btnCharge" size="small">费用</el-button>
-            <el-button class="w-100" ref="btnFixedAsset" size="small">固定资产</el-button>
-            <el-button class="w-100" ref="btnManualBil" size="small">手工票据</el-button>
-            <el-button class="item" ref="btnTicket" size="small">银行承兑汇票</el-button>
-        </el-button-group>
-      <!-- </el-row> -->
+      <el-button-group style="display:flex; width:100%">
+        <el-button ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
+        <el-button ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
+        <el-button ref="btnBank" size="small">银行对账单</el-button>
+        <el-button ref="btnPayroll" size="small">人员信息</el-button>
+        <el-button ref="btnPayroll" size="small">人员工资</el-button>
+        <el-button ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
+        <el-button ref="btnSalesCustoms" size="small">海关报关单</el-button>
+        <el-button ref="btnCharge" size="small">费用</el-button>
+        <el-button ref="btnFixedAsset" size="small">固定资产</el-button>
+        <el-button ref="btnManualBil" size="small">手工票据</el-button>
+        <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
+      </el-button-group>
       <el-row>
-        <el-upload class="upload-demo22" drag action="" multiple>
+        <el-upload class="upload-demo22" drag action multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
@@ -149,7 +140,7 @@
       </el-row>
       <!-- <el-row>
         内容table
-      </el-row> -->
+      </el-row>-->
       <el-row>
         <el-row type="flex" align="middle">
           <el-col :span="24">
@@ -307,8 +298,8 @@ export default {
       padding-bottom: 10px;
       background-color: #f6f3f3;
     }
-    .el-button-group{
-      .el-button{
+    .el-button-group {
+      .el-button {
         flex: 1;
       }
     }
@@ -318,7 +309,7 @@ export default {
     .el-upload {
       display: block;
       padding: 10px 0;
-      .el-upload-dragger{
+      .el-upload-dragger {
         width: 100%;
       }
     }

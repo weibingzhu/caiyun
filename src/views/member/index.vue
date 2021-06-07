@@ -6,7 +6,7 @@
       <template slot="search">
         <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
-            <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
+            <el-input placeholder="请输入关键字" v-model.trim="keyWork" size="small"></el-input>
           </el-form-item>
           <el-button native-type="submit" size="small">添加成员</el-button>
           <el-dropdown size="small" @command="handleCommand">
@@ -37,7 +37,7 @@
       <template slot="table">
         <el-row>
           <el-col :span="3">
-            <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+            <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input>
             <el-tree
               :data="data"
               node-key="id"
