@@ -5,7 +5,7 @@
         <el-form-item label="搜索">
           <el-input placeholder="请输入关键字" v-model.trim="keyWork" size="small"></el-input>
         </el-form-item>
-        <el-button native-type="submit" size="small">添加成员</el-button>
+        <el-button native-type="submit" size="small" @click="handleCreate">添加成员</el-button>
         <el-dropdown size="small" @command="handleCommand">
           <el-button size="small">
             批量处理
@@ -92,18 +92,12 @@
 
 <script>
 const Form = () => import('./components/Form')
-const CreateFormPopup = $mixins.popupManager.$('create', Form)
-const UpdateFormPopup = $mixins.popupManager.$('update', Form)
 
 export default {
   mixins: [
     $mixins.pageList,
     $mixins.popupManager
   ],
-  components: {
-    CreateFormPopup,
-    UpdateFormPopup
-  },
   data () {
     return {
       query: this.getQuery({
@@ -206,6 +200,12 @@ export default {
     },
     allowDrag (draggingNode) {
       return draggingNode.data.label.indexOf('三级 3-2-2') === -1
+    },
+    handleCreate (params) {
+      ms.navigator.push(this, Form, {
+        params,
+        title: params ? '编辑' : '创建'
+      })
     }
   },
   watch: {

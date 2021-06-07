@@ -1,9 +1,15 @@
 <template>
   <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
-    <el-form-item label="业主姓名" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
+    <el-form-item label="真实姓名" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
       <el-input v-model.trim="form.title"></el-input>
     </el-form-item>
-    <el-form-item label="联系电话" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
+    <el-form-item label="昵称" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
+      <el-input v-model.trim="form.title"></el-input>
+    </el-form-item>
+    <el-form-item label="手机号码" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
+      <el-input v-model.trim="form.title"></el-input>
+    </el-form-item>
+    <el-form-item label="部门" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
       <el-input v-model.trim="form.title"></el-input>
     </el-form-item>
   </el-form>
