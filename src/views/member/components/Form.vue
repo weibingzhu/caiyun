@@ -17,6 +17,9 @@
 
 <script>
 export default {
+  mixins: [
+    ms.mixins.form
+  ],
   data () {
     return {
       form: {
@@ -27,26 +30,10 @@ export default {
   },
   methods: {
     fetch () {
-      if (this.query) {
-        return this.$axios({
-          url: `/v1/article/${this.query}`
-        }).then(res => {
-          Object.keys(this.form).forEach(item => {
-            this.form[item] = res.data[item]
-          })
-        })
-      }
+
     },
     submit () {
-      let data = JSON.parse(JSON.stringify(this.form))
-      return this.$axios({
-        url: `/v1/article${this.query ? '/' + this.query : ''}`,
-        method: this.query ? 'PUT' : 'POST',
-        data,
-        options: {
-          context: this
-        }
-      })
+      // let data = JSON.parse(JSON.stringify(this.form))
     }
   }
 }
