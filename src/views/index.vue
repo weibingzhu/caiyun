@@ -99,7 +99,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad="asdf">银行对账单</el-dropdown-item>
+                <el-dropdown-item command="asdf">银行对账单</el-dropdown-item>
                 <el-dropdown-item commonad="asdf">海关报关单</el-dropdown-item>
                 <el-dropdown-item>海关缴款书</el-dropdown-item>
                 <el-dropdown-item>进项</el-dropdown-item>

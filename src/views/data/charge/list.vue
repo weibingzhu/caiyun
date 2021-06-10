@@ -16,7 +16,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad="asdf" v-if="$store.state.tax_or_acc" >导出数据</el-dropdown-item>
+                <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc" >导出数据</el-dropdown-item>
                 <el-dropdown-item>上传数据</el-dropdown-item>
                 <el-dropdown-item>模板下载</el-dropdown-item>
                 <el-dropdown-item>已删除数据</el-dropdown-item>

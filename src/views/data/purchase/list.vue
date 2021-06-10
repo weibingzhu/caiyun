@@ -23,8 +23,8 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad="asdf">Excel上传</el-dropdown-item>
-                <el-dropdown-item commonad="asdf">优先提取</el-dropdown-item>
+                <el-dropdown-item command="asdf">Excel上传</el-dropdown-item>
+                <el-dropdown-item command="asdf">优先提取</el-dropdown-item>
                 <el-dropdown-item>紧急提取</el-dropdown-item>
                 <el-dropdown-item>加入观察</el-dropdown-item>
                 <el-dropdown-item>批改业务类型</el-dropdown-item>

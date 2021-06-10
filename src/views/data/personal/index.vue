@@ -102,7 +102,7 @@
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>删除选中数据</el-dropdown-item>
-                  <el-dropdown-item commonad="asdf">已删除数据</el-dropdown-item>
+                  <el-dropdown-item command="asdf">已删除数据</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
               <div style="font-weight: bold;">申报人数：13 人收入总额：91000.00 元免税收入总计：0.00 元</div>

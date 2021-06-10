@@ -54,8 +54,7 @@
 </template>
 
 <script>
-// import 'e-ui/lib/style/theme/signin.css'
-// import ESignin from 'e-ui/lib/signin'
+
 import pyfl from 'pyfl'
 export default {
   data () {
@@ -77,10 +76,6 @@ export default {
       dialogVisible: false
     }
   },
-
-  // components: {
-  //   ESignin
-  // },
   methods: {
     onSubmit (formName) {
       // this.form['device'] = { 'type': 'mozilla/5.0+(windows+nt+10.0;+win64;+x64)+applewebkit/537.36+(khtml,+like+gecko)+chrome/89.0.4389.114+safari/537.36', 'address': { 'ip': '113.118.227.107', 'location': { 'lat': 22.53332, 'lng': 113.93041 }, 'ad_info': { 'nation': '中国', 'province': '广东省', 'city': '深圳市', 'district': '南山区', 'adcode': 440305 } } }

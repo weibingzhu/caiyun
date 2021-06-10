@@ -21,7 +21,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad="asdf" v-if="$store.state.tax_or_acc" >一键报税</el-dropdown-item>
+                <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc" >一键报税</el-dropdown-item>
                 <el-dropdown-item>螺蛳粉</el-dropdown-item>
                 <el-dropdown-item>双皮奶</el-dropdown-item>
                 <el-dropdown-item>蚵仔煎</el-dropdown-item>

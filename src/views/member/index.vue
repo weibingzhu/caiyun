@@ -12,20 +12,21 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item commonad="asdf">加入部门</el-dropdown-item>
+            <el-dropdown-item command="asdf">加入部门</el-dropdown-item>
             <el-dropdown-item>移除部门</el-dropdown-item>
             <el-dropdown-item>激活/未激活</el-dropdown-item>
             <el-dropdown-item>离职</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-dropdown size="small" @command="handleCommand">
+        <el-dropdown size="small" @command="handleExcel">
           <el-button size="small">
             导入导出
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item commonad="asdf">导入成员</el-dropdown-item>
-            <el-dropdown-item>导出成员</el-dropdown-item>
+            <el-dropdown-item command="import">导入成员</el-dropdown-item>
+            <el-dropdown-item command="export">导出成员</el-dropdown-item>
+            <el-dropdown-item command="download">模板下载</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <!-- <el-button size="small">成员审批</el-button> -->
@@ -91,8 +92,9 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver'
+import ExcelJS from 'exceljs'
 const Form = () => import('./components/Form')
-
 export default {
   mixins: [
     $mixins.pageList,
@@ -163,11 +165,25 @@ export default {
   },
   methods: {
     fetch (query) {
-      debugger
       let params = { page: 1, size: 20 } // JSON.parse(JSON.stringify(query))
       this.UtilsAxios.handleFetchPost('/api/admin/user/page', (res) => {
         debugger
       }, params)
+    },
+
+    // 导入导出人员excel
+    handleExcel (command) {
+      if (command === 'import') {
+
+      } else if (command === 'export') {
+
+      } else if (command === 'download') {
+        const workbook = new ExcelJS.Workbook()
+        workbook.xlsx.writeBuffer().then(data => {
+          const blob = new Blob([data], { type: 'application/octet-stream' })
+          FileSaver.saveAs(blob, '员工excel模板.xlsx')
+        })
+      }
     },
     filterNode (value, data) {
       if (!value) return true

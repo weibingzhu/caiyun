@@ -18,7 +18,7 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item commonad="asdf" v-if="$store.state.tax_or_acc" >优先提取</el-dropdown-item>
+              <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc" >优先提取</el-dropdown-item>
               <el-dropdown-item>税表上传</el-dropdown-item>
               <el-dropdown-item>优先报税</el-dropdown-item>
               <el-dropdown-item>excel导出</el-dropdown-item>

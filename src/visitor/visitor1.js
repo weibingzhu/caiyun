@@ -11,8 +11,18 @@ export default {
         route: '/customer/contract'
       },
       {
-        title: ' 客户列表',
+        title: '客户列表',
         index: '01-02',
+        route: '/customer/list'
+      },
+      {
+        title: '流失客户',
+        index: '01-03',
+        route: '/customer/list'
+      },
+      {
+        title: '工商年审',
+        index: '01-04',
         route: '/customer/list'
       }]
     },

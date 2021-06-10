@@ -63,7 +63,7 @@
                 更多操作<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item commonad='asdf'>黄金糕</el-dropdown-item>
+                <el-dropdown-item command='asdf'>黄金糕</el-dropdown-item>
                 <el-dropdown-item>狮子头</el-dropdown-item>
                 <el-dropdown-item>螺蛳粉</el-dropdown-item>
                 <el-dropdown-item>双皮奶</el-dropdown-item>
