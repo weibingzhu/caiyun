@@ -179,6 +179,16 @@ export default {
 
       } else if (command === 'download') {
         const workbook = new ExcelJS.Workbook()
+        const worksheet = workbook.addWorksheet('员工列表', { properties: { outlineLevelCol: 1 } })
+        worksheet.mergeCells('A1:D1')
+        let rowTitle = worksheet.getRow(1)
+        rowTitle.height = 28
+        rowTitle.font = { size: 16, bold: true }
+        rowTitle.alignment = { vertical: 'middle', horizontal: 'center' }
+
+        let cell1 = rowTitle.getCell(1)
+        cell1.value = '工资表'
+
         workbook.xlsx.writeBuffer().then(data => {
           const blob = new Blob([data], { type: 'application/octet-stream' })
           FileSaver.saveAs(blob, '员工excel模板.xlsx')
