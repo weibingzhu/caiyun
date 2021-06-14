@@ -1,6 +1,7 @@
 import FileSaver from 'file-saver'
 import ExcelJS from 'exceljs'
 import _ from 'lodash'
+// import { formatDate } from 'element-ui/src/utils/date-util'
 
 /**
  * 通用的导出excel模板， 复杂的请用：
@@ -50,7 +51,7 @@ const $$ = {
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
     let sheets = this.workbook.worksheets
-    debugger
+    let sheetDatas = []
     for (let i = 0; i < sheets.length; i++) {
       let sheet = sheets[i]
       let sheetData = {
@@ -65,21 +66,19 @@ const $$ = {
         for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
           let cell = row.getCell(cellIndex)
           // type:2数值,3字符串,4日期,6 公式
-          if (cell.type === 4 && cell.value && this.dateFormat) {
-            if (this.dateFormat.toLowerCase() === 'timestamp') {
-              rowData.push(new Date(cell.value).getTime())
-            } else {
-              // rowData.push(formatDate(new Date(cell.value), this.dateFormat))
-            }
+          debugger
+          if (cell.type === 4 && cell.value) {
+            rowData.push(new Date(cell.value).getTime())
+            // rowData.push(formatDate(new Date(cell.value)))
           } else {
             rowData.push(cell.text.trim())
           }
         }
         sheetData.rows.push(rowData)
       }
-      sheets.push(sheetData)
+      sheetDatas.push(sheetData)
     }
-    return sheets
+    return sheetDatas
   }
 }
 
