@@ -493,7 +493,6 @@ export default {
     async handleClickUploadInput (e) {
       const file = e.target.files && e.target.files[0]
       let data = await ExcelCommon.parse(file)
-      debugger
       console.log(data)
     },
 

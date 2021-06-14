@@ -66,7 +66,6 @@ const $$ = {
         for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
           let cell = row.getCell(cellIndex)
           // type:2数值,3字符串,4日期,6 公式
-          debugger
           if (cell.type === 4 && cell.value) {
             rowData.push(new Date(cell.value).getTime())
             // rowData.push(formatDate(new Date(cell.value)))
