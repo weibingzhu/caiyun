@@ -30,7 +30,6 @@
             <el-dropdown-item @click.native="handleDownload">模板下载</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <!-- <el-button size="small">成员审批</el-button> -->
       </el-form>
     </template>
     <template slot="table">
@@ -93,9 +92,7 @@
 </template>
 
 <script>
-import FileSaver from 'file-saver'
-import ExcelJS from 'exceljs'
-import { Calendar } from 'element-ui'
+import ExcelCommon from '@/excel/common/index'
 const Form = () => import('./components/Form')
 export default {
   mixins: [
@@ -172,93 +169,56 @@ export default {
         debugger
       }, params)
     },
+    // 导入excel
     handleImport (e) {
       this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
     },
-
     // 导出现有员工
     handleExport () {
-      const workbook = new ExcelJS.Workbook()
-      const worksheet = workbook.addWorksheet('员工列表')
-
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
-      let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' },]
-
-      handers.forEach((hander, i) => {
-        let row = worksheet.getRow(1)
-        let cell = row.getCell(1 + i++)
-        cell.value = hander.title
-        datas.forEach((d, ii) => {
-          row = worksheet.getRow(2 + ii)
-          cell = row.getCell(i)
-          cell.value = d[hander.path]
-        })
-      })
-
-      workbook.xlsx.writeBuffer().then(data => {
-        const blob = new Blob([data], { type: 'application/octet-stream' })
-        FileSaver.saveAs(blob, '员工excel.xlsx')
-      })
+      let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
+      ExcelCommon.export(handers, datas, '员工excel.xlsx')
     },
     // 下载模板
     handleDownload () {
-      const workbook = new ExcelJS.Workbook()
-      const worksheet = workbook.addWorksheet('员工列表')
-
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
       let datas = []
-
-      handers.forEach((hander, i) => {
-        let row = worksheet.getRow(1)
-        let cell = row.getCell(1 + i++)
-        cell.value = hander.title
-        datas.forEach((d, ii) => {
-          row = worksheet.getRow(2 + ii)
-          cell = row.getCell(i)
-          cell.value = d[hander.path]
-        })
-      })
-
-      workbook.xlsx.writeBuffer().then(data => {
-        const blob = new Blob([data], { type: 'application/octet-stream' })
-        FileSaver.saveAs(blob, '员工excel模板.xlsx')
-      })
+      ExcelCommon.export(handers, datas, '员工excel模板.xlsx')
     },
     // 解析excel TODO 相同字段替换问题（就是多次上传什么覆盖问题）
     handleClickUploadInput (e) {
-      debugger
-      const file = e.target.files && e.target.files[0]
-      this.workbook = new ExcelJS.Workbook();
-      this.workbook.xlsx.load(file, {}).then(res => {
-        debugger
-        let sheets = this.workbook.worksheets;
-        for (let i = 0; i < sheets.length; i++) {
-          let sheet = sheets[i];
-          let sheetData = { name: sheet.name, index: i, rows: [] };
-          let rowCount = sheet.rowCount;
-          for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
-            let row = sheet.getRow(rowIndex);
-            let rowData = [];
-            for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
-              let cell = row.getCell(cellIndex);
-              if (cell.type === 4 && cell.value && this.dateFormat) {// type:2数值,3字符串,4日期,6公式
-                if (this.dateFormat.toLowerCase() === 'timestamp') {
-                  rowData.push(new Date(cell.value).getTime());
-                } else {
-                  rowData.push(formatDate(new Date(cell.value), this.dateFormat));
-                }
-              } else {
-                rowData.push(cell.text.trim());
-              }
-            }
-            sheetData.rows.push(rowData);
-          }
-          this.sheets.push(sheetData);
-        }
-        console.log(this.sheets);
-      }).catch(err => {
-      })
-
+      // const file = e.target.files && e.target.files[0]
+      // this.workbook = new ExcelJS.Workbook()
+      // this.workbook.xlsx.load(file, {}).then(res => {
+      //   debugger
+      //   let sheets = this.workbook.worksheets
+      //   for (let i = 0; i < sheets.length; i++) {
+      //     let sheet = sheets[i]
+      //     let sheetData = { name: sheet.name, index: i, rows: [] }
+      //     let rowCount = sheet.rowCount
+      //     for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
+      //       let row = sheet.getRow(rowIndex)
+      //       let rowData = []
+      //       for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
+      //         let cell = row.getCell(cellIndex)
+      //         if (cell.type === 4 && cell.value && this.dateFormat) { // type:2数值,3字符串,4日期,6公式
+      //           if (this.dateFormat.toLowerCase() === 'timestamp') {
+      //             rowData.push(new Date(cell.value).getTime())
+      //           } else {
+      //             // rowData.push(formatDate(new Date(cell.value), this.dateFormat))
+      //           }
+      //         } else {
+      //           rowData.push(cell.text.trim())
+      //         }
+      //       }
+      //       sheetData.rows.push(rowData)
+      //     }
+      //     this.sheets.push(sheetData)
+      //   }
+      //   console.log(this.sheets)
+      // }).catch(err => {
+      //   console.log(err)
+      // })
     },
 
     filterNode (value, data) {

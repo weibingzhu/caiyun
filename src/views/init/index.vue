@@ -12,8 +12,19 @@
           <el-button size="small">取消</el-button>
           <el-button size="small">重置</el-button>
           <el-button size="small">保存</el-button>
-          <el-button size="small">上传excel</el-button>
-          <el-button size="small">下载模板</el-button>
+          <input ref="uploadInput" accept=".xlsx, .xls" type="file" style="display:none" @change="handleClickUploadInput($event)" />
+          <el-dropdown size="small">
+            <el-button size="small">
+              导入导出
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="handleImport">导入Excel</el-dropdown-item>
+              <el-dropdown-item @click.native="handleExport">导出该公司</el-dropdown-item>
+              <el-dropdown-item @click.native="handleAllExport">导出所有公司</el-dropdown-item>
+              <el-dropdown-item @click.native="handleDownload">模板下载</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
         <el-form :inline="true">
           <el-row>
@@ -135,7 +146,7 @@
             <el-radio-group v-model="radio">
               <el-radio :label="3">备选项</el-radio>
               <el-radio :label="6">备选项</el-radio>
-              <el-radio :label="9"> </el-radio>
+              <el-radio :label="9"></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -392,6 +403,8 @@
 
 <script>
 
+import ExcelCommon from '@/excel/common/index'
+
 export default {
   mixins: [
     $mixins.pageList
@@ -451,46 +464,37 @@ export default {
       let params = JSON.parse(JSON.stringify(query))
       let type = this.taxType === this.znDataTaxType.taxPersonal ? 'p' : (this.taxType === this.znDataTaxType.taxGeneral ? 'g' : (this.taxType === this.znDataTaxType.taxSmall ? 's' : 'c'))
       return this.UtilsAxios.handleFetchPost(`/api/zn/taxes/${type}/agent`, (res) => {
-        // return this.UtilsAxios.handleFetchPost(`/api/zn/taxes/p/agent`, (res) => {
-        this.total.sum = res.data.length
-        this.total.gSum = 0
-        this.total.sSum = 0
-
-        let pCurr = 0
-        let pPay = 0
-
-        let aCurr = 0
-        let aPay = 0
-
-        let cCurr = 0
-        let cPay = 0
-        for (const item of res.data) {
-          item['operatorNames'] = this._.map(item.operator, 'name').toString()
-          item['qualification'] = item.category ? item.category.qualification : 0
-          item['companyName'] = item.company ? item.company.name : ''
-
-          let taxStatusC = item.statuss && item.statuss[this.znDataTaxType.taxCompany] ? item.statuss[this.znDataTaxType.taxCompany].status : ''
-          item[this.znDataTaxType.taxCompany] = taxStatusC
-          this.total.c.curr = this.znData.declareSuccessStatus.includes(taxStatusC) ? ++cCurr : cCurr
-          this.total.c.pay = this.znData.paySuccessStatus.includes(taxStatusC) ? ++cPay : cPay
-
-          let taxStatusP = item.statuss && item.statuss[this.znDataTaxType.taxPersonal] ? item.statuss[this.znDataTaxType.taxPersonal].status : ''
-          item[this.znDataTaxType.taxPersonal] = taxStatusP
-          this.total.p.curr = this.znData.declareSuccessStatus.includes(taxStatusP) ? ++pCurr : pCurr
-          this.total.p.pay = this.znData.paySuccessStatus.includes(taxStatusP) ? ++pPay : pPay
-
-          let taxStatusAG = item.statuss && item.statuss[this.znDataTaxType.taxGeneral] ? item.statuss[this.znDataTaxType.taxGeneral].status : ''
-          let taxStatusAS = item[this.znDataTaxType.taxSmall] = item.statuss && item.statuss[this.znDataTaxType.taxSmall] ? item.statuss[this.znDataTaxType.taxSmall].status : ''
-          item['addTax'] = { taxGeneral: taxStatusAG, taxSmall: taxStatusAS }
-          this.total.a.curr = (this.znData.declareSuccessStatus.includes(taxStatusAG) || this.znData.declareSuccessStatus.includes(taxStatusAS)) ? ++aCurr : aCurr
-          this.total.a.pay = (this.znData.paySuccessStatus.includes(taxStatusAG) || this.znData.paySuccessStatus.includes(taxStatusAS)) ? ++aPay : aPay
-
-          item['qualification'] === 1 ? ++this.total.gSum : ++this.total.sSum
-        }
-        res.data.length = 100
-        this.pageData = res
-        // debugger
+        console.log('asdf')
       }, params)
+    },
+
+    // 导入excel
+    handleImport (e) {
+      this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
+    },
+    // 导出该公司的参数
+    handleExport () {
+      let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
+      let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
+      ExcelCommon.export(handers, datas, 'xxxx公司参数.xlsx')
+    },
+    // 导出我名下所有公司的参数
+    handleAllExport () {
+      let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
+      let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
+      ExcelCommon.export(handers, datas, '所有公司参数.xlsx')
+    },
+    // 下载模板
+    handleDownload () {
+      let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
+      ExcelCommon.export(handers, [], '公司参数模板.xlsx')
+    },
+    // 解析excel
+    async handleClickUploadInput (e) {
+      const file = e.target.files && e.target.files[0]
+      let data = await ExcelCommon.parse(file)
+      debugger
+      console.log(data)
     },
 
     handleRowDblclick (row, column, event) {
