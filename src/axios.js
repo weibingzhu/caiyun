@@ -35,8 +35,8 @@ $axios.interceptors.request.use(config => {
   // Do something before request is sent
   let token = localStorage.getItem('token')
   if (config.headers && token) {
-    config.headers['x-admin-token'] = token
-    // config.headers['Authorization'] = 'Bearer ' + token
+    // config.headers['x-admin-token'] = token
+    config.headers['Authorization'] = 'Bearer ' + token
   }
   Object.assign(window.$$headers, {token: config.headers['token']})
   if (/^get$/i.test(config.method) && config.params) {
