@@ -23,6 +23,24 @@
           </el-badge>
           <el-badge class="item">
             <el-button
+              ref="btnManualBill"
+              v-bind:class="{selectModeule: selectModules === 'ManualBill'}"
+              size="small"
+              @click="handleClickModule('ManualBill')"
+              @dblclick.native="handleDblClickModule('ManualBill','手工票据')"
+            >手工票据</el-button>
+          </el-badge>
+          <el-badge class="item">
+            <el-button
+              ref="btnCharge"
+              v-bind:class="{selectModeule: selectModules === 'Charge'}"
+              size="small"
+              @click="handleClickModule('Charge')"
+              @dblclick.native="handleDblClickModule('Charge','手工票据')"
+            >费用</el-button>
+          </el-badge>
+          <el-badge class="item">
+            <el-button
               ref="btnPurchaseCustoms"
               v-bind:class="{selectModeule: selectModules === 'PurchaseCustoms'}"
               size="small"
@@ -38,24 +56,6 @@
               @click="handleClickModule('SalesCustoms')"
               @dblclick.native="handleDblClickModule('SalesCustoms','海关报关单')"
             >海关报关单</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button
-              ref="btnManualBil"
-              v-bind:class="{selectModeule: selectModules === 'ManualBil'}"
-              size="small"
-              @click="handleClickModule('ManualBil')"
-              @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
-            >手工票据</el-button>
-          </el-badge>
-          <el-badge class="item">
-            <el-button
-              ref="btnCharge"
-              v-bind:class="{selectModeule: selectModules === 'Charge'}"
-              size="small"
-              @click="handleClickModule('Charge')"
-              @dblclick.native="handleDblClickModule('Charge','手工票据')"
-            >费用</el-button>
           </el-badge>
           <span>
             <icon class="el-icon-caret-right" />
@@ -92,7 +92,7 @@
             <el-button class="w-100" ref="btnFixedAsset" size="small">固定资产</el-button>
           </el-badge>
           <el-badge class="item">
-            <el-button class="w-100" ref="btnManualBil" size="small">手工票据</el-button>
+            <el-button class="w-100" ref="btnManualBill" size="small">手工票据</el-button>
           </el-badge>
           <el-badge class="item">
             <el-button class="w-100" ref="btnTicket" size="small">银行承兑汇票</el-button>
@@ -101,7 +101,10 @@
       </template>
       <div slot="table">
         <!-- <router-view :key="$route.path" class="sub-view"></router-view> -->
-        <sales-list></sales-list>
+        <!-- <sales-list></sales-list> -->
+        <!-- <purchase-list></purchase-list> -->
+        <!-- <purchase-list></purchase-list> -->
+        <!-- <purchase-customs-list></purchase-customs-list> -->
       </div>
     </e-page-list-layout>
   </div>
@@ -110,6 +113,7 @@
 <script>
 import PurchaseList from './purchase/list'
 import SalesList from './sales/list'
+import PurchaseCustomsList from './purchaseCustoms/list.vue'
 
 export default {
   mixins: [
@@ -117,6 +121,7 @@ export default {
   ],
   components: {
     PurchaseList,
+    PurchaseCustomsList,
     SalesList
   },
   data () {
@@ -168,16 +173,9 @@ export default {
       console.log('asdf')
     },
 
-    /**
-     * 切换头部的面包屑
-     */
-    handleTaxCommand (command) {
-      this.$router.push({ path: command, query: { companyId: this.selectCompanyId } })
-    },
-
     // 税表
     headleCreateTabale () {
-      this.$router.push({ path: `/data/general/tableGeneral`, query: { companyId: this.selectCompanyId } })
+      this.$router.push({ path: `/data/general/TableGeneral`, query: { companyId: this.selectCompanyId } })
     }
   }
 }

@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import ExcelCommon from '@/excel/common/index'
+import ExcelUtils from '@/excel/utils'
 const Form = () => import('./components/Form')
 export default {
   mixins: [
@@ -177,48 +177,16 @@ export default {
     handleExport () {
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
       let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
-      ExcelCommon.export(handers, datas, '员工excel.xlsx')
+      ExcelUtils.export(handers, datas, '员工excel.xlsx')
     },
     // 下载模板
     handleDownload () {
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
       let datas = []
-      ExcelCommon.export(handers, datas, '员工excel模板.xlsx')
+      ExcelUtils.export(handers, datas, '员工excel模板.xlsx')
     },
     // 解析excel TODO 相同字段替换问题（就是多次上传什么覆盖问题）
     handleClickUploadInput (e) {
-      // const file = e.target.files && e.target.files[0]
-      // this.workbook = new ExcelJS.Workbook()
-      // this.workbook.xlsx.load(file, {}).then(res => {
-      //   debugger
-      //   let sheets = this.workbook.worksheets
-      //   for (let i = 0; i < sheets.length; i++) {
-      //     let sheet = sheets[i]
-      //     let sheetData = { name: sheet.name, index: i, rows: [] }
-      //     let rowCount = sheet.rowCount
-      //     for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
-      //       let row = sheet.getRow(rowIndex)
-      //       let rowData = []
-      //       for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
-      //         let cell = row.getCell(cellIndex)
-      //         if (cell.type === 4 && cell.value && this.dateFormat) { // type:2数值,3字符串,4日期,6公式
-      //           if (this.dateFormat.toLowerCase() === 'timestamp') {
-      //             rowData.push(new Date(cell.value).getTime())
-      //           } else {
-      //             // rowData.push(formatDate(new Date(cell.value), this.dateFormat))
-      //           }
-      //         } else {
-      //           rowData.push(cell.text.trim())
-      //         }
-      //       }
-      //       sheetData.rows.push(rowData)
-      //     }
-      //     this.sheets.push(sheetData)
-      //   }
-      //   console.log(this.sheets)
-      // }).catch(err => {
-      //   console.log(err)
-      // })
     },
 
     filterNode (value, data) {

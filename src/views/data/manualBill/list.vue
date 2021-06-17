@@ -1,5 +1,5 @@
 <template>
-  <div class="manualBil-list">
+  <div class="manualBill-list">
     <e-page-list-layout>
       <template slot="search">
         <el-form slot="search" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
@@ -206,7 +206,7 @@ export default {
 </script>
 
 <style lang="scss">
-.manualBil-list {
+.manualBill-list {
   .all-module {
     display: flex;
     .el-badge {

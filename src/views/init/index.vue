@@ -403,7 +403,7 @@
 
 <script>
 
-import ExcelCommon from '@/excel/common/index'
+import ExcelUtils from '@/excel/utils'
 
 export default {
   mixins: [
@@ -476,23 +476,23 @@ export default {
     handleExport () {
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
       let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
-      ExcelCommon.export(handers, datas, 'xxxx公司参数.xlsx')
+      ExcelUtils.export(handers, datas, 'xxxx公司参数.xlsx')
     },
     // 导出我名下所有公司的参数
     handleAllExport () {
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
       let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
-      ExcelCommon.export(handers, datas, '所有公司参数.xlsx')
+      ExcelUtils.export(handers, datas, '所有公司参数.xlsx')
     },
     // 下载模板
     handleDownload () {
       let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
-      ExcelCommon.export(handers, [], '公司参数模板.xlsx')
+      ExcelUtils.export(handers, [], '公司参数模板.xlsx')
     },
     // 解析excel
     async handleClickUploadInput (e) {
       const file = e.target.files && e.target.files[0]
-      let data = await ExcelCommon.parse(file)
+      let data = await ExcelUtils.parse(file)
       console.log(data)
     },
 

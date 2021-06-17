@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver'
 import ExcelJS from 'exceljs'
 import _ from 'lodash'
-// import { formatDate } from 'element-ui/src/utils/date-util'
+import { formatDate } from 'element-ui/src/utils/date-util'
 
 /**
  * 通用的导出excel模板， 复杂的请用：
@@ -46,7 +46,7 @@ const $$ = {
   /**
    * 解析excel
    */
-  async parse (file) {
+  async parse (file, type = 'array') {
     if (!file) return
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
@@ -57,27 +57,48 @@ const $$ = {
       let sheetData = {
         name: sheet.name,
         index: i,
-        rows: []
+        rowsJson: [],
+        rowsArray: []
       }
       let rowCount = sheet.rowCount
       for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
         let row = sheet.getRow(rowIndex)
-        let rowData = []
+        let rowsArray = []
+        let rowsJson = {}
+        debugger
         for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
+          let value = ''
           let cell = row.getCell(cellIndex)
-          // type:2数值,3字符串,4日期,6 公式
-          if (cell.type === 4 && cell.value) {
-            rowData.push(new Date(cell.value).getTime())
-            // rowData.push(formatDate(new Date(cell.value)))
+          if (cell.type === 4) { // type:2数值,3字符串,4日期,6公式
+            value = cell.value || 0
+            rowsArray.push(new Date(value).getTime()) // rowData.push(formatDate(new Date(cell.value)))
           } else {
-            rowData.push(cell.text.trim())
+            value = cell.text || ''
+            value = value.trim()
+            rowsArray.push(value)
           }
+          rowsJson[cell.address] = value
         }
-        sheetData.rows.push(rowData)
+        sheetData.rows.push(rowsArray)
       }
       sheetDatas.push(sheetData)
     }
     return sheetDatas
+  },
+  /**
+   * 数据类型转换
+   */
+  convert (value, type, format = null) {
+    if (!value || !type) return value
+    type = type.toLocaleLowerCase()
+    switch (type) {
+      case 'date':
+        value = formatDate(new Date(value), format)
+        break
+      default:
+        break
+    }
+    return value
   }
 }
 

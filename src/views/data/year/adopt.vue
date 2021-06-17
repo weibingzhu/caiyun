@@ -58,11 +58,11 @@
           </el-badge>
           <el-badge class="item">
             <el-button
-              ref="btnManualBil"
-              v-bind:class="{selectModeule: selectModules === 'ManualBil'}"
+              ref="btnManualBill"
+              v-bind:class="{selectModeule: selectModules === 'ManualBill'}"
               size="small"
-              @click="handleClickModule('ManualBil')"
-              @dblclick.native="handleDblClickModule('ManualBil','手工票据')"
+              @click="handleClickModule('ManualBill')"
+              @dblclick.native="handleDblClickModule('ManualBill','手工票据')"
             >手工票据</el-button>
           </el-badge>
           <el-badge class="item">

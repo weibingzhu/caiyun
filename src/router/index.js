@@ -122,13 +122,13 @@ let routes = [
             component: () => import('@/views/data/salesCustoms/list.vue')
           },
           {
-            path: 'manualBill',
+            path: 'ManualBill',
             component: () => import('@/views/data/manualBill/list.vue')
           },
           {
-            path: 'tableGeneral',
+            path: 'TableGeneral',
             meta: {
-              title: 'qwe'
+              title: '报税税表'
             },
             component: () => import('@/views/data/general/tableGeneral.vue')
           },
