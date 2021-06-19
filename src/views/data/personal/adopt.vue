@@ -201,8 +201,10 @@
           </el-form>
         </el-col>
         <span>
-          <el-button size="small">复制上月</el-button>
-          <el-button size="small">执行规则</el-button>
+          <el-tooltip class="item" effect="dark" content="系统会在每个月的1号凌晨自动复制上个月数据" placement="top-start">
+            <el-button size="small">复制上月</el-button>
+          </el-tooltip>
+          <el-button size="small">数据检验</el-button>
           <el-button size="small">一键报税</el-button>
         </span>
       </el-row>
@@ -241,6 +243,7 @@
           <el-tag size="mini" v-else type="success">小规模</el-tag>
         </template>
       </el-table-column>
+
       <el-table-column label="报税通知" prop="qualification">通知</el-table-column>
       <el-table-column label="客户回复" prop="qualification">OK</el-table-column>
       <el-table-column label="人数" prop="qualification">3</el-table-column>
@@ -299,7 +302,6 @@
 
 <script>
 import MultiName from '@/views/components/MultiName'
-import pyfl from 'pyfl'
 import ChartPieDoughnut from '@/views/components/chart/PieDoughnut'
 
 export default {
@@ -436,15 +438,7 @@ export default {
     fetch (query = {}) {
       let params = JSON.parse(JSON.stringify(query))
       params.period = params.period || this.Utils.getStorePeriodObj(this)
-      return this.UtilsAxios.handleFetchPost(`/api/zn/taxes/p/agent`, (res) => {
-        let temp = []
-        for (const item of res.data) {
-          let name = this.$options.filters.filterName(item.company.name)
-          let py = pyfl(name)
-          temp.push({ value: item.company._id, label: item.company.name, py, item }) // TODO item 有多余的数据
-        }
-        this.$store.commit('ALL_COMPANIES', temp)
-
+      this.UtilsAxios.handleFetchPost(`/api/zn/taxes/p/agent`, (res) => {
         this.total.sum = res.data.length
 
         let pCurr = 0
@@ -477,7 +471,7 @@ export default {
           this.total.a.curr = (this.znData.declareSuccessStatus.includes(taxStatusAG) || this.znData.declareSuccessStatus.includes(taxStatusAS)) ? ++aCurr : aCurr
           this.total.a.pay = (this.znData.paySuccessStatus.includes(taxStatusAG) || this.znData.paySuccessStatus.includes(taxStatusAS)) ? ++aPay : aPay
         }
-        res.data.length = 50 // TODO
+        res.data.length = 100 // TODO
         this.pageData.data = res.data
         this.pageData.count = 100
       }, params)
@@ -579,7 +573,7 @@ export default {
     display: flex;
     height: 110px;
     background-color: #a1e2e733;
-    background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='30%25' font-size='24' fill-opacity='0.5' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 100 100)'%3E文字底图%3C/text%3E%3C/svg%3E");
+    // background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='30%25' font-size='24' fill-opacity='0.5' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 100 100)'%3E文字底图%3C/text%3E%3C/svg%3E");
     // & .el-col {
     //   border-radius: 10px;
     //   background-color: #32c1ca;

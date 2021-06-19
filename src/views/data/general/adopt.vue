@@ -109,8 +109,6 @@
 
 <script>
 import MultiName from '@/views/components/MultiName'
-import pyfl from 'pyfl'
-// import Form from './components/Form'
 
 export default {
   mixins: [
@@ -168,15 +166,7 @@ export default {
     fetch (query = {}) {
       let params = JSON.parse(JSON.stringify(query))
       params.period = params.period || this.Utils.getStorePeriodObj(this)
-      return this.UtilsAxios.handleFetchPost(`/api/zn/taxes/g/agent`, (res) => {
-        let temp = []
-        for (const item of res.data) {
-          let name = this.$options.filters.filterName(item.company.name)
-          let py = pyfl(name)
-          temp.push({ value: item.company._id, label: item.company.name, py, item }) // TODO item 有多余的数据
-        }
-        this.$store.commit('ALL_COMPANIES', temp)
-
+      this.UtilsAxios.handleFetchPost(`/api/zn/taxes/g/agent`, (res) => {
         this.total.sum = res.data.length
         this.total.gSum = 0
         this.total.sSum = 0

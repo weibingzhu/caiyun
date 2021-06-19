@@ -181,6 +181,13 @@ let routes = [
         }
       },
       {
+        path: '/role/index',
+        component: () => import('@/views/role/index.vue'),
+        meta: {
+          title: '角色管理'
+        }
+      },
+      {
         path: '/customer/contract',
         component: () => import('@/views/customer/contract.vue'),
         meta: {
@@ -203,6 +210,20 @@ let routes = [
       },
       {
         path: '/customer/list',
+        component: () => import('@/views/customer/list.vue'),
+        meta: {
+          title: '客户列表'
+        }
+      },
+      {
+        path: '/customer/leave',
+        component: () => import('@/views/customer/list.vue'),
+        meta: {
+          title: '客户列表'
+        }
+      },
+      {
+        path: '/customer/yearCheck',
         component: () => import('@/views/customer/list.vue'),
         meta: {
           title: '客户列表'

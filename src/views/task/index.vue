@@ -71,7 +71,7 @@
         </el-table-column>
         <el-table-column label="操作员" prop="operator.name">
           <template slot-scope="scope">
-            <span>{{scope.row.operator.name}} 管理员权限</span>
+            <span>{{scope.row.operator.name}}</span>
           </template>
         </el-table-column>
         <el-table-column label="任务类型" prop="classify" />

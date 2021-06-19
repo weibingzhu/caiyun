@@ -93,7 +93,7 @@
             </el-tooltip>
           </el-col>
           <span class="tilte-right-area">
-            <el-dropdown size="small" @command="handleCommand">
+            <el-dropdown size="small">
               <el-button size="small">
                 模板下载
                 <i class="el-icon-arrow-down el-icon--right"></i>

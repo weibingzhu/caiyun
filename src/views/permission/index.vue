@@ -11,7 +11,6 @@
             ref="tree"
             default-expand-all
             :filter-node-method="filterNode"
-            show-checkbox
             @check-change="handleCheckChange"
           ></el-tree>
         </el-col>
@@ -19,8 +18,8 @@
           <el-row type="flex" align="middle">
             <el-col :span="24">姓名，所属部门， 职位，xxxx</el-col>
             <span>
-              <el-button size="small">重设</el-button>
-              <el-button size="small">确定</el-button>
+              <el-button size="small">添加</el-button>
+              <el-button size="small">删除</el-button>
             </span>
           </el-row>
           <el-scrollbar>
@@ -31,7 +30,7 @@
                 name="1"
                 :key="index"
               >
-                <span v-for="(item2, index2) in [{name:'管理员'},{name:'管理员'},{name:'管理员'},{name:'管理员2'},{name:'管理员'},{name:'管理员3'}]" :key="index2">
+                <span v-for="(item2, index2) in [{name:'btn1'},{name:'添加'},{name:'删除'},{name:'管理员2'},{name:'管理员'},{name:'管理员3'}]" :key="index2">
                   <el-checkbox v-model="checked">{{item2.name}}</el-checkbox>
                   <el-tooltip class="item" effect="dark" placement="bottom">
                     <div slot="content">asd</div>
@@ -64,13 +63,13 @@ export default {
       filterText: '',
       data: [{
         id: 1,
-        label: '一级 1',
+        label: 'ddddd',
         children: [{
           id: 4,
-          label: '二级 1-1',
+          label: '合同管理',
           children: [{
             id: 9,
-            label: '三级 1-1-1'
+            label: '审核'
           }, {
             id: 10,
             label: '三级 1-1-2'

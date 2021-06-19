@@ -18,12 +18,12 @@ export default {
       {
         title: '流失客户',
         index: '01-03',
-        route: '/customer/list'
+        route: '/customer/leave'
       },
       {
         title: '工商年审',
         index: '01-04',
-        route: '/customer/list'
+        route: '/customer/yearCheck'
       }]
     },
     {
@@ -39,10 +39,19 @@ export default {
       route: '/data/adopt'
     },
     {
-      title: '提取列表',
+      title: '自动化管理',
       index: '019',
       icon: '&#xe604;',
-      route: '/task/index'
+      options: [{
+        title: '机器人状态',
+        index: '019-01',
+        route: '/data/personal/adopt'
+      },
+      {
+        title: '任务列表',
+        index: '019-02',
+        route: '/data/general/adopt'
+      }]
     },
     {
       title: '税务管理',
@@ -89,20 +98,8 @@ export default {
         route: '/acc/report'
       }]
     },
-    // {
-    //   title: '税务进度',
-    //   index: '0114',
-    //   icon: '&#xe604;',
-    //   route: '/tax/progress'
-    // },
-    // {
-    //   title: '账务进度',
-    //   index: '0115',
-    //   icon: '&#xe604;',
-    //   route: '/acc/progress'
-    // },
     {
-      title: '统计管理',
+      title: '数据统计',
       index: '0116',
       icon: '&#xe604;',
       options: [{
@@ -158,7 +155,13 @@ export default {
       route: '/member/index'
     },
     {
-      title: '权限设置',
+      title: '角色管理',
+      index: '020',
+      icon: '&#xe604;',
+      route: '/role/index'
+    },
+    {
+      title: '权限管理',
       index: '021',
       icon: '&#xe604;',
       route: '/permission/index'

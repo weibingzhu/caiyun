@@ -100,6 +100,7 @@
         </el-button-group>
       </template>
       <div slot="table">
+        asdas
         <!-- <router-view :key="$route.path" class="sub-view"></router-view> -->
         <!-- <sales-list></sales-list> -->
         <!-- <purchase-list></purchase-list> -->

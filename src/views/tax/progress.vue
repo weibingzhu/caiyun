@@ -607,7 +607,7 @@ export default {
     display: flex;
     height: 110px;
     background-color: #a1e2e733;
-    background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='30%25' font-size='24' fill-opacity='0.5' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 100 100)'%3E文字底图%3C/text%3E%3C/svg%3E");
+    // background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='30%25' font-size='24' fill-opacity='0.5' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 100 100)'%3E文字底图%3C/text%3E%3C/svg%3E");
     // & .el-col {
     //   border-radius: 10px;
     //   background-color: #32c1ca;

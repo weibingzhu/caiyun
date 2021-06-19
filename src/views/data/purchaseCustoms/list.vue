@@ -8,7 +8,7 @@
           </el-form-item>
           <pg-up :selectCompanyId="selectCompanyId"></pg-up>
           <span class="operating-area" >
-            <el-button size="small">新加</el-button>
+            <el-button size="small" @click="handleAdd">新加</el-button>
             <el-button size="small">提取缴款书</el-button>
             <el-button size="small" @click="handleShowCrawlerStatus">提取状态</el-button>
             <el-button size="small" >执行规则</el-button>
@@ -56,9 +56,11 @@
 
 <script>
 import PgUp from '../../components/PgUp'
+const Form = () => import('./Form')
 export default {
   components: {
-    PgUp
+    PgUp,
+    Form
   },
   mixins: [
     $mixins.pageList
@@ -117,11 +119,27 @@ export default {
       this._fetch(params)
     },
     _fetch (p) {
-      let url = `/api/yzh/accaux/purchase/search?owner=${this.selectCompanyId}`
+      let url = `/api/yzh/accaux/customspurchase/search?owner=${this.selectCompanyId}`
       return this.UtilsAxios.handleFetchPost(url, (res) => {
+        debugger
         this.total.sum = res.data.length
         this.pageData = res
       }, p)
+    },
+
+    // 手动添加
+    handleAdd () {
+      this._msNavigator(null)
+    },
+    // 编辑
+    handleEdit () {
+      this._msNavigator({name: 'test'})
+    },
+    _msNavigator (params) {
+      ms.navigator.push(this, Form, {
+        params,
+        title: params ? '编辑' : '创建'
+      })
     },
 
     handleShowCrawlerStatus () {
