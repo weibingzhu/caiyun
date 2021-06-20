@@ -5,91 +5,35 @@
         <el-form-item label="搜索">
           <el-input placeholder="请输入关键字" v-model.trim="keyWork" size="small"></el-input>
         </el-form-item>
-        <el-button native-type="submit" size="small" @click="handleCreate">添加成员</el-button>
-        <el-dropdown size="small">
-          <el-button size="small">
-            批量处理
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>加入部门</el-dropdown-item>
-            <el-dropdown-item>移除部门</el-dropdown-item>
-            <el-dropdown-item>激活/未激活</el-dropdown-item>
-            <el-dropdown-item>离职</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <input ref="uploadInput" accept=".xlsx, .xls" type="file" style="display:none" @change="handleClickUploadInput($event)" />
-        <el-dropdown size="small">
-          <el-button size="small">
-            导入导出
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="handleImport">导入成员</el-dropdown-item>
-            <el-dropdown-item @click.native="handleExport">导出成员</el-dropdown-item>
-            <el-dropdown-item @click.native="handleDownload">模板下载</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <el-button native-type="submit" size="small" @click="handleCreate">添加角色</el-button>
       </el-form>
     </template>
     <template slot="table">
-      <el-row>
-        <!-- <el-col :span="3"> -->
-          <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input> -->
-          <!-- <el-tree
-            :data="data"
-            node-key="id"
-            ref="tree"
-            default-expand-all
-            :filter-node-method="filterNode"
-            @node-drag-start="handleDragStart"
-            @node-drag-enter="handleDragEnter"
-            @node-drag-leave="handleDragLeave"
-            @node-drag-over="handleDragOver"
-            @node-drag-end="handleDragEnd"
-            @node-drop="handleDrop"
-            draggable
-            :allow-drop="allowDrop"
-            :allow-drag="allowDrag"
-          ></el-tree> -->
-        <!-- </el-col> -->
-        <el-col :span="24">
-          <el-table v-bind="getTableProps()" v-on="getTableListeners()" stripe @row-dblclick="handleRowDblclick" :data="[{},{},{},{},{},{},{},{},{}]">
-            <el-table-column type="selection" width="58"></el-table-column>
-            <el-table-column label="成员昵称">
-              <template v-slot="scope">搬砖小强</template>
-            </el-table-column>
-            <el-table-column label="真实姓名">
-              <template v-slot="scope">王强</template>
-            </el-table-column>
-            <el-table-column label="邮箱">
-              <template v-slot="scope">46345955@qq.com</template>
-            </el-table-column>
-            <el-table-column label="手机号">
-              <template v-slot="scope">14578562559</template>
-            </el-table-column>
-            <el-table-column label="部门">
-              <template v-slot="scope">服务部</template>
-            </el-table-column>
-            <el-table-column label="部门数">
-              <template v-slot="scope">2</template>
-            </el-table-column>
-            <el-table-column label="配分权限">
-              <template v-slot="scope">编辑</template>
-            </el-table-column>
-            <el-table-column label="入职时间">
-              <template v-slot="scope">1212-12-12</template>
-            </el-table-column>
-            <el-table-column label="状 态">
-              <template v-slot="scope">
-                <template v-if="scope.$index % 3">未激活</template>
-                <template v-else-if="scope.$index % 5">离职</template>
-                <template v-else>在职</template>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
+      <el-table v-bind="getTableProps()" v-on="getTableListeners()" stripe @row-dblclick="handleRowDblclick" :data="[{},{},{},{},{},{},{},{},{}]">
+        <el-table-column type="selection" width="58"></el-table-column>
+        <el-table-column label="角色名称">
+          <template v-slot="scope">管理员</template>
+        </el-table-column>
+        <el-table-column label="描述">
+          <template v-slot="scope">该权限是一般是用的</template>
+        </el-table-column>
+        <el-table-column label="配分权限">
+          <template v-slot="scope">编辑，创建，删除 xxx都有</template>
+        </el-table-column>
+        <el-table-column label="修改">
+          <template v-slot="scope">1212-12-12/小伟</template>
+        </el-table-column>
+        <el-table-column label="创建时间">
+          <template v-slot="scope">1212-12-12</template>
+        </el-table-column>
+        <el-table-column label="状 态">
+          <template v-slot="scope">
+            <template v-if="scope.$index % 3">未激活</template>
+            <template v-else-if="scope.$index % 5">离职</template>
+            <template v-else>在职</template>
+          </template>
+        </el-table-column>
+      </el-table>
     </template>
   </ms-page-list-layout>
 </template>

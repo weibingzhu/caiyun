@@ -12,8 +12,6 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>加入部门</el-dropdown-item>
-            <el-dropdown-item>移除部门</el-dropdown-item>
             <el-dropdown-item>激活/未激活</el-dropdown-item>
             <el-dropdown-item>离职</el-dropdown-item>
           </el-dropdown-menu>
@@ -32,65 +30,44 @@
         </el-dropdown>
       </el-form>
     </template>
-    <template slot="table">
-      <el-row>
-        <!-- <el-col :span="3"> -->
-          <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input> -->
-          <!-- <el-tree
-            :data="data"
-            node-key="id"
-            ref="tree"
-            default-expand-all
-            :filter-node-method="filterNode"
-            @node-drag-start="handleDragStart"
-            @node-drag-enter="handleDragEnter"
-            @node-drag-leave="handleDragLeave"
-            @node-drag-over="handleDragOver"
-            @node-drag-end="handleDragEnd"
-            @node-drop="handleDrop"
-            draggable
-            :allow-drop="allowDrop"
-            :allow-drag="allowDrag"
-          ></el-tree> -->
-        <!-- </el-col> -->
-        <el-col :span="24">
-          <el-table v-bind="getTableProps()" v-on="getTableListeners()" stripe @row-dblclick="handleRowDblclick" :data="[{},{},{},{},{},{},{},{},{}]">
-            <el-table-column type="selection" width="58"></el-table-column>
-            <el-table-column label="成员昵称">
-              <template v-slot="scope">搬砖小强</template>
-            </el-table-column>
-            <el-table-column label="真实姓名">
-              <template v-slot="scope">王强</template>
-            </el-table-column>
-            <el-table-column label="邮箱">
-              <template v-slot="scope">46345955@qq.com</template>
-            </el-table-column>
-            <el-table-column label="手机号">
-              <template v-slot="scope">14578562559</template>
-            </el-table-column>
-            <el-table-column label="部门">
-              <template v-slot="scope">服务部</template>
-            </el-table-column>
-            <el-table-column label="部门数">
-              <template v-slot="scope">2</template>
-            </el-table-column>
-            <el-table-column label="配分权限">
-              <template v-slot="scope">编辑</template>
-            </el-table-column>
-            <el-table-column label="入职时间">
-              <template v-slot="scope">1212-12-12</template>
-            </el-table-column>
-            <el-table-column label="状 态">
-              <template v-slot="scope">
-                <template v-if="scope.$index % 3">未激活</template>
-                <template v-else-if="scope.$index % 5">离职</template>
-                <template v-else>在职</template>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
-    </template>
+    <el-table
+      slot="table"
+      v-bind="getTableProps()"
+      v-on="getTableListeners()"
+      stripe
+      @row-dblclick="handleRowDblclick"
+      :data="[{},{},{},{},{},{},{},{},{}]"
+    >
+      <el-table-column type="selection" width="58"></el-table-column>
+      <el-table-column label="成员昵称">
+        <template v-slot="scope">搬砖小强</template>
+      </el-table-column>
+      <el-table-column label="真实姓名">
+        <template v-slot="scope">王强</template>
+      </el-table-column>
+      <el-table-column label="邮箱">
+        <template v-slot="scope">46345955@qq.com</template>
+      </el-table-column>
+      <el-table-column label="手机号">
+        <template v-slot="scope">14578562559</template>
+      </el-table-column>
+      <el-table-column label="部门">
+        <template v-slot="scope">服务部</template>
+      </el-table-column>
+      <el-table-column label="配分权限">
+        <template v-slot="scope">管理员，合同用户</template>
+      </el-table-column>
+      <el-table-column label="入职时间">
+        <template v-slot="scope">1212-12-12</template>
+      </el-table-column>
+      <el-table-column label="状 态">
+        <template v-slot="scope">
+          <template v-if="scope.$index % 3">未激活</template>
+          <template v-else-if="scope.$index % 5">离职</template>
+          <template v-else>在职</template>
+        </template>
+      </el-table-column>
+    </el-table>
   </ms-page-list-layout>
 </template>
 
