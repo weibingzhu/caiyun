@@ -149,10 +149,10 @@ export default {
       }]
     },
     {
-      title: '成员管理',
-      index: '020',
+      title: '权限管理',
+      index: '021',
       icon: '&#xe604;',
-      route: '/member/index'
+      route: '/permission/index'
     },
     {
       title: '角色管理',
@@ -161,10 +161,10 @@ export default {
       route: '/role/index'
     },
     {
-      title: '权限管理',
-      index: '021',
+      title: '成员管理',
+      index: '020',
       icon: '&#xe604;',
-      route: '/permission/index'
+      route: '/member/index'
     },
     {
       title: '系统配置',

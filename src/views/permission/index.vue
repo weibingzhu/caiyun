@@ -3,42 +3,56 @@
     <template slot="search"></template>
     <template slot="table">
       <el-row>
-        <el-col :span="3">
+        <el-col :span="5">
           <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input>
           <el-tree
             :data="data"
-            node-key="id"
             ref="tree"
-            default-expand-all
             :filter-node-method="filterNode"
-            @check-change="handleCheckChange"
-          ></el-tree>
+            show-checkbox
+            node-key="id"
+            default-expand-all
+            :expand-on-click-node="false"
+          >
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>{{ node.label }}</span>
+              <el-button-group>
+                <el-button type="text" icon="el-icon-remove-outline" size="mini" @click="() => remove(node, data)"></el-button>
+                <el-button type="text" icon="el-icon-circle-plus-outline" size="mini" @click="() => append(data)"></el-button>
+              </el-button-group>
+            </span>
+          </el-tree>
         </el-col>
-        <el-col :span="21">
+        <el-col :span="19">
           <el-row type="flex" align="middle">
-            <el-col :span="24">姓名，所属部门， 职位，xxxx</el-col>
+            <el-col :span="24">
+              <el-tooltip class="item" effect="dark" placement="bottom" content="添加根节点">
+                <el-button size="small">添加</el-button>
+              </el-tooltip>
+            </el-col>
             <span>
-              <el-button size="small">添加</el-button>
-              <el-button size="small">删除</el-button>
+              <el-button size="small">刷新</el-button>
             </span>
           </el-row>
           <el-scrollbar>
-            <el-collapse v-model="activeNames" @change="handleChange">
-              <el-collapse-item
-                v-for="(item, index) in [{id:'xxx',name:'mk1'},{id:'yyy',name:'mk2'},{id:'xxx2',name:'mk1'},{id:'yyy2',name:'mk2'},{id:'33',name:'mk2'},{id:'333',name:'mk1'},{id:'44',name:'mk2'},{id:'444',name:'mk2'},{id:'55',name:'mk1'},{id:'555',name:'mk2'}]"
-                :title="item.name"
-                name="1"
-                :key="index"
-              >
-                <span v-for="(item2, index2) in [{name:'btn1'},{name:'添加'},{name:'删除'},{name:'管理员2'},{name:'管理员'},{name:'管理员3'}]" :key="index2">
-                  <el-checkbox v-model="checked">{{item2.name}}</el-checkbox>
-                  <el-tooltip class="item" effect="dark" placement="bottom">
-                    <div slot="content">asd</div>
-                    <i class="el-icon-question"></i>
-                  </el-tooltip>
-                </span>
-              </el-collapse-item>
-            </el-collapse>
+            <e-section
+              v-for="(item, index) in [{id:'xxx',name:'合同管理'},{id:'yyy',name:'客户管理'},{id:'xxx2',name:'初值化管理'},{id:'yyy2',name:'货币汇率'},{id:'33',name:'系统配置'}, {id:'1212',name:'合同管理'},{id:'yyy',name:'客户管理'},{id:'xxx2',name:'初值化管理'},{id:'yyy2',name:'货币汇率'},{id:'33',name:'系统配置'}]"
+              :title="item.name"
+              name="1"
+              :key="index"
+            >
+              <el-link type="primary" slot="action">
+                <el-button type="text" size="mini" @click="() => remove(node, data)">添加</el-button>
+                <el-button type="text" size="mini" @click="() => append(data)">删除</el-button>
+              </el-link>
+              <span v-for="(item2, index2) in [{name:'btn1'},{name:'添加'},{name:'删除'},{name:'提交任务'},{name:'取消任务'}]" :key="index2">
+                <el-checkbox v-model="checked">{{item2.name}}</el-checkbox>
+                <el-tooltip class="item" effect="dark" placement="bottom">
+                  <div slot="content">asd</div>
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </span>
+            </e-section>
           </el-scrollbar>
         </el-col>
       </el-row>
@@ -47,6 +61,7 @@
 </template>
 
 <script>
+let id = 1000
 export default {
   mixins: [
     $mixins.pageList,
@@ -63,48 +78,37 @@ export default {
       filterText: '',
       data: [{
         id: 1,
-        label: 'ddddd',
+        label: '我的客户',
         children: [{
-          id: 4,
-          label: '合同管理',
-          children: [{
-            id: 9,
-            label: '审核'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
+          id: 11,
+          label: '合同管理'
+        },
+        {
+          id: 12,
+          label: '客户列表'
         }]
       }, {
         id: 2,
-        label: '一级 2',
+        label: '初值化管理'
+      }, {
+        id: 3,
+        label: '右边差不多的菜单',
         children: [{
-          id: 5,
-          label: '二级 2-1'
+          id: 7,
+          label: '还有隐藏页面的权限'
         }, {
-          id: 6,
-          label: '二级 2-2'
+          id: 8,
+          label: '还有弹窗的页面权限'
         }]
       }, {
         id: 3,
-        label: '一级 3',
+        label: '系统配置',
         children: [{
           id: 7,
-          label: '二级 3-1'
+          label: '货币汇率'
         }, {
           id: 8,
-          label: '二级 3-2',
-          children: [{
-            id: 11,
-            disabled: true,
-            label: '三级 3-2-1'
-          }, {
-            id: 12,
-            label: '三级 3-2-2'
-          }, {
-            id: 13,
-            label: '三级 3-2-3'
-          }]
+          label: '系统配置'
         }]
       }],
       activeNames: ['1'],
@@ -124,9 +128,23 @@ export default {
       //   this.pageData = res
       // })
     },
-    handleCheckChange (data, checked, indeterminate) {
-      console.log(data, checked, indeterminate)
+
+    append (data) {
+      const newChild = { id: id++, label: 'testtest', children: [] }
+      if (!data.children) {
+        this.$set(data, 'children', [])
+      }
+      data.children.push(newChild)
     },
+
+    remove (node, data) {
+      debugger
+      const parent = node.parent
+      const children = parent.data.children || parent.data
+      const index = children.findIndex(d => d.id === data.id)
+      children.splice(index, 1)
+    },
+
     filterNode (value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1
@@ -142,5 +160,13 @@ export default {
 
 <style lang="scss">
 .permission-index {
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+  }
 }
 </style>
