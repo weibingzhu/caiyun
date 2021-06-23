@@ -7,6 +7,7 @@ import configs from './configs'
  */
 class Manager {
   rowsJson = null
+  parseFile = null
   model = null
   async parse (file) {
     let sheetDatas = await utils.parse(file)
@@ -31,7 +32,14 @@ class Manager {
 
     if (!config) return 'excel文件比配失败'
     if (!config.parseFile) return 'config没有比配解析js文件'
-    return config.parseFile
+    this.parseFile = config.parseFile
+  }
+  parseModel () {
+    this.model = Object.assign(this.model, this.parseFile.before())
+    this.model = Object.assign(this.model, this.parseFile.header())
+    this.model = Object.assign(this.model, this.parseFile.body())
+    this.model = Object.assign(this.model, this.parseFile.footer())
+    this.model = Object.assign(this.model, this.parseFile.after())
   }
 }
 

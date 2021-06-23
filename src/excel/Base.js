@@ -3,9 +3,11 @@
  */
 module.exports = class Base {
   // constructor () {}
-  before (params, $user) {}
-  header (params, $user) {}
-  body (params, $user) {}
-  footer (params, $user) {}
-  after (params, $user) {}
+  before (params) {
+    return {}
+  }
+  header (params) {}
+  body (params) {}
+  footer (params) {}
+  after (params) {}
 }
