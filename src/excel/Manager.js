@@ -25,14 +25,14 @@ class Manager {
       if (!condition || !Array.isArray(condition)) return false
       for (const item of condition) {
         let v = this.rowsJson[item.address]
-        if (!item.value.test(v)) return false
+        if (!item.value || !item.value.test(v)) return false
       }
     })
-    if (!config) return 'excel文件比配失败'
-    if (!config.main) return 'config 没有比配main'
-    return config.main
-  }
 
+    if (!config) return 'excel文件比配失败'
+    if (!config.parseFile) return 'config没有比配解析js文件'
+    return config.parseFile
+  }
 }
 
 module.exports = new Manager()
