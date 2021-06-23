@@ -3,20 +3,25 @@ import configs from './configs'
 
 /**
  * excel解析管理类
- *
  */
 class Manager {
   rowsJson = null
   parseFile = null
   model = null
+
+  /**
+   * 把excel解析成row的json或[]
+   */
   async parse (file) {
     let sheetDatas = await utils.parse(file)
     if (!sheetDatas) return
     if (!Array.isArray(sheetDatas) || !sheetDatas[0]) return
     this.rowsJson = sheetDatas[0].rowsJson
   }
+
   /**
-   * 定位是哪个excel
+   * 定位excel对应的模型
+   * 拿到对应的解析文件（把rowJson解析成对应的模型）
    */
   match () {
     if (!this.rowsJson) return '解析excel失败，确认excel格式或版本'
@@ -34,6 +39,10 @@ class Manager {
     if (!config.parseFile) return 'config没有比配解析js文件'
     this.parseFile = config.parseFile
   }
+
+  /**
+   * 解析 rowJson到对应的模型
+   */
   parseModel () {
     this.model = Object.assign(this.model, this.parseFile.before())
     this.model = Object.assign(this.model, this.parseFile.header())
