@@ -61,7 +61,6 @@
 </template>
 
 <script>
-let id = 1000
 export default {
   mixins: [
     $mixins.pageList,
@@ -128,13 +127,29 @@ export default {
       //   this.pageData = res
       // })
     },
+    addRoot () {
 
-    append (data) {
-      const newChild = { id: id++, label: 'testtest', children: [] }
-      if (!data.children) {
-        this.$set(data, 'children', [])
-      }
-      data.children.push(newChild)
+    },
+    addNode (data) {
+      this.$prompt('请节点名称', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        this.$message({
+          type: 'success',
+          message: '成功添加节点' + value
+        })
+        const newChild = { id: new Date().getDate(), label: value, children: [] }
+        if (!data.children) {
+          this.$set(data, 'children', [])
+        }
+        data.children.push(newChild)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
     },
 
     remove (node, data) {

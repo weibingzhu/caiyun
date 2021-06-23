@@ -1,5 +1,37 @@
+import utils from './utils'
+import configs from './configs'
 
+/**
+ * excel解析管理类
+ *
+ */
 class Manager {
+  rowsJson = null
+  model = null
+  async parse (file) {
+    let sheetDatas = await utils.parse(file)
+    if (!sheetDatas) return
+    if (!Array.isArray(sheetDatas) || !sheetDatas[0]) return
+    this.rowsJson = sheetDatas[0].rowsJson
+  }
+  /**
+   * 定位是哪个excel
+   */
+  match () {
+    if (!this.rowsJson) return '解析excel失败，确认excel格式或版本'
+
+    let config = configs.find(c => {
+      let condition = c.condition
+      if (!condition || !Array.isArray(condition)) return false
+      for (const item of condition) {
+        let v = this.rowsJson[item.address]
+        if (!item.value.test(v)) return false
+      }
+    })
+    if (!config) return 'excel文件比配失败'
+    if (!config.main) return 'config 没有比配main'
+    return config.main
+  }
 
 }
 
