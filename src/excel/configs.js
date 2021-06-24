@@ -1,7 +1,8 @@
-const personalConfigs = require('./personal/configs')
+import personal from './personal/configs'
+import bank from './bank/configs'
 /**
  * 特殊excel的所有比配
  */
-module.exports = [
-  ...personalConfigs
-]
+export default []
+  .concat(personal)
+  .concat(bank)

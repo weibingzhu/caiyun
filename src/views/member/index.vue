@@ -73,6 +73,7 @@
 
 <script>
 import ExcelUtils from '@/excel/utils'
+import ExcelManager from '@/excel/Manager'
 const Form = () => import('./components/Form')
 export default {
   mixins: [
@@ -166,7 +167,11 @@ export default {
       ExcelUtils.export(handers, datas, '员工excel模板.xlsx')
     },
     // 解析excel TODO 相同字段替换问题（就是多次上传什么覆盖问题）
-    handleClickUploadInput (e) {
+    async handleClickUploadInput (e) {
+      const file = e.target.files && e.target.files[0]
+      let model = await ExcelManager.parse(file)
+      debugger
+      console.log('model:', model)
     },
     // 双击人员编辑
     handleRowDblclick (row, column, event) {

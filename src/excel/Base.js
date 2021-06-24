@@ -1,13 +1,21 @@
 /**
  * 解析excel的抽象类
  */
-module.exports = class Base {
+export default class Base {
   // constructor () {}
   before (params) {
     return {}
   }
-  header (params) {}
-  body (params) {}
-  footer (params) {}
-  after (params) {}
+  header (params) {
+    return {}
+  }
+  body (params) {
+    return {}
+  }
+  footer (params) {
+    return {}
+  }
+  after (params) {
+    return {}
+  }
 }

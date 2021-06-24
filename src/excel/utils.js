@@ -46,7 +46,7 @@ const $$ = {
   /**
    * 解析excel
    */
-  async parse (file, type = 'array') {
+  async parse (file) {
     if (!file) return
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
@@ -63,23 +63,21 @@ const $$ = {
       let rowCount = sheet.rowCount
       for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
         let row = sheet.getRow(rowIndex)
-        let rowsArray = []
-        let rowsJson = {}
-        debugger
+        let rowArray = []
         for (let cellIndex = 1; cellIndex <= row.cellCount; cellIndex++) {
           let value = ''
           let cell = row.getCell(cellIndex)
           if (cell.type === 4) { // type:2数值,3字符串,4日期,6公式
             value = cell.value || 0
-            rowsArray.push(new Date(value).getTime()) // rowData.push(formatDate(new Date(cell.value)))
+            rowArray.push(new Date(value).getTime()) // rowData.push(formatDate(new Date(cell.value)))
           } else {
             value = cell.text || ''
             value = value.trim()
-            rowsArray.push(value)
+            rowArray.push(value)
           }
-          rowsJson[cell.address] = value
+          sheetData.rowsJson[cell.address] = value
         }
-        sheetData.rows.push(rowsArray)
+        sheetData.rowsArray.push(rowArray)
       }
       sheetDatas.push(sheetData)
     }
