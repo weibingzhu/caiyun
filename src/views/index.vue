@@ -3,7 +3,7 @@
     <template slot="logo" slot-scope="scope">
       <div>
         <div>
-          <el-image style="width: 100%; height: 70px" src="/static/images/logo.jpg" :fit="fit"></el-image>
+          <el-image style="width: 100%; height: 70px" src="/static/images/logo.jpg"></el-image>
         </div>
         <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch>
       </div>
@@ -18,9 +18,6 @@
         type="month"
         placeholder="操作属期"
       ></el-date-picker>
-      <!-- <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch> -->
-      <el-tag size="small" v-if="qualification === 1">一般</el-tag>
-      <el-tag size="small" v-if="qualification === 2">小规模</el-tag>
       <!-- {{selectCompanyId}} -->
       <el-popover placement="bottom-start" width="260" trigger="hover">
         <div>
@@ -49,6 +46,9 @@
           <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-popover>
+      <el-tag size="small" v-if="qualification === 1">一般</el-tag>
+      <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
+      <el-tag size="small" else>小规模</el-tag>
     </div>
     <div slot="nav" class="nav">
       <div class="e-frame-layout--nav-item">
@@ -304,9 +304,9 @@ export default {
       margin-top: 10px;
     }
   }
-  .tittle {
-    .el-select {
-      width: 50%;
+  .title{
+    .el-tag{
+      margin: -6px;
     }
   }
   .el-dialog {
