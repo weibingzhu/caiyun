@@ -86,6 +86,43 @@ const $$ = {
     }
     return sheetDatas
   },
+
+  rows2Json (worksheet) {
+    let dataArray = []
+    let keys = []
+    worksheet.eachRow(function (row, rowNumber) {
+      if (rowNumber === 4) {
+        keys = row.values
+      } else if (rowNumber < 4) {
+        console.log('skip')
+      } else {
+        let rowDict = $$.eachCell(keys, row.values)
+        dataArray.push(rowDict)
+      }
+    })
+    return dataArray
+  },
+
+  /**
+   *  type: 2数值,3字符串,4日期,6公式
+   */
+  eachCell (keys, row) {
+    let data = {}
+    row.eachCell(function (cell, colNumber) {
+      var value = null
+      if (cell.type === 4) {
+        value = cell.value
+        if (value) value = new Date(value).getTime() // rowData.push(formatDate(new Date(cell.value)))
+      } else {
+        value = cell.value || ''
+        value = value.trim()
+        if (typeof value === 'object') value = value.text
+      }
+      data[keys[colNumber]] = value
+    })
+    return data
+  },
+
   /**
    * 数据类型转换
    */
@@ -100,34 +137,6 @@ const $$ = {
         break
     }
     return value
-  },
-
-  changeRowsToDict (worksheet) {
-    let dataArray = []
-    let keys = []
-    worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber === 4) {
-        keys = row.values
-      } else if (rowNumber < 4) {
-        console.log('asd,')
-      } else {
-        let rowDict = $$.cellValueToDict2(keys, row)
-        dataArray.push(rowDict)
-      }
-    })
-    debugger
-    return dataArray
-  },
-
-  cellValueToDict2 (keys, row) {
-    let data = {}
-    row.eachCell((cell, colNumber) => {
-      debugger
-      var value = cell.value
-      if (typeof value === 'object') value = value.text
-      data[keys[colNumber]] = value
-    })
-    return data
   }
 }
 

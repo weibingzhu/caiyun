@@ -1,12 +1,27 @@
 <template>
   <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index" :asideCollapse="false">
     <template slot="logo" slot-scope="scope">
-      <i :style="`font-size:${scope.isCollapse?14:26}px;font-style:normal;`">LOGO</i>
+      <div>
+        <div>
+          <el-image style="width: 100%; height: 70px" src="/static/images/logo.jpg" :fit="fit"></el-image>
+        </div>
+        <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch>
+      </div>
     </template>
     <div slot="title" class="tittle">
+      <el-date-picker
+        @change="handleChangePeriod"
+        :clearable="false"
+        class="main-period"
+        v-model="period"
+        size="small"
+        type="month"
+        placeholder="操作属期"
+      ></el-date-picker>
+      <!-- <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch> -->
       <el-tag size="small" v-if="qualification === 1">一般</el-tag>
       <el-tag size="small" v-if="qualification === 2">小规模</el-tag>
-      {{selectCompanyId}}
+      <!-- {{selectCompanyId}} -->
       <el-popover placement="bottom-start" width="260" trigger="hover">
         <div>
           <div style=" text-align: right;">
@@ -24,7 +39,6 @@
         </div>
         <el-select
           slot="reference"
-          class="w150"
           placeholder="请选择要操作的公司"
           size="small"
           filterable
@@ -35,16 +49,6 @@
           <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-popover>
-      <el-date-picker
-        @change="handleChangePeriod"
-        :clearable="false"
-        class="main-period"
-        v-model="period"
-        size="small"
-        type="month"
-        placeholder="操作属期"
-      ></el-date-picker>
-      <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch>
     </div>
     <div slot="nav" class="nav">
       <div class="e-frame-layout--nav-item">
@@ -294,6 +298,16 @@ export default {
 .home-index {
   .el-date-editor {
     max-width: 110px;
+  }
+  .ms-frame-layout--logo{
+    .el-switch{
+      margin-top: 10px;
+    }
+  }
+  .tittle {
+    .el-select {
+      width: 50%;
+    }
   }
   .el-dialog {
     // .el-dialog__header{
