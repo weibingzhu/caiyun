@@ -3,19 +3,21 @@
  */
 export default class Base {
   // constructor () {}
-  before (params) {
+  before (data, model) {
+    // 处理一些，填充，跳过， 等清理工作
     return {}
   }
-  header (params) {
+  header (data, model) {
     return {}
   }
-  body (params) {
+  body (data, model) {
     return {}
   }
-  footer (params) {
+  footer (data, model) {
     return {}
   }
-  after (params) {
+  after (data, model) {
+    // 合并 等
     return {}
   }
 }

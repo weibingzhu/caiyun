@@ -129,7 +129,7 @@
         <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
       </el-button-group>
       <el-row>
-        <el-upload class="upload-demo22" drag action multiple>
+        <el-upload class="upload-demo22" drag multiple :auto-upload="false" :on-change="handleChange">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
@@ -148,8 +148,8 @@
           </el-col>
           <span>
             <el-button native-type="submit" size="small">定位错误</el-button>
-            <el-button native-type="submit" size="small">上传该excel</el-button>
             <el-button native-type="submit" size="small">放弃上传</el-button>
+            <el-button native-type="submit" type="primary" size="small">确认上传</el-button>
           </span>
         </el-row>
       </el-row>
@@ -159,6 +159,7 @@
 
 <script>
 
+import ExcelManager from '@/excel/Manager'
 import visitor from '@/visitor/index'
 
 export default {
@@ -226,13 +227,18 @@ export default {
 
     handleEvent (event) {
       if (event.ctrlKey && event.shiftKey && event.altKey && event.keyCode === 13) {
-        console.log('三个')
+        console.log('ctrl+shift+alt+enter')
       } else if (event.ctrlKey && event.shiftKey && event.keyCode === 13) {
         this.uploadDialog = true
-        console.log('2个')
+        console.log('ctrl+shift+enter')
       } else if (event.ctrlKey && event.keyCode === 13) {
-        console.log('1个')
+        console.log('ctrl+enter')
       }
+    },
+    async handleChange (file) {
+      let model = await ExcelManager.parse(file.raw)
+      debugger
+      console.log('model:', model)
     }
   },
   computed: {

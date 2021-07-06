@@ -14,7 +14,7 @@ class Manager {
     let r = this._match()
     if (r) return r
     this._parseModel()
-    debugger
+
     let tempModel = JSON.parse(JSON.stringify(this.model))
     this.rowsJson = null
     this.parseFile = null
@@ -47,15 +47,18 @@ class Manager {
 
   /**
    * 跟进condition获取config
+   * 如果是string 是判断全等
+   * 如果是正则（/ * /）就test
    */
   _getConfig () {
     for (const config of configs) {
       let conditions = config.conditions
       if (!conditions || !Array.isArray(conditions)) continue
       for (const condition of conditions) {
-        let excelValue = this.rowsJson[condition.address]
-        console.log('condition.value', condition.value)
-        if (condition.value.test(excelValue)) return config
+        let cellValue = this.rowsJson[condition.address]
+        if (!cellValue) continue
+        if ((typeof condition.value) === 'string' && condition.value === cellValue) return config
+        if (condition.value.test(cellValue)) return config
       }
     }
   }
@@ -64,12 +67,11 @@ class Manager {
    * 解析 rowJson到对应的模型
    */
   _parseModel () {
-    debugger
-    this.model = Object.assign(this.model, this.parseFile.before(this.rowsJson))
-    this.model = Object.assign(this.model, this.parseFile.header(this.rowsJson))
-    this.model = Object.assign(this.model, this.parseFile.body(this.rowsJson))
-    this.model = Object.assign(this.model, this.parseFile.footer(this.rowsJson))
-    this.model = Object.assign(this.model, this.parseFile.after(this.rowsJson))
+    this.model = Object.assign(this.model, this.parseFile.before(this.rowsJson, this.model))
+    this.model = Object.assign(this.model, this.parseFile.header(this.rowsJson, this.model))
+    this.model = Object.assign(this.model, this.parseFile.body(this.rowsJson, this.model))
+    this.model = Object.assign(this.model, this.parseFile.footer(this.rowsJson, this.model))
+    this.model = Object.assign(this.model, this.parseFile.after(this.rowsJson, this.model))
   }
 }
 

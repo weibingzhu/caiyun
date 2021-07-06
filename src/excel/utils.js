@@ -1,7 +1,9 @@
 import FileSaver from 'file-saver'
 import ExcelJS from 'exceljs'
 import _ from 'lodash'
-import { formatDate } from 'element-ui/src/utils/date-util'
+import {
+  formatDate
+} from 'element-ui/src/utils/date-util'
 
 /**
  * 通用的导出excel模板， 复杂的请用：
@@ -51,6 +53,7 @@ const $$ = {
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
     let sheets = this.workbook.worksheets
+    $$.changeRowsToDict(sheets[0])
     let sheetDatas = []
     for (let i = 0; i < sheets.length; i++) {
       let sheet = sheets[i]
@@ -97,6 +100,34 @@ const $$ = {
         break
     }
     return value
+  },
+
+  changeRowsToDict (worksheet) {
+    let dataArray = []
+    let keys = []
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 4) {
+        keys = row.values
+      } else if (rowNumber < 4) {
+        console.log('asd,')
+      } else {
+        let rowDict = $$.cellValueToDict2(keys, row)
+        dataArray.push(rowDict)
+      }
+    })
+    debugger
+    return dataArray
+  },
+
+  cellValueToDict2 (keys, row) {
+    let data = {}
+    row.eachCell((cell, colNumber) => {
+      debugger
+      var value = cell.value
+      if (typeof value === 'object') value = value.text
+      data[keys[colNumber]] = value
+    })
+    return data
   }
 }
 
