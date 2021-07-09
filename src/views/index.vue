@@ -121,19 +121,37 @@
       </div>
       <div class="load-error">{{uploadError}}</div>
       <input ref="uploadInput" accept=".xlsx, .xls" type="file" style="display:none" @change="handleClickUploadInput($event)" />
-      <el-button-group style="display:flex; width:100%">
-        <el-button ref="btnPurchase" size="small" @click="handleUpload('purchase')">进项</el-button>
-        <el-button ref="btnSales" size="small" @click="handleUpload('sales')">销项</el-button>
-        <el-button ref="btnBank" size="small">银行对账单</el-button>
-        <el-button ref="btnPayroll" size="small" @click="handleUpload('person')">人员信息</el-button>
-        <el-button ref="btnPayroll" size="small" @click="handleUpload('personTax')">人员工资</el-button>
-        <el-button ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
-        <el-button ref="btnSalesCustoms" size="small">海关报关单</el-button>
-        <el-button ref="btnCharge" size="small">费用</el-button>
-        <el-button ref="btnFixedAsset" size="small">固定资产</el-button>
-        <el-button ref="btnManualBil" size="small">手工票据</el-button>
-        <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
-      </el-button-group>
+      <el-row type="flex" align="middle">
+        <el-col :span="24">
+          <el-button-group style="display:flex; width:100%">
+            <el-button ref="btnPurchase" size="small" @click="handleUpload('purchase')">进项</el-button>
+            <el-button ref="btnSales" size="small" @click="handleUpload('sales')">销项</el-button>
+            <el-button ref="btnBank" size="small">银行对账单</el-button>
+            <el-button ref="btnPayroll" size="small" @click="handleUpload('person')">人员信息</el-button>
+            <el-button ref="btnPayroll" size="small" @click="handleUpload('personTax')">人员工资</el-button>
+            <el-button ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
+            <el-button ref="btnSalesCustoms" size="small">海关报关单</el-button>
+            <el-button ref="btnCharge" size="small">费用</el-button>
+            <el-button ref="btnFixedAsset" size="small">固定资产</el-button>
+            <el-button ref="btnManualBil" size="small">手工票据</el-button>
+            <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
+          </el-button-group>
+        </el-col>
+        <el-dropdown size="small">
+          <el-button size="small" type="primary">
+            更多
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="handleUpload('foreigners')">外籍人员信息</el-dropdown-item>
+            <el-dropdown-item @click.native="handleUpload('tax')">无住所工资薪金</el-dropdown-item>
+            <el-dropdown-item @click.native="handleUpload('yearAwards')">全年一次性奖金</el-dropdown-item>
+            <el-dropdown-item>银行汇票</el-dropdown-item>
+            <el-dropdown-item>固定资产</el-dropdown-item>
+            <el-dropdown-item>手工票据</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-row>
       <el-row>
         <el-upload class="upload-demo22" drag multiple :auto-upload="false" :on-change="handleUploadChange">
           <i class="el-icon-upload"></i>

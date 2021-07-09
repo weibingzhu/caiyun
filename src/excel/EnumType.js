@@ -2,6 +2,7 @@
 export default {
   // payroll: 'payroll',
   person: 'person',
+  foreigners: 'foreigners',
   personTax: 'personTax',
 
   mank: 'bank',
