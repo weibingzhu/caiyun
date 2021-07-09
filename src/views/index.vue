@@ -46,6 +46,8 @@
           <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-popover>
+
+      <!-- TODO -->
       <el-tag size="small" v-if="qualification === 1">一般</el-tag>
       <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
       <el-tag size="small" else>小规模</el-tag>
@@ -119,12 +121,14 @@
           </span>
         </el-row>
       </div>
+      <div class="load-error">{{uploadError}}</div>
+      <input ref="uploadInput" accept=".xlsx, .xls" type="file" style="display:none" @change="handleClickUploadInput($event)" />
       <el-button-group style="display:flex; width:100%">
-        <el-button ref="btnPurchase" size="small" @click="handleClickModule('Purchase')">进项</el-button>
-        <el-button ref="btnSales" size="small" @click="handleClickModule('Sales')">销项</el-button>
+        <el-button ref="btnPurchase" size="small" @click="handleUpload('purchase')">进项</el-button>
+        <el-button ref="btnSales" size="small" @click="handleUpload('sales')">销项</el-button>
         <el-button ref="btnBank" size="small">银行对账单</el-button>
-        <el-button ref="btnPayroll" size="small">人员信息</el-button>
-        <el-button ref="btnPayroll" size="small">人员工资</el-button>
+        <el-button ref="btnPayroll" size="small" @click="handleUpload('person')">人员信息</el-button>
+        <el-button ref="btnPayroll" size="small" @click="handleUpload('personTax')">人员工资</el-button>
         <el-button ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
         <el-button ref="btnSalesCustoms" size="small">海关报关单</el-button>
         <el-button ref="btnCharge" size="small">费用</el-button>
@@ -133,7 +137,7 @@
         <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
       </el-button-group>
       <el-row>
-        <el-upload class="upload-demo22" drag multiple :auto-upload="false" :on-change="handleChange">
+        <el-upload class="upload-demo22" drag multiple :auto-upload="false" :on-change="handleUploadChange">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
@@ -169,6 +173,8 @@ import visitor from '@/visitor/index'
 export default {
   data () {
     return {
+      uploadError: '',
+      uploadType: '',
       uploadDialog: false,
       isPreview: true,
       allCompanies: this.$store.state.allCompanies,
@@ -239,11 +245,30 @@ export default {
         console.log('ctrl+enter')
       }
     },
-    async handleChange (file) {
-      let model = await ExcelManager.parse(file.raw)
+    /**
+     * 上传excel
+     */
+    handleUpload (type) {
+      this.uploadType = type
+      this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
+    },
+    async handleClickUploadInput (e) {
+      debugger
+      const file = e.target.files && e.target.files[0]
+      let info = { type: this.uploadType, name: '', month: '' }
+      let model = await ExcelManager.parse(file, info)
       debugger
       console.log('model:', model)
+    },
+
+    async handleUploadChange (file) {
+      let model = await ExcelManager.parse(file.raw)
+      debugger
+      if (this._.isString(model)) {
+        this.uploadError = model
+      }
     }
+
   },
   computed: {
     selectCompanyId: {
@@ -299,19 +324,24 @@ export default {
   .el-date-editor {
     max-width: 110px;
   }
-  .ms-frame-layout--logo{
-    .el-switch{
+  .ms-frame-layout--logo {
+    .el-switch {
       margin-top: 10px;
     }
   }
-  .title{
-    .el-tag{
+  .title {
+    .el-tag {
       margin: -6px;
     }
   }
   .el-dialog {
     // .el-dialog__header{
     // }
+    .load-error {
+      text-align: center;
+      color: red;
+      font-size: 1.4rem;
+    }
 
     .el-dialog__body {
       padding-top: 10px;

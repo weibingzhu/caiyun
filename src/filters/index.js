@@ -32,7 +32,7 @@ export default {
   // 公司名称缩写
   filterName (value) {
     if (!value) return ''
-    let filterArr = ['科技有限公司', '科技有限公司', '深圳市', '(深圳)', '（深圳）', '深圳', '广州市', '东莞市', '（有限合伙）', '(有限合伙)', '有限公司']
+    let filterArr = ['深圳市', '(深圳)', '（深圳）', '深圳', '广州市', '东莞市', '科技有限公司', '科技有限公司', '（有限合伙）', '(有限合伙)', '有限公司']
     for (const item of filterArr) {
       let index = value.indexOf(item)
       if (index >= 0) value = value.replace(item, '')

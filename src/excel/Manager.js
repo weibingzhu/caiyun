@@ -5,22 +5,25 @@ import configs from './configs'
  * excel解析管理类
  */
 class Manager {
-  rowsJson = null
-  parseFile = null
-  model = {}
+  config = null
+  sheet = null
+  rowsAddrres = null
 
-  async parse (file) {
+  /**
+   * file 的内容
+   * info 头部信息
+   */
+  async parse (file, info) {
+    this.model = {}
     await this._parse(file)
-    let r = this._match()
+    let r = this._match(info)
     if (r) return r
-    this._parseModel()
+    let m = this._parseModel(info)
+    if ((typeof m) === 'string') return m
 
-    let tempModel = JSON.parse(JSON.stringify(this.model))
-    this.rowsJson = null
-    this.parseFile = null
-    this.model = null
-    file = null
-    return tempModel
+    let model = JSON.parse(JSON.stringify(m))
+    Object.assign(this.config, model)
+    return this.config
   }
 
   /**
@@ -30,48 +33,70 @@ class Manager {
     let sheetDatas = await utils.parse(file)
     if (!sheetDatas) return
     if (!Array.isArray(sheetDatas) || !sheetDatas[0]) return
-    this.rowsJson = sheetDatas[0].rowsJson
+    this.sheet = sheetDatas[0].sheet
+    this.rowsAddrres = sheetDatas[0].rowsAddrres
   }
 
   /**
    * 定位excel对应的模型
    * 拿到对应的解析文件（把rowJson解析成对应的模型）
    */
-  _match () {
-    if (!this.rowsJson) return '解析excel失败，确认excel格式或版本'
-    let config = this._getConfig()
-    if (!config) return 'excel文件比配失败'
-    if (!config.parseFile) return 'config没有比配解析js文件'
-    this.parseFile = config.parseFile
+  _match (info) {
+    if (!this.rowsAddrres) return '解析excel失败，确认excel格式或版本'
+    this.config = this._getConfig(info)
+    if (!this.config) return '自动配比种类失败，请选择对应种类上传'
+    Object.assign(this.config, {rowsAddrres: this.rowsAddrres, sheet: this.sheet})
   }
 
   /**
    * 跟进condition获取config
    * 如果是string 是判断全等
-   * 如果是正则（/ * /）就test
+   * 如果是正则（/ * /）就用test比配
    */
-  _getConfig () {
+  _getConfig (info) {
     for (const config of configs) {
+      debugger
       let conditions = config.conditions
       if (!conditions || !Array.isArray(conditions)) continue
-      for (const condition of conditions) {
-        let cellValue = this.rowsJson[condition.address]
-        if (!cellValue) continue
-        if ((typeof condition.value) === 'string' && condition.value === cellValue) return config
-        if (condition.value.test(cellValue)) return config
-      }
+      asdf
+      if (info) return conditions.some(c => c.type === info.type) // 无头解析，上传之前已经确定了info
+      let isConfig = conditions.every(condition => {
+        let cellValue = this.rowsAddrres[condition.address]
+        let condValue = condition.value
+        if (!cellValue || !condValue) return false
+        if ((typeof condValue) === 'string' && condValue === cellValue) return true
+        if (this._isReg(condValue) && condValue.test(cellValue)) return true
+        return false
+      })
+      if (isConfig) return config
     }
   }
 
   /**
-   * 解析 rowJson到对应的模型
+   * 解析rowJson到对应的模型
    */
-  _parseModel () {
-    this.model = Object.assign(this.model, this.parseFile.before(this.rowsJson, this.model))
-    this.model = Object.assign(this.model, this.parseFile.header(this.rowsJson, this.model))
-    this.model = Object.assign(this.model, this.parseFile.body(this.rowsJson, this.model))
-    this.model = Object.assign(this.model, this.parseFile.footer(this.rowsJson, this.model))
-    this.model = Object.assign(this.model, this.parseFile.after(this.rowsJson, this.model))
+  _parseModel (info) {
+    let jsFile = this.config.parseFile
+    if (!jsFile) return '没有找到对应的解析脚本，请联系管理人员'
+
+    let model = {}
+    Object.assign(model, jsFile.before(this.config))
+    Object.assign(model, info ? {info} : jsFile.header(this.config))
+    Object.assign(model, jsFile.body(this.config))
+    Object.assign(model, jsFile.footer(this.config))
+    Object.assign(model, jsFile.after(this.config))
+    return model
+  }
+
+  _isReg (reg) {
+    let isReg
+    try {
+      // eslint-disable-next-line no-eval
+      isReg = eval(reg) instanceof RegExp
+    } catch (e) {
+      isReg = false
+    }
+    return isReg
   }
 }
 

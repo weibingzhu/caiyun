@@ -16,6 +16,7 @@ const $$ = {
    * datas = [{ name: 'name1', phone: '18945897856', position: '秘书' }, { name: 'name2', phone: '18945897856', position: '程序员' }]
    * 没有datas就是模板
    * 注意：里面不支持 value 转换，必须转换好在用
+   *
    * @param {*} handers     头部的名称和数据path的映射
    * @param {*} datas       数据源
    * @param {*} exportName  导出的excel的默认名称
@@ -53,14 +54,15 @@ const $$ = {
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
     let sheets = this.workbook.worksheets
-    $$.changeRowsToDict(sheets[0])
+
     let sheetDatas = []
     for (let i = 0; i < sheets.length; i++) {
       let sheet = sheets[i]
       let sheetData = {
+        sheet,
         name: sheet.name,
         index: i,
-        rowsJson: [],
+        rowsAddrres: {},
         rowsArray: []
       }
       let rowCount = sheet.rowCount
@@ -78,25 +80,36 @@ const $$ = {
             value = value.trim()
             rowArray.push(value)
           }
-          sheetData.rowsJson[cell.address] = value
+          sheetData.rowsAddrres[cell.address] = value
         }
         sheetData.rowsArray.push(rowArray)
       }
+
       sheetDatas.push(sheetData)
     }
     return sheetDatas
   },
 
-  rows2Json (worksheet) {
-    let dataArray = []
+  rows2Json (config) {
+    if (!config || !config.sheet) return {}
+    if (!config.header || !Array.isArray(config.header)) return {}
+    if (!config.skip || !Array.isArray(config.skip)) return {}
+    if (!config.footer || !Array.isArray(config.footer)) return {}
+
     let keys = []
-    worksheet.eachRow(function (row, rowNumber) {
-      if (rowNumber === 4) {
-        keys = row.values
-      } else if (rowNumber < 4) {
-        console.log('skip')
-      } else {
-        let rowDict = $$.eachCell(keys, row.values)
+    let dataArray = []
+    let isSkip = config.skip.length === 0
+    let isFooter = config.footer.length === 0
+    config.sheet.eachRow((row, rowNumber) => {
+      let rowValues = row.values
+      if (_.intersection(rowValues, config.header).length === config.header.length) { // 获取头部
+        keys = rowValues
+        return
+      }
+      if (!isSkip) isSkip = !_.intersection(rowValues, config.skip).length === config.skip.length
+      if (!isFooter) isFooter = !_.intersection(rowValues, config.footer).length === config.footer.length
+      if (keys.length > 0 && isSkip && isFooter) { // 跳过头部之前的，跳过skip，跳过footer; 余下的就是body
+        let rowDict = $$.eachCell(keys, row)
         dataArray.push(rowDict)
       }
     })
@@ -108,7 +121,7 @@ const $$ = {
    */
   eachCell (keys, row) {
     let data = {}
-    row.eachCell(function (cell, colNumber) {
+    row.eachCell((cell, colNumber) => {
       var value = null
       if (cell.type === 4) {
         value = cell.value
