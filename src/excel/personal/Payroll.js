@@ -3,11 +3,11 @@ import utils from '../utils'
 import EnumType from '../EnumType'
 
 /**
- * 外籍人员信息
+ * 薪金所得（）
  */
-class Foreigners extends Base {
+class Payroll extends Base {
   constructor () {
-    super(EnumType.foreigners)
+    super(EnumType.Payroll)
   }
   before (config) {
   }
@@ -26,4 +26,4 @@ class Foreigners extends Base {
     return {}
   }
 }
-export default new Foreigners()
+export default new Payroll()

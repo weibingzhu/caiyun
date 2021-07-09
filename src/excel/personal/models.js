@@ -58,7 +58,13 @@ export default {
     { title: '开户行省份', path: '*姓名', type: 's' },
     { title: '职务', path: '*姓名', type: 's' }
   ],
-  personTax: [
+  payroll: [
+    { title: '工号', path: '工号', type: 's' },
+    { title: '*姓名', path: '*姓名', type: 's' },
+    { title: '*证件类型', path: '*证件类型', type: 's' },
+    { title: '*证件号码', path: '*证件号码', type: 's' }
+  ],
+  foreigners: [
     { title: '工号', path: '工号', type: 's' },
     { title: '*姓名', path: '*姓名', type: 's' },
     { title: '*证件类型', path: '*证件类型', type: 's' },

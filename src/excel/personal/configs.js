@@ -1,7 +1,12 @@
 import models from './models'
 import EnumType from '../EnumType'
-import person from './person'
-import tax from './tax'
+
+import person from './Person'
+import Payroll from './Payroll'
+import foreigners from './Foreigners'
+import yearAwards from './YearAwards'
+import TaxSystem from './TaxSystem'
+import TaxCustom from './TaxCustom'
 
 /**
  * condition: 比配对应的模型, 支持正则
@@ -32,11 +37,63 @@ export default [
       {address: 'A2', value: '公司全称'},
       {address: 'A3', value: '区间'}
     ],
-    type: EnumType.personTax,
+    type: EnumType.payroll,
     header: ['姓名', '*证件号码', '*本期收入'],
-    bodyMap: models.personTax,
+    bodyMap: models.payroll,
     footer: [],
     skip: [],
-    parseFile: tax
+    parseFile: Payroll
+  },
+  {
+    conditions: [
+      {address: 'B1', value: '外籍人员信息'},
+      {address: 'A2', value: '公司全称'},
+      {address: 'A3', value: '区间'}
+    ],
+    type: EnumType.foreigners,
+    header: ['姓名', '*证件号码', '*本期收入'],
+    bodyMap: models.foreigners,
+    footer: [],
+    skip: [],
+    parseFile: foreigners
+  },
+  {
+    conditions: [
+      {address: 'B1', value: '一次性年终奖'},
+      {address: 'A2', value: '公司全称'},
+      {address: 'A3', value: '区间'}
+    ],
+    type: EnumType.yearAwards,
+    header: ['姓名', '*证件号码', '*全年一次性奖金额'],
+    bodyMap: models.yearAwards,
+    footer: [],
+    skip: [],
+    parseFile: yearAwards
   }
+  // {
+  //   conditions: [
+  //     {address: 'B1', value: '一次性年终奖'},
+  //     {address: 'A2', value: '公司全称'},
+  //     {address: 'A3', value: '区间'}
+  //   ],
+  //   type: EnumType.yearAwards,
+  //   header: ['姓名', '*证件号码', '*全年一次性奖金额'],
+  //   bodyMap: models.yearAwards,
+  //   footer: [],
+  //   skip: [],
+  //   parseFile: TaxCustom
+  // },
+  // {
+  //   conditions: [
+  //     {address: 'B1', value: '一次性年终奖'},
+  //     {address: 'A2', value: '公司全称'},
+  //     {address: 'A3', value: '区间'}
+  //   ],
+  //   type: EnumType.yearAwards,
+  //   header: ['姓名', '*证件号码', '*全年一次性奖金额'],
+  //   bodyMap: models.TaxSystem,
+  //   footer: [],
+  //   skip: [],
+  //   parseFile: TaxSystem
+  // }
 ]

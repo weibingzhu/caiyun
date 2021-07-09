@@ -1,9 +1,12 @@
 
 export default {
-  // payroll: 'payroll',
+  payroll: 'payroll',
   person: 'person',
   foreigners: 'foreigners',
   personTax: 'personTax',
+  yearAwards: 'yearAwards',
+  taxCustom: 'taxCustom',
+  taxSystem: 'taxSystem',
 
   mank: 'bank',
   charge: 'charge',

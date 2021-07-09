@@ -3,11 +3,12 @@ import utils from '../utils'
 import EnumType from '../EnumType'
 
 /**
- * 外籍人员信息
+ * 咱们系统导给客户算税额的excel
+ * 和手机端一样，就是跟客户看税款而已
  */
-class Foreigners extends Base {
+class TaxCustom extends Base {
   constructor () {
-    super(EnumType.foreigners)
+    super(EnumType.taxCustom)
   }
   before (config) {
   }
@@ -26,4 +27,4 @@ class Foreigners extends Base {
     return {}
   }
 }
-export default new Foreigners()
+export default new TaxCustom()
