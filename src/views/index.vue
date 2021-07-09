@@ -108,8 +108,6 @@
                 <el-dropdown-item command="asdf">银行对账单</el-dropdown-item>
                 <el-dropdown-item commonad="asdf">海关报关单</el-dropdown-item>
                 <el-dropdown-item>海关缴款书</el-dropdown-item>
-                <el-dropdown-item>进项</el-dropdown-item>
-                <el-dropdown-item>销项</el-dropdown-item>
                 <el-dropdown-item>费用</el-dropdown-item>
                 <el-dropdown-item>个税人员信息</el-dropdown-item>
                 <el-dropdown-item>个税人员工资</el-dropdown-item>
@@ -239,6 +237,7 @@ export default {
       if (event.ctrlKey && event.shiftKey && event.altKey && event.keyCode === 13) {
         console.log('ctrl+shift+alt+enter')
       } else if (event.ctrlKey && event.shiftKey && event.keyCode === 13) {
+        this.uploadError = ''
         this.uploadDialog = true
         console.log('ctrl+shift+enter')
       } else if (event.ctrlKey && event.keyCode === 13) {
@@ -253,16 +252,18 @@ export default {
       this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
     },
     async handleClickUploadInput (e) {
-      debugger
       const file = e.target.files && e.target.files[0]
       let info = { type: this.uploadType, name: '', month: '' }
-      let model = await ExcelManager.parse(file, info)
-      debugger
-      console.log('model:', model)
+      await this.parseExcel(file, info)
     },
 
     async handleUploadChange (file) {
-      let model = await ExcelManager.parse(file.raw)
+      await this.parseExcel(file.raw, null)
+    },
+
+    async parseExcel (file, info) {
+      this.uploadError = ''
+      let model = await ExcelManager.parse(file, info)
       debugger
       if (this._.isString(model)) {
         this.uploadError = model

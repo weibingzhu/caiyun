@@ -1,6 +1,7 @@
 import models from './models'
-import person from './person'
 import EnumType from '../EnumType'
+import person from './person'
+import tax from './tax'
 
 /**
  * condition: 比配对应的模型, 支持正则
@@ -14,7 +15,7 @@ import EnumType from '../EnumType'
 export default [
   {
     conditions: [
-      {address: 'A1', value: '种类222'},
+      {address: 'B1', value: '人员信息'},
       {address: 'A2', value: /公司全称/},
       {address: 'A3', value: '区间'}
     ],
@@ -24,14 +25,18 @@ export default [
     footer: [],
     skip: [],
     parseFile: person
+  },
+  {
+    conditions: [
+      {address: 'B1', value: '薪金收入'},
+      {address: 'A2', value: '公司全称'},
+      {address: 'A3', value: '区间'}
+    ],
+    type: EnumType.personTax,
+    header: ['姓名', '*证件号码', '*本期收入'],
+    bodyMap: models.personTax,
+    footer: [],
+    skip: [],
+    parseFile: tax
   }
-  // {
-  //   conditions: [
-  //     {address: 'A2', value: '/b/'},
-  //     {address: 'A5', value: '/a/'},
-  //     {address: 'A8', value: '/a/'}
-  //   ],
-  //   parseFile: person,
-  //   model: models.person
-  // }
 ]

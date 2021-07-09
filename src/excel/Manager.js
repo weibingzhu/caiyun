@@ -52,14 +52,13 @@ class Manager {
    * 跟进condition获取config
    * 如果是string 是判断全等
    * 如果是正则（/ * /）就用test比配
+   * info: {type,name|taxId,month}
    */
   _getConfig (info) {
     for (const config of configs) {
-      debugger
       let conditions = config.conditions
       if (!conditions || !Array.isArray(conditions)) continue
-      asdf
-      if (info) return conditions.some(c => c.type === info.type) // 无头解析，上传之前已经确定了info
+      if (info && config.type === info.type) return config // 无头解析，上传之前已经确定了info
       let isConfig = conditions.every(condition => {
         let cellValue = this.rowsAddrres[condition.address]
         let condValue = condition.value
@@ -74,6 +73,7 @@ class Manager {
 
   /**
    * 解析rowJson到对应的模型
+   * info: 就了就不用解析header（选择好了）
    */
   _parseModel (info) {
     let jsFile = this.config.parseFile
