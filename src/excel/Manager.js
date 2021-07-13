@@ -14,14 +14,14 @@ class Manager {
    * info 头部信息
    */
   async parse (file, info) {
-    this.model = {}
+    debugger
     await this._parse(file)
     let r = this._match(info)
     if (r) return r
-    let m = this._parseModel(info)
-    if ((typeof m) === 'string') return m
 
-    let model = JSON.parse(JSON.stringify(m))
+    let model = this._parseModel(info)
+    if ((typeof model) === 'string') return model
+
     Object.assign(this.config, model)
     return this.config
   }
@@ -64,7 +64,7 @@ class Manager {
         let condValue = condition.value
         if (!cellValue || !condValue) return false
         if ((typeof condValue) === 'string' && condValue === cellValue) return true
-        if (this._isReg(condValue) && condValue.test(cellValue)) return true
+        if (utils.isRegExp(condValue) && condValue.test(cellValue)) return true
         return false
       })
       if (isConfig) return config
@@ -79,24 +79,13 @@ class Manager {
     let jsFile = this.config.parseFile
     if (!jsFile) return '没有找到对应的解析脚本，请联系管理人员'
 
-    let model = {}
+    let model = {} // ={data:[],info:{}}
     Object.assign(model, jsFile.before(this.config))
-    Object.assign(model, info ? {info} : jsFile.header(this.config))
-    Object.assign(model, jsFile.body(this.config))
-    Object.assign(model, jsFile.footer(this.config))
-    Object.assign(model, jsFile.after(this.config))
+    Object.assign(model, info ? {info} : jsFile.header(this.config, model))
+    Object.assign(model, jsFile.body(this.config, model))
+    Object.assign(model, jsFile.footer(this.config, model))
+    Object.assign(model, jsFile.after(this.config, model))
     return model
-  }
-
-  _isReg (reg) {
-    let isReg
-    try {
-      // eslint-disable-next-line no-eval
-      isReg = eval(reg) instanceof RegExp
-    } catch (e) {
-      isReg = false
-    }
-    return isReg
   }
 }
 

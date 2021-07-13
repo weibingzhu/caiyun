@@ -9,15 +9,6 @@
       </div>
     </template>
     <div slot="title" class="tittle">
-      <el-date-picker
-        @change="handleChangePeriod"
-        :clearable="false"
-        class="main-period"
-        v-model="period"
-        size="small"
-        type="month"
-        placeholder="操作属期"
-      ></el-date-picker>
       <!-- {{selectCompanyId}} -->
       <el-popover placement="bottom-start" width="260" trigger="hover">
         <div>
@@ -46,11 +37,20 @@
           <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-popover>
-
       <!-- TODO -->
-      <el-tag size="small" v-if="qualification === 1">一般</el-tag>
+      <!-- <el-tag size="small" type="success" v-if="qualification === 1">一般人</el-tag> -->
+      <el-tag type="success">一般人</el-tag>
       <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
-      <el-tag size="small" else>小规模</el-tag>
+      <el-tag >小规模</el-tag>
+      <el-date-picker
+        @change="handleChangePeriod"
+        :clearable="false"
+        class="main-period"
+        v-model="period"
+        size="small"
+        type="month"
+        placeholder="操作属期"
+      ></el-date-picker>
     </div>
     <div slot="nav" class="nav">
       <div class="e-frame-layout--nav-item">
@@ -267,11 +267,12 @@ export default {
      */
     handleUpload (type) {
       this.uploadType = type
+      debugger
       this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
     },
     async handleClickUploadInput (e) {
       const file = e.target.files && e.target.files[0]
-      let info = { type: this.uploadType, name: '', month: '' }
+      let info = { type: this.uploadType, name: '', taxId: '', month: '' }
       await this.parseExcel(file, info)
     },
 
@@ -280,6 +281,7 @@ export default {
     },
 
     async parseExcel (file, info) {
+      debugger
       this.uploadError = ''
       let model = await ExcelManager.parse(file, info)
       debugger
@@ -343,15 +345,19 @@ export default {
   .el-date-editor {
     max-width: 110px;
   }
+  .el-select {
+    .el-input__inner {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
   .ms-frame-layout--logo {
     .el-switch {
       margin-top: 10px;
     }
   }
-  .title {
-    .el-tag {
-      margin: -6px;
-    }
+  .el-tag {
+    margin: -10px;
   }
   .el-dialog {
     // .el-dialog__header{

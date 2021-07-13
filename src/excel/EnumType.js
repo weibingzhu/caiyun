@@ -8,14 +8,15 @@ export default {
   taxCustom: 'taxCustom',
   taxSystem: 'taxSystem',
 
-  mank: 'bank',
+  sales: 'sales',
+  purchase: 'purchase',
+
+  bank: 'bank',
   charge: 'charge',
   customsPurchase: 'customsPurchase',
   customsSales: 'customsSales',
   fixedAsset: 'fixedAsset',
   fixedAssetDepreciation: 'fixedAssetDepreciation',
   manualBill: 'manualBill',
-  purchase: 'purchase',
-  sales: 'sales',
   ticket: 'ticket'
 }

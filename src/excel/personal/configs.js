@@ -5,8 +5,8 @@ import person from './Person'
 import Payroll from './Payroll'
 import foreigners from './Foreigners'
 import yearAwards from './YearAwards'
-import TaxSystem from './TaxSystem'
-import TaxCustom from './TaxCustom'
+// import TaxSystem from './TaxSystem'
+// import TaxCustom from './TaxCustom'
 
 /**
  * condition: 比配对应的模型, 支持正则

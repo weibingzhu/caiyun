@@ -97,6 +97,14 @@
           <el-badge class="item">
             <el-button class="w-100" ref="btnTicket" size="small">银行承兑汇票</el-button>
           </el-badge>
+          <span>
+            <icon class="el-icon-caret-right" />
+          </span>
+          <el-badge value class="item">
+            <el-tooltip class="item" effect="dark" content="asd fjaldsfj asdfasdfasdfsa" placement="bottom-end">
+              <el-button class="w-100" ref="btnManualBil" size="small" type="primary" @click="headleCreateTabale">生成凭证</el-button>
+            </el-tooltip>
+          </el-badge>
         </el-button-group>
       </template>
       <div slot="table">

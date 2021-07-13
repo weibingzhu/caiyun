@@ -11,18 +11,18 @@ class Foreigners extends Base {
   }
   before (config) {
   }
-  header (config) {
+  header (config, model) {
     let rowsAddrres = config.rowsAddrres
     this.info = {type: this.info.type, name: rowsAddrres['B2'], month: rowsAddrres['B3']}
     return {info: this.info}
   }
-  body (config) {
+  body (config, model) {
     return {data: utils.rows2Json(config)}
   }
-  footer (config) {
+  footer (config, model) {
     return {}
   }
-  after (config) {
+  after (config, model) {
     return {}
   }
 }

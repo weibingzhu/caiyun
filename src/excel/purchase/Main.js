@@ -3,27 +3,27 @@ import utils from '../utils'
 import EnumType from '../EnumType'
 
 /**
- * 一次性年终奖
+ * 进项
  */
-class YearAwards extends Base {
+class Main extends Base {
   constructor () {
-    super(EnumType.yearAwards)
+    super(EnumType.purchase)
   }
   before (config) {
   }
-  header (config, model) {
+  header (config) {
     let rowsAddrres = config.rowsAddrres
-    this.info = {type: this.info.type, name: rowsAddrres['B2'], month: rowsAddrres['B3']}
+    this.info = {type: this.info.type, taxId: rowsAddrres['B2'], month: rowsAddrres['H2']}
     return {info: this.info}
   }
-  body (config, model) {
+  body (config) {
     return {data: utils.rows2Json(config)}
   }
-  footer (config, model) {
+  footer (config) {
     return {}
   }
   after (config, model) {
-    return {}
+    return {model}
   }
 }
-export default new YearAwards()
+export default new Main()

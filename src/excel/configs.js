@@ -1,11 +1,13 @@
 import personal from './personal/configs'
-import bank from './bank/configs'
+import sales from './sales/configs'
+import purchase from './purchase/configs'
 /**
  * 特殊excel的所有比配
  */
 export default []
   .concat(personal)
-  .concat(bank)
+  .concat(sales)
+  .concat(purchase)
 
 /**
   该结构体一个不能少
@@ -13,10 +15,11 @@ export default []
     conditions: [
       {address: 'A1', value: '种类'},
     ],
+    info: {},
     header: [],
-    bodyMap: xx,
     footer: [],
     skip: [],
+    bodyMap: xx,
     parseFile: xx
   }
    */

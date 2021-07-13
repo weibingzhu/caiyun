@@ -53,6 +53,7 @@ const $$ = {
     if (!file) return
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
+    debugger
     let sheets = this.workbook.worksheets
 
     let sheetDatas = []
@@ -93,27 +94,67 @@ const $$ = {
   rows2Json (config) {
     if (!config || !config.sheet) return {}
     if (!config.header || !Array.isArray(config.header)) return {}
-    if (!config.skip || !Array.isArray(config.skip)) return {}
-    if (!config.footer || !Array.isArray(config.footer)) return {}
+    // if (!config.skip || !Array.isArray(config.skip)) return {}
+    // if (!config.footer || !Array.isArray(config.footer)) return {}
 
     let keys = []
     let dataArray = []
-    let isSkip = config.skip.length === 0
-    let isFooter = config.footer.length === 0
-    config.sheet.eachRow((row, rowNumber) => {
+
+    config.sheet.eachRow((row, rowIndex) => {
       let rowValues = row.values
-      if (_.intersection(rowValues, config.header).length === config.header.length) { // 获取头部
+      if (keys.length === 0 && _.intersection(rowValues, config.header).length === config.header.length) { // 获取头部
         keys = rowValues
         return
       }
-      if (!isSkip) isSkip = !_.intersection(rowValues, config.skip).length === config.skip.length
-      if (!isFooter) isFooter = !_.intersection(rowValues, config.footer).length === config.footer.length
-      if (keys.length > 0 && isSkip && isFooter) { // 跳过头部之前的，跳过skip，跳过footer; 余下的就是body
-        let rowDict = $$.eachCell(keys, row)
-        dataArray.push(rowDict)
+      if (keys.length > 0) { // 跳过头部
+        let isSkip = config.skip ? config.skip.length === 0 : true
+        let isFooter = config.footer ? config.footer.length === 0 : true
+        if (!isSkip) isSkip = !$$._isSkip(rowValues, config)
+        if (!isFooter) isFooter = !$$._isFooter(rowValues, config)
+        if (isSkip && isFooter) { // 跳过skip，跳过footer; 余下的就是body
+          let rowDict = $$.eachCell(keys, row)
+          dataArray.push(rowDict)
+        }
       }
     })
     return dataArray
+  },
+
+  /**
+   * 过滤掉需要跳过的
+   */
+  _isSkip (rowValues, config) {
+    return $$._excelVSconfig(rowValues, config.skip)
+  },
+
+  /**
+   * 过滤掉底部
+   */
+  _isFooter (rowValues, config) {
+    return $$._excelVSconfig(rowValues, config.footer)
+  },
+
+  /**
+   * excel的内容和config文件的过滤文件（支持正则）
+   */
+  _excelVSconfig (excelRows, vsDatas) {
+    if (!excelRows || !vsDatas || !Array.isArray(excelRows) || !Array.isArray(vsDatas)) return
+    let isAllString = vsDatas.some(e => (typeof e) === 'string')
+    if (isAllString) {
+      return _.intersection(excelRows, vsDatas).length === vsDatas.length
+    } else {
+      return vsDatas.every(vsData => {
+        if ((typeof vsData) === 'string' && excelRows.includes(vsData)) {
+          return true
+        } else if ($$.isRegExp(vsData)) {
+          return excelRows.some(cellValue => {
+            return cellValue ? vsData.test(cellValue) : false
+          })
+        } else {
+          return false
+        }
+      })
+    }
   },
 
   /**
@@ -121,7 +162,7 @@ const $$ = {
    */
   eachCell (keys, row) {
     let data = {}
-    row.eachCell((cell, colNumber) => {
+    row.eachCell((cell, colIndex) => {
       var value = null
       if (cell.type === 4) {
         value = cell.value
@@ -131,7 +172,7 @@ const $$ = {
         value = value.trim()
         if (typeof value === 'object') value = value.text
       }
-      data[keys[colNumber]] = value
+      data[keys[colIndex]] = value
     })
     return data
   },
@@ -150,6 +191,17 @@ const $$ = {
         break
     }
     return value
+  },
+
+  isRegExp (reg) {
+    let isReg
+    try {
+      // eslint-disable-next-line no-eval
+      isReg = eval(reg) instanceof RegExp
+    } catch (e) {
+      isReg = false
+    }
+    return isReg
   }
 }
 
