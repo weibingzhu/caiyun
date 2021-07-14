@@ -10,7 +10,7 @@
     </template>
     <div slot="title" class="tittle">
       <!-- {{selectCompanyId}} -->
-      <el-popover placement="bottom-start" width="260" trigger="hover">
+      <el-popover placement="bottom-start" width="300" trigger="hover">
         <div>
           <div style=" text-align: right;">
             <el-link
@@ -26,6 +26,7 @@
           </div>
         </div>
         <el-select
+          :style="'width:' + companyNameChars+ 'px'"
           slot="reference"
           placeholder="请选择要操作的公司"
           size="small"
@@ -34,14 +35,14 @@
           v-model="selectCompanyId"
           @change="handleSelect"
         >
-          <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.label"></el-option>
         </el-select>
       </el-popover>
       <!-- TODO -->
       <!-- <el-tag size="small" type="success" v-if="qualification === 1">一般人</el-tag> -->
-      <el-tag type="success">一般人</el-tag>
+      <!-- <el-tag type="success">一般人</el-tag> -->
       <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
-      <el-tag >小规模</el-tag>
+      <el-tag>小规模</el-tag>
       <el-date-picker
         @change="handleChangePeriod"
         :clearable="false"
@@ -192,6 +193,7 @@ export default {
       uploadError: '',
       uploadType: '',
       uploadDialog: false,
+      companyNameChars: 260,
       isPreview: true,
       allCompanies: this.$store.state.allCompanies,
       type: true,
@@ -201,7 +203,10 @@ export default {
   },
   methods: {
     // 选择公司
-    handleSelect () {
+    handleSelect (e) {
+      this.companyNameChars = e ? e.length : 20
+      this.companyNameChars = 36 + this.companyNameChars * 19
+
       this.$store.commit('SELECT_COMPANY_ID', this.selectCompanyId)
       let routerPath = this.$route.path
       this.$router.push({ path: routerPath, query: { companyId: this.selectCompanyId } })
@@ -346,6 +351,7 @@ export default {
     max-width: 110px;
   }
   .el-select {
+    width: 320px;
     .el-input__inner {
       font-size: 1.2rem;
       font-weight: bold;
