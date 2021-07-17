@@ -23,7 +23,6 @@ class Main extends Base {
     return {}
   }
   after (config, model) {
-    debugger
     if (!model || !Array.isArray(model.data)) return {model}
     let details = ['商品名称', '规格', '单位', '数量', '单价', '金额', '税率', '税额', '税收分类编码']
 

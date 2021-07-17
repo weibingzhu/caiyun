@@ -113,7 +113,6 @@ export default {
     fetch (query) {
       let params = { page: 1, size: 20 } // JSON.parse(JSON.stringify(query))
       this.UtilsAxios.handleFetchPost('/api/admin/user/page', (res) => {
-        debugger
       }, params)
     },
     // 导入excel

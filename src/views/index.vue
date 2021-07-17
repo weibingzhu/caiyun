@@ -9,6 +9,11 @@
       </div>
     </template>
     <div slot="title" class="tittle">
+      <!-- TODO -->
+      <!-- <el-tag size="small" type="success" v-if="qualification === 1">一般人</el-tag> -->
+      <!-- <el-tag type="success">一般人</el-tag> -->
+      <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
+      <el-tag>小规模</el-tag>
       <!-- {{selectCompanyId}} -->
       <el-popover placement="bottom-start" width="300" trigger="hover">
         <div>
@@ -26,6 +31,7 @@
           </div>
         </div>
         <el-select
+          class="selectCompany"
           :style="'width:' + companyNameChars+ 'px'"
           slot="reference"
           placeholder="请选择要操作的公司"
@@ -38,11 +44,6 @@
           <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.label"></el-option>
         </el-select>
       </el-popover>
-      <!-- TODO -->
-      <!-- <el-tag size="small" type="success" v-if="qualification === 1">一般人</el-tag> -->
-      <!-- <el-tag type="success">一般人</el-tag> -->
-      <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
-      <el-tag>小规模</el-tag>
       <el-date-picker
         @change="handleChangePeriod"
         :clearable="false"
@@ -193,7 +194,7 @@ export default {
       uploadError: '',
       uploadType: '',
       uploadDialog: false,
-      companyNameChars: 260,
+      companyNameChars: 360,
       isPreview: true,
       allCompanies: this.$store.state.allCompanies,
       type: true,
@@ -205,7 +206,9 @@ export default {
     // 选择公司
     handleSelect (e) {
       this.companyNameChars = e ? e.length : 20
-      this.companyNameChars = 36 + this.companyNameChars * 19
+      let w = window.innerWidth
+      let cw = w > 1440 ? 19 : 16
+      this.companyNameChars = 36 + this.companyNameChars * cw
 
       this.$store.commit('SELECT_COMPANY_ID', this.selectCompanyId)
       let routerPath = this.$route.path
@@ -272,7 +275,6 @@ export default {
      */
     handleUpload (type) {
       this.uploadType = type
-      debugger
       this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
     },
     async handleClickUploadInput (e) {
@@ -286,7 +288,6 @@ export default {
     },
 
     async parseExcel (file, info) {
-      debugger
       this.uploadError = ''
       let model = await ExcelManager.parse(file, info)
       debugger
@@ -350,7 +351,7 @@ export default {
   .el-date-editor {
     max-width: 110px;
   }
-  .el-select {
+  .selectCompany {
     width: 320px;
     .el-input__inner {
       font-size: 1.2rem;
@@ -363,7 +364,7 @@ export default {
     }
   }
   .el-tag {
-    margin: -10px;
+    margin-right: -4px;
   }
   .el-dialog {
     // .el-dialog__header{

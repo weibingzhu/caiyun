@@ -125,7 +125,6 @@ export default {
       return row.idp
     },
     exChangeHeandler (row, rowList) {
-      debugger
       var that = this
       if (rowList.length) {
         that.expands = []

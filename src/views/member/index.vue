@@ -147,7 +147,6 @@ export default {
     fetch (query) {
       let params = { page: 1, size: 20 } // JSON.parse(JSON.stringify(query))
       this.UtilsAxios.handleFetchPost('/api/admin/user/page', (res) => {
-        debugger
       }, params)
     },
     // 导入excel
@@ -170,7 +169,6 @@ export default {
     async handleClickUploadInput (e) {
       const file = e.target.files && e.target.files[0]
       let model = await ExcelManager.parse(file)
-      debugger
       console.log('model:', model)
     },
     // 双击人员编辑

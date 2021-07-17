@@ -404,7 +404,6 @@ export default {
       let params = { period: { 'y': period.y, 'm': period.m }, company: this.selectCompanyId }
       let url = '/api/zn/taxes/p/image'
       this.UtilsAxios.handleFetchPost(url, (res) => {
-        debugger
         if (res.code === 0) {
           console.log('asd')
         }
@@ -416,7 +415,6 @@ export default {
       let params = { service: 'accaux-rule', payload: { company: this.selectCompanyId, model: 'AccauxPayroll', type: 'tax', _id: null } }
       let url = '/api/zn/do'
       this.UtilsAxios.handleFetchPost(url, (res) => {
-        debugger
         if (res.code === 0) {
           console.log('asd')
         }
@@ -437,7 +435,6 @@ export default {
       }
       let url = '/api/zn/do'
       this.UtilsAxios.handleFetchPost(url, (res) => {
-        debugger
         if (res.code === 0) {
           console.log('asd')
         }

@@ -209,7 +209,6 @@ export default {
       params.period = params.period || this.Utils.getStorePeriodObj(this)
       // TODO  路径 g 临时用的
       return this.UtilsAxios.handleFetchPost(`/api/zn/taxes/g/agent`, (res) => {
-        debugger
         let temp = []
         for (const item of res.data) {
           let name = this.$options.filters.filterName(item.company.name)

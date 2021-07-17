@@ -497,7 +497,6 @@ export default {
     },
 
     handleRowDblclick (row, column, event) {
-      debugger
       this.$router.push({ path: `/data/${this.taxType}`, query: { companyId: row.company._id } })
     },
 

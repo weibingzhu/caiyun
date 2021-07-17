@@ -121,7 +121,6 @@ export default {
     _fetch (p) {
       let url = `/api/yzh/accaux/customspurchase/search?owner=${this.selectCompanyId}`
       return this.UtilsAxios.handleFetchPost(url, (res) => {
-        debugger
         this.total.sum = res.data.length
         this.pageData = res
       }, p)

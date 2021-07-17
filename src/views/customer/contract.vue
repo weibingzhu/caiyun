@@ -235,7 +235,6 @@ export default {
         }
         res.data.length = 100
         this.pageData = res
-        // debugger
       }, params)
     },
 
@@ -248,7 +247,6 @@ export default {
     },
 
     handleRowDblclick (row, column, event) {
-      debugger
       this.$router.push({ path: `/data/${this.taxType}`, query: { companyId: row.company._id } })
     },
 

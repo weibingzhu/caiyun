@@ -1,4 +1,5 @@
-所有可操作的btn都要添加快捷键（比如三三下 alt 或三下ctrl 显示每个操作位置的快捷键），尽量多添加 双击的功能
+所有可操作的 地方（btn，a，select等）尽量添加快捷键（ctrl+F1显示每个操作位置的快捷键和说明）
+尽量多添加 双击的功能
 
 登录 401 没有提示
 和原生的html混合只用问题，税表那里
@@ -43,6 +44,52 @@
 setting 灰色掉的一定要给tip说明，什么才能点亮它
 
 月初时，提醒管理员，填写初值化信息（比如：汇率，）
+
+单击任何一条凭证，都到显示原始数据（发票，银行对账单 等）
+
+
+  let period = {y:2021, m:6}
+  let query = {'isp': $user.company, 'period.y': period.y, 'period.m': period.m}
+  let appHistory = await $MQ.db.model('AccountingSikulix').find(query,'history classify').lean()
+  let webHistory = await $MQ.db.model('AccountingPuppeteer').find(query,'history classify').lean()
+
+  let calcMonth = (data) =>
+  {
+    let temp = {}
+    for (let h of data) {
+      for (let hh in h.history) {
+        Object.assign(h.history[hh], {classify: h.classify}, {_id: h._id})
+      }
+      Object.assign(temp, h.history)
+    }
+    // 按天分
+    let dayTime = 86400000 // 一天的毫秒数
+    let currMonth = new Date(2021, 6, 1, 0, 0, 0).getTime() // 月初时间（毫秒）
+    let month = {} // 一个月的统计数据
+    for (let time in temp) {
+      time = parseInt(time)
+      let jihao = parseInt((time - currMonth) / dayTime) + 1 // 几号操作的
+      let curr = month[jihao] ? month[jihao] : []
+      let item = Object.assign(temp[time], {time})
+      curr.push(item)
+      month[jihao] = curr
+    }
+    // console.log(month)
+    // 再按人分
+    for (let eachDay in month) {
+      let everyone = _.groupBy(month[eachDay], 'name')
+      for (let name in everyone) {
+        let count = everyone[name].length
+        everyone[name] = _.groupBy(everyone[name], 'classify')
+        everyone[name]['count'] = count
+      }
+      month[eachDay] = everyone
+    }
+    return month
+  }
+
+  let app = calcMonth(appHistory)
+  let web = calcMonth(webHistory)
 
 
 

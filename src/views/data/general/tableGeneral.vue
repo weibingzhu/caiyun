@@ -110,7 +110,6 @@ export default {
 
   methods: {
     fetch (query) {
-      debugger
       this.selectCompany = query.companyId
       let period = query.period || this.Utils.getStorePeriodObj(this)
       let params = { cond: { 'period.y': period.y, 'period.m': period.m }, select: 'deduction period date payType result provider.name provider.xname invoice.no invoice.currency invoice.type invoice.status invoice.remarks entries accClass utag total other.check evaluated collectionRetreat insteadService accInfo error manual active' }
@@ -140,7 +139,6 @@ export default {
 
     // 跨行列
     spanMethod ({ row, column, rowIndex, columnIndex }) {
-      debugger
       return {
         rowspan: row.rowspan || 1,
         colspan: row.colspan || 1

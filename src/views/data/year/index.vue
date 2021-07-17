@@ -103,7 +103,6 @@ export default {
 
   methods: {
     fetch (query) {
-      debugger
       this.selectCompanyId = query.companyId
       this.$store.commit('SELECT_COMPANY_ID', this.selectCompanyId)
       // let type = this.$store.state.tax_or_acc ? 'tax' : 'acc'
@@ -122,7 +121,6 @@ export default {
      * 双击确认无数据
      */
     handleDblClickModule (module, name) {
-      debugger
       console.log('asdf')
     },
 
@@ -138,7 +136,6 @@ export default {
       this.$router.push({ path: `/data/general/tableGeneral`, query: {companyId: this.selectCompanyId} })
     },
     handleDbClickManualBil () {
-      debugger
       console.log('asdf')
     }
   }

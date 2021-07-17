@@ -53,7 +53,6 @@ const $$ = {
     if (!file) return
     this.workbook = new ExcelJS.Workbook()
     await this.workbook.xlsx.load(file, {})
-    debugger
     let sheets = this.workbook.worksheets
 
     let sheetDatas = []

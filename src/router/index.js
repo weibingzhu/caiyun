@@ -264,6 +264,20 @@ let routes = [
           title: '报表管理'
         }
       },
+      {
+        path: '/partner/list',
+        component: () => import('@/views//partner/list.vue'),
+        meta: {
+          title: '合伙人列表'
+        }
+      },
+      {
+        path: '/partner/data',
+        component: () => import('@/views/partner/data.vue'),
+        meta: {
+          title: '合伙人数据'
+        }
+      },
       // {
       //   path: '/test/sheetjs',
       //   component: () => import('@/test/sheetjs.vue')

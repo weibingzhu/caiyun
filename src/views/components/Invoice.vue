@@ -205,11 +205,9 @@ export default {
   },
   watch: {
     invioceId: function (newValue, oldValue) {
-      debugger
       let _id = newValue
       let url = `/api/yzh/accaux/sales/search?owner=${this.selectCompany}`
       return this.UtilsAxios.handleFetchPost(url, (res) => {
-        debugger
         this.data = res.data
       }, {cond: {_id}})
     }

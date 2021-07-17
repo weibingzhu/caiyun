@@ -217,7 +217,6 @@ export default {
       return this.UtilsAxios.handleFetchPost(url, (res) => {
         this.total.sum = res.data.length
         this.pageData = res
-        debugger
       }, p)
     },
     handleShowCrawlerList () {

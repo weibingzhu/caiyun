@@ -177,8 +177,23 @@ export default {
       },
       {
         title: '系统设置',
-        index: '0153-01',
+        index: '0153-02',
         route: '/setting/system'
+      }]
+    },
+    {
+      title: '合伙人管理',
+      index: '0183',
+      icon: '&#xe604;',
+      options: [{
+        title: '合伙人列表',
+        index: '0183-01',
+        route: '/partner/list'
+      },
+      {
+        title: '合伙人数据',
+        index: '0183-02',
+        route: '/partner/data'
       }]
     },
     {

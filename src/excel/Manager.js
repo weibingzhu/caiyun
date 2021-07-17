@@ -14,7 +14,6 @@ class Manager {
    * info 头部信息
    */
   async parse (file, info) {
-    debugger
     await this._parse(file)
     let r = this._match(info)
     if (r) return r

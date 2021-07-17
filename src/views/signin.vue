@@ -92,7 +92,6 @@ export default {
       })
     },
     logonSuccess (res) {
-      debugger
       this.$store.commit('USRE', res.data)
       this.$store.commit('SELECT_COMPANY_ID', '')
       this.$store.commit('SELECT_COMPANY_IDS', [])
