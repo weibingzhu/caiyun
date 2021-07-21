@@ -1,5 +1,5 @@
 <template>
-  <ms-page-list-layout>
+  <ms-page-list-layout class="role-index">
     <template slot="search">
       <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
         <el-form-item label="搜索">
@@ -185,4 +185,8 @@ export default {
 </script>
 
 <style lang="scss">
+.role-index {
+  width: 100%;
+  height: 100%;
+}
 </style>

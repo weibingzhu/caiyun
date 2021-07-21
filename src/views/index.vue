@@ -3,7 +3,7 @@
     <template slot="logo" slot-scope="scope">
       <div>
         <div>
-          <el-image style="width: 100%; height: 70px" src="/static/images/logo.jpg"></el-image>
+          <el-image @dblclick="handleDblclickLogo" @click="handleClickLogo" style="width: 100%; height: 70px" src="/static/images/logo.jpg"></el-image>
         </div>
         <el-switch size="mini" v-model="type" active-text="报税" inactive-text="记账" @change="handleSwitch"></el-switch>
       </div>
@@ -237,6 +237,18 @@ export default {
         // this.menus = visitor.visitor1_tax.menus
       }
     },
+
+    // 双击左边栏的logo
+    handleDblclickLogo () {
+      this.$router.push({
+        path: '/'
+      })
+    },
+    // 切换右边的菜单大小
+    handleClickLogo () {
+      // TODO
+    },
+
     handleLogout () {
       this.$router.push({
         path: '/signin'

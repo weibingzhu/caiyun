@@ -12,7 +12,9 @@
     <el-form-item label="联系电话" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
       <el-input v-model.trim="form.title"></el-input>
     </el-form-item>
-    <el-form-item label="公司地址" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">TODO</el-form-item>
+    <el-form-item label="公司地址" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
+      <e-area-cascader v-model="form.region" filterable expand-trigger="hover"></e-area-cascader>
+    </el-form-item>
     <el-form-item label="业务属区" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">TODO不一定是公司地址</el-form-item>
     <el-form-item label="负责人" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">负责人</el-form-item>
   </el-form>

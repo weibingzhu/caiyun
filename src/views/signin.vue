@@ -28,13 +28,16 @@
 
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
           <h3 class="login-title">欢迎登录</h3>
+          <!-- <el-form-item label="公司名" prop="mobile">
+            <el-input type="text" placeholder="请输入公司名" v-model="form.mobile" />
+          </el-form-item> -->
           <el-form-item label="账号" prop="mobile">
             <el-input type="text" placeholder="请输入账号" v-model="form.mobile" />
           </el-form-item>
           <el-form-item label="密码" prop="smsCode">
             <el-input type="text" placeholder="请输入验证码" v-model="form.smsCode" />
           </el-form-item>
-          <el-form-item>
+          <el-form-item style="">
             <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
           </el-form-item>
         </el-form>

@@ -62,6 +62,6 @@ el-scrollbar/index: el-scrollbar 无效
 
 /api/yzh/puppeterr/list 可以了 ，，当是 /api/yzh/sikulix/list 还没有
 
-
+双击logo 页面切换过去了，tab的title没有修改
 
 

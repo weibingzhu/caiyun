@@ -5,10 +5,10 @@ Vue.use(Router)
 let routes = [
   {
     path: '/',
-    component: () => import('@/views/index.vue'),
     meta: {
-      title: 'test'
+      title: '首页'
     },
+    component: () => import('@/views/index.vue'),
     children: [
       {
         path: '/developing/:id',

@@ -1,5 +1,5 @@
 <template>
-  <ms-page-list-layout>
+  <ms-page-list-layout class="partner-list">
     <template slot="search">
       <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
         <el-form-item label="业务属区">
@@ -194,4 +194,7 @@ export default {
 </script>
 
 <style lang="scss">
+.partner-list{
+  width: 100%;
+}
 </style>

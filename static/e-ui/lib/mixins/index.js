@@ -318,7 +318,7 @@ __webpack_require__.r(__webpack_exports__);
         data: [],
         count: 0
       },
-      tableBodyHeight: 200
+      // tableBodyHeight: 200
     };
   },
 
