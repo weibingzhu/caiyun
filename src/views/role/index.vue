@@ -43,8 +43,7 @@ import ExcelUtils from '@/excel/utils'
 const Form = () => import('./components/Form')
 export default {
   mixins: [
-    $mixins.pageList,
-    $mixins.popupManager
+    ms.mixins.pageList
   ],
   data () {
     return {
