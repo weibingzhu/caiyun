@@ -162,7 +162,7 @@ const $$ = {
   eachCell (keys, row) {
     let data = {}
     row.eachCell((cell, colIndex) => {
-      var value = null
+      let value = null
       if (cell.type === 4) {
         value = cell.value
         if (value) value = new Date(value).getTime() // rowData.push(formatDate(new Date(cell.value)))

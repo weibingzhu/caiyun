@@ -1,4 +1,4 @@
-var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
+let Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
   /**
    * IE678:
    *   => typeof window.setInterval == 'obecjt'
@@ -8,8 +8,8 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
    *   1. function setInterval(){}//在全局定义setInterval函数
    *   2. window.setInterval = function(){...}//可以覆盖
    */
-  var execScript = window.execScript
-  var STD = !!window.addEventListener
+  let execScript = window.execScript
+  let STD = !!window.addEventListener
 
   function fixNative() {
     execScript(
@@ -17,13 +17,13 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     );
   }
 
-  var iRate = 1;
-  var iFreeFrame = 9e9;
-  var iLast, iTick;
+  let iRate = 1;
+  let iFreeFrame = 9e9;
+  let iLast, iTick;
 
-  var aQueue = [];
-  var nQueue = 1;
-  var iFlag = 0;
+  let aQueue = [];
+  let nQueue = 1;
+  let iFlag = 0;
 
   function addQueue(code, delay, arg, repeat) {
     if (!code) {
@@ -63,13 +63,13 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     global.clearInterval = clearInterval;
     global.Date = Date;
 
-    for (var i = 0; i < requestFrameName.length; i++) {
+    for (let i = 0; i < requestFrameName.length; i++) {
       global[requestFrameName[i]] = requestAnimationFrame;
       global[cancelFrameName[i]] = clearTimeout;
     }
 
     iLast = iTick = +new fnDt();
-    var tid = fnSI(onTimer, 1);
+    let tid = fnSI(onTimer, 1);
   }
 
   function unhook() {
@@ -79,14 +79,14 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     global.clearInterval = fnCI;
     global.Date = fnDt;
 
-    for (var i = 0; i < requestFrameName.length; i++) {
-      var k = requestFrameName[i];
+    for (let i = 0; i < requestFrameName.length; i++) {
+      let k = requestFrameName[i];
       global[k] = requestFrameFn[k];
     }
   }
 
   function execute(task) {
-    var code = task.code;
+    let code = task.code;
 
     if (typeof code == "function") {
       if (execScript) {
@@ -108,11 +108,11 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
   }
 
   function onTimer() {
-    var cur = +new fnDt();
-    var elapse = (cur - iLast) * iRate;
+    let cur = +new fnDt();
+    let elapse = (cur - iLast) * iRate;
 
-    for (var k in aQueue) {
-      var task = aQueue[k];
+    for (let k in aQueue) {
+      let task = aQueue[k];
 
       // 防止ie浏览器枚举时递归
       if (task.flag == iFlag) {
@@ -125,7 +125,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
       if (task.repeat) {
         // setInterval
         // 跳帧数
-        var skip = (task.sum / task.delay) >> 0;
+        let skip = (task.sum / task.delay) >> 0;
 
         // 最大跳帧数，防止卡死
         if (skip > 32) {
@@ -156,7 +156,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
   }
 
   /** 重定义时间函数 ***********************************/
-  var SLICE = [].slice;
+  let SLICE = [].slice;
 
   function setTimeout(code, delay, arg) {
     if (arg) {
@@ -184,12 +184,12 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     return setTimeout(cb, 16);
   }
 
-  var requestFrameName = [],
+  let requestFrameName = [],
     requestFrameFn = {},
     cancelFrameName = [],
     cancelFrameFn = {};
 
-  var REQUEST_FRAME = [
+  let REQUEST_FRAME = [
     "oRequestAnimationFrame",
     "mozRequestAnimationFrame",
     "webkitRequestAnimationFrame",
@@ -197,7 +197,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     "requestAnimationFrame"
   ];
 
-  var CANCEL_FRAME = [
+  let CANCEL_FRAME = [
     "cancelAnimationFrame",
     "cancelRequestAnimationFrame",
     "mozCancelAnimationFrame",
@@ -210,8 +210,8 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     "msCancelRequestAnimationFrame"
   ];
 
-  for (var i = REQUEST_FRAME.length - 1; i >= 0; i--) {
-    var k = REQUEST_FRAME[i];
+  for (let i = REQUEST_FRAME.length - 1; i >= 0; i--) {
+    let k = REQUEST_FRAME[i];
     if (global[k]) {
       requestFrameName.push(k);
       requestFrameFn[k] = global[k];
@@ -232,7 +232,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
       // new Date(...)
       switch (arguments.length) {
         case 0:
-          var cur = +new fnDt();
+          let cur = +new fnDt();
           iTick += (cur - iLast) * iRate;
           iLast = cur;
           return new fnDt(iTick);
@@ -263,7 +263,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
 
   if (fnDt.now)
     Date.now = function () {
-      var cur = fnDt.now();
+      let cur = fnDt.now();
       iTick += (cur - iLast) * iRate;
       iLast = cur;
       return Math.round(iTick);
@@ -276,7 +276,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
   // ==================================================
   // 导出接口
   // ==================================================
-  var nativeFn = typeof fnCT == "object";
+  let nativeFn = typeof fnCT == "object";
 
   function setup() {
     if (nativeFn) {
@@ -342,14 +342,14 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
 // JsGear -UI部分
 //
 (function () {
-  var QUIRKS = "BackCompat" == document.compatMode;
-  var IE6 = /IE 6/.test(navigator.userAgent);
-  var IE7 = /IE 7/.test(navigator.userAgent);
-  var STD = !!window.addEventListener;
-  var DE = document.documentElement;
-  var BODY;
+  let QUIRKS = "BackCompat" == document.compatMode;
+  let IE6 = /IE 6/.test(navigator.userAgent);
+  let IE7 = /IE 7/.test(navigator.userAgent);
+  let STD = !!window.addEventListener;
+  let DE = document.documentElement;
+  let BODY;
 
-  var $bind = STD ?
+  let $bind = STD ?
     function (e, n, f) {
       e.addEventListener(n, f, false);
     } :
@@ -357,7 +357,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
       e.attachEvent("on" + n, f);
     };
 
-  var $unbind = STD ?
+  let $unbind = STD ?
     function (e, n, f) {
       e.removeEventListener(n, f, false);
     } :
@@ -366,39 +366,39 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     };
 
   function $extend(src, dst) {
-    for (var k in src) {
+    for (let k in src) {
       dst[k] = src[k];
     }
   }
 
-  var TRAY_W = 48;
-  var TRAY_H = 48;
-  var RULE_OPA = 0.7;
+  let TRAY_W = 48;
+  let TRAY_H = 48;
+  let RULE_OPA = 0.7;
 
-  var iMaxLeft;
-  var iMaxTop;
+  let iMaxLeft;
+  let iMaxTop;
 
-  var oTray, styTray;
-  var oRule, styRule;
-  var oMask, styMask;
-  var iPercent = 1;
+  let oTray, styTray;
+  let oRule, styRule;
+  let oMask, styMask;
+  let iPercent = 1;
 
-  var uDrag = {};
-  var iX = 0;
-  var iY = 0;
+  let uDrag = {};
+  let iX = 0;
+  let iY = 0;
 
-  var iRuleAlp = RULE_OPA;
-  var oRuleAlp;
-  var aRuleNum = [];
+  let iRuleAlp = RULE_OPA;
+  let oRuleAlp;
+  let aRuleNum = [];
 
-  var tidFade = -1;
-  var tidNumUpdate = -1;
+  let tidFade = -1;
+  let tidNumUpdate = -1;
 
-  var TRAY_URL = "http://www.etherdream.com/JSGear/gear.png";
-  var TRAY_DATA =
+  let TRAY_URL = "http://www.etherdream.com/JSGear/gear.png";
+  let TRAY_DATA =
     "url(data:image/png;base64,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)";
 
-  var UI_TRAY = {
+  let UI_TRAY = {
     zIndex: 9999,
     position: "fixed",
     overflow: "hidden",
@@ -415,7 +415,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     WebkitUserSelect: "none"
   };
 
-  var UI_RULE = {
+  let UI_RULE = {
     display: "none",
     zIndex: 9998,
     position: "fixed",
@@ -436,7 +436,7 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     cursor: "move"
   };
 
-  var UI_MASK = {
+  let UI_MASK = {
     display: "none",
     zIndex: 9997,
 
@@ -450,14 +450,14 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     cursor: "move"
   };
 
-  var UI_NUM = {
+  let UI_NUM = {
     position: "absolute",
     top: "1px",
     height: "44px"
   };
 
   function init() {
-    var t = Gear.rawSetInterval(function () {
+    let t = Gear.rawSetInterval(function () {
       BODY = document.body;
       if (BODY) {
         Gear.rawClearInterval(t);
@@ -482,10 +482,10 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     oTray.title = "拖动调整速度\n双击即可归零";
 
     // 尺
-    for (var i = -10; i <= 10; ++i) {
-      var num = document.createElement("div");
-      var sty = num.style;
-      var s;
+    for (let i = -10; i <= 10; ++i) {
+      let num = document.createElement("div");
+      let sty = num.style;
+      let s;
 
       //
       // -10 ~ +10 刻度
@@ -554,8 +554,8 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
   }
 
   function handleResize() {
-    var W = QUIRKS ? BODY.clientWidth : DE.clientWidth;
-    var H = QUIRKS ? BODY.clientHeight : DE.clientHeight;
+    let W = QUIRKS ? BODY.clientWidth : DE.clientWidth;
+    let H = QUIRKS ? BODY.clientHeight : DE.clientHeight;
 
     iMaxLeft = W - TRAY_W;
     iMaxTop = H - TRAY_H;
@@ -564,9 +564,9 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
     move(iMaxLeft * iPercent, iY);
 
     // 尺宽度
-    var n = aRuleNum.length;
-    var w = W / n;
-    var i;
+    let n = aRuleNum.length;
+    let w = W / n;
+    let i;
 
     styRule.width = W + "px";
     w = ~~(w * 1e6) / 1e6;
@@ -583,8 +583,8 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
 
   // 支持 position:fixed
   function handleScroll() {
-    var ox = DE.scrollLeft;
-    var oy = DE.scrollTop;
+    let ox = DE.scrollLeft;
+    let oy = DE.scrollTop;
 
     styTray.left = iX + ox + "px";
     styTray.top = styRule.top = iY + oy + "px";
@@ -667,13 +667,13 @@ var Gear = (function (fnST, fnCT, fnSI, fnCI, fnDt, global) {
   }
 
   function handleUpdateNum() {
-    var pow = 20 * (iPercent - 0.5);
+    let pow = 20 * (iPercent - 0.5);
 
-    var rate = Math.pow(2, pow);
+    let rate = Math.pow(2, pow);
     Gear.setRate(rate);
 
     // 格式化数字
-    var s;
+    let s;
     if (rate >= 1000) {
       s = rate.toPrecision(4);
     } else if (rate >= 1) {

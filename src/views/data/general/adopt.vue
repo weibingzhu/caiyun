@@ -262,7 +262,7 @@ export default {
       return row.company._id
     },
     exChangeHeandler (row, rowList) {
-      var that = this
+      let that = this
       if (rowList.length) {
         that.expands = []
         if (row) {

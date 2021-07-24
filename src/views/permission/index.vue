@@ -3,7 +3,7 @@
     <template slot="search"></template>
     <template slot="table">
       <el-row>
-        <el-col :span="5">
+        <el-col :span="7" class="col-left-tree" >
           <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input>
           <el-tree
             :data="data"
@@ -23,7 +23,7 @@
             </span>
           </el-tree>
         </el-col>
-        <el-col :span="19">
+        <el-col :span="17">
           <el-row type="flex" align="middle">
             <el-col :span="24">
               <el-tooltip class="item" effect="dark" placement="bottom" content="添加根节点">
@@ -181,6 +181,9 @@ export default {
     justify-content: space-between;
     font-size: 14px;
     padding-right: 8px;
+  }
+  .col-left-tree{
+    min-width: 260px;
   }
 }
 </style>

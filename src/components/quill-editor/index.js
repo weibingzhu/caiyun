@@ -10,7 +10,7 @@ import { ImageDrop } from 'quill-image-drop-module'
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/ImageDrop', ImageDrop)
 
-var BaseImageFormat = Quill.import('formats/image')
+let BaseImageFormat = Quill.import('formats/image')
 const ImageFormatAttributesList = [
   'alt',
   'height',

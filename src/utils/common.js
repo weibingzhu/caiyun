@@ -65,9 +65,9 @@ export default {
       },
       // 去重 多维数组值 一维值引用好弄https://segmentfault.com/a/1190000016418021
       unique (array) {
-        var res = []
-        for (var i = 0, len = array.length; i < len; i++) {
-          var current = array[i].toString()
+        let res = []
+        for (let i = 0, len = array.length; i < len; i++) {
+          let current = array[i].toString()
           if (res.indexOf(current) !== -1) {
             return true
           } else {
