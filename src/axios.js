@@ -7,36 +7,13 @@ const $axios = axios.create({
   timeout: 10 * 1000 // 请求超时时间
 })
 let count = 0
-// let objectToFormData = (obj, form, namespace) => {
-//   const fd = form || []
-//   let formKey
-//   for (var property in obj) {
-//     if (obj.hasOwnProperty(property)) {
-//       let key = Array.isArray(obj) ? '[]' : `[${property}]`
-//       if (namespace) {
-//         formKey = namespace + key
-//       } else {
-//         formKey = property
-//       }
-//       // console.log('formKey', formKey)
-//       // if the property is an object, but not a File, use recursivity.
-//       if (typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
-//         objectToFormData(obj[property], fd, formKey)
-//       } else {
-//         // if it's a string or a File object
-//         // fd.append(formKey, obj[property])
-//         fd.push(`${formKey}=${obj[property]}`)
-//       }
-//     }
-//   }
-//   return fd.join('&')
-// }
 $axios.interceptors.request.use(config => {
   // Do something before request is sent
   let token = localStorage.getItem('token')
   if (config.headers && token) {
     // config.headers['x-admin-token'] = token
-    config.headers['Authorization'] = 'Bearer ' + token
+    // config.headers['Authorization'] = 'Bearer ' + token // zn99 style
+    config.headers['Authorization'] = 'Token ' + token // .net
   }
   Object.assign(window.$$headers, {token: config.headers['token']})
   if (/^get$/i.test(config.method) && config.params) {

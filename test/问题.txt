@@ -65,3 +65,9 @@ el-scrollbar/index: el-scrollbar 无效
 双击logo 页面切换过去了，tab的title没有修改
 
 
+左边的树，应该出现滚动条时，变成浏览器的滚动条
+from 界面什么判断是 编辑还是创建
+from 界面编辑的时候，确定了才同步列表
+logon 不带token
+
+

@@ -28,16 +28,16 @@
 
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
           <h3 class="login-title">欢迎登录</h3>
-          <!-- <el-form-item label="公司名" prop="mobile">
-            <el-input type="text" placeholder="请输入公司名" v-model="form.mobile" />
-          </el-form-item> -->
-          <el-form-item label="账号" prop="mobile">
-            <el-input type="text" placeholder="请输入账号" v-model="form.mobile" />
+          <el-form-item label="代账公司ID" prop="TenantCode">
+            <el-input type="text" placeholder="请输入代账公司ID" v-model="form.TenantCode" />
           </el-form-item>
-          <el-form-item label="密码" prop="smsCode">
-            <el-input type="text" placeholder="请输入验证码" v-model="form.smsCode" />
+          <el-form-item label="账号" prop="LoginName">
+            <el-input type="text" placeholder="请输入账号" v-model="form.LoginName" />
           </el-form-item>
-          <el-form-item style="">
+          <el-form-item label="密码" prop="Password">
+            <el-input type="text" placeholder="请输入密码" v-model="form.Password" />
+          </el-form-item>
+          <el-form-item style>
             <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
           </el-form-item>
         </el-form>
@@ -63,8 +63,10 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
-        smsCode: ''
+        TenantCode: '',
+        LoginName: '',
+        Password: '',
+        Remember: true
       },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
@@ -84,9 +86,9 @@ export default {
       // this.form['device'] = { 'type': 'mozilla/5.0+(windows+nt+10.0;+win64;+x64)+applewebkit/537.36+(khtml,+like+gecko)+chrome/89.0.4389.114+safari/537.36', 'address': { 'ip': '113.118.227.107', 'location': { 'lat': 22.53332, 'lng': 113.93041 }, 'ad_info': { 'nation': '中国', 'province': '广东省', 'city': '深圳市', 'district': '南山区', 'adcode': 440305 } } }
       this.$refs[formName].validate((valid) => { // 为表单绑定验证功能
         if (valid) {
-          // this.UtilsAxios.handleFetchPost('/api/admin/login', (res) => {
-          this.UtilsAxios.handleFetch('/api/login', (res) => {
-            this.logonSuccess(res)
+          this.UtilsAxios.handleFetchPost('/api/Session/Login', (res) => {
+            localStorage.setItem('token', res)
+            this.logonSuccess2(res)
           }, this.form)
         } else {
           this.dialogVisible = true
@@ -94,6 +96,13 @@ export default {
         }
       })
     },
+    logonSuccess2 (res) {
+      this.UtilsAxios.handleFetchPost('/api/Session/GetSession', (res) => {
+        debugger
+        console.log(res)
+      }, null)
+    },
+
     logonSuccess (res) {
       this.$store.commit('USRE', res.data)
       this.$store.commit('SELECT_COMPANY_ID', '')
@@ -127,6 +136,7 @@ export default {
 
     }
   }
+
 }
 </script>
 

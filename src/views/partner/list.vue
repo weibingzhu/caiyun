@@ -3,26 +3,21 @@
     <template slot="search">
       <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
         <el-form-item label="业务属区">
-          <el-cascader :options="options" :props="props" clearable></el-cascader>
+          <e-area-cascader v-model="query.region" filterable expand-trigger="hover"></e-area-cascader>
         </el-form-item>
         <el-form-item label="搜索">
-          <el-input placeholder="请输入关键字" v-model.trim="keyWork" size="small"></el-input>
+          <el-input placeholder="请输入关键字" v-model.trim="query.Search" size="small"></el-input>
         </el-form-item>
+        <el-form-item label prop="IsEnable">
+          <el-checkbox v-model="query.IsEnable">是否启用</el-checkbox>
+        </el-form-item>
+        <el-button native-type="search" size="small" @click="handleSearch">搜索</el-button>
         <el-button native-type="submit" size="small" @click="handleCreate">添加</el-button>
       </el-form>
     </template>
-    <el-table
-      slot="table"
-      v-bind="getTableProps()"
-      v-on="getTableListeners()"
-      stripe
-      @row-dblclick="handleRowDblclick"
-      :data="[{},{},{},{},{},{},{},{},{}]"
-    >
-      <!-- <el-table-column type="selection" width="58"></el-table-column> -->
-      <el-table-column label="公司全名">
-        <template v-slot="scope">朵朵彩云</template>
-      </el-table-column>
+    <el-table slot="table" v-bind="getTableProps()" v-on="getTableListeners()" stripe @row-dblclick="handleRowDblclick" :data="pageData.data">
+      <el-table-column label="公司税号" prop="Code"></el-table-column>
+      <el-table-column label="公司全名" prop="Name"></el-table-column>
       <el-table-column label="联系电话">
         <template v-slot="scope">14578562559</template>
       </el-table-column>
@@ -78,13 +73,14 @@
           <template v-else>正常</template>
         </template>
       </el-table-column>
+      <el-table-column label="状态" prop="IsEnable"></el-table-column>
       <el-table-column label="服务评价">
         <template v-slot="scope">100</template>
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">看数据</el-button>
-          <el-button type="text" size="small">编辑</el-button>
+          <el-button @click="handleDelect(scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="handleRowDblclick(scope.row)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,48 +95,29 @@ export default {
   ],
   data () {
     return {
-      options: [{
-        value: 1,
-        label: '东南',
-        children: [{
-          value: 2,
-          label: '上海',
-          children: [
-            { value: 3, label: '普陀' },
-            { value: 4, label: '黄埔' },
-            { value: 5, label: '徐汇' }
-          ]
-        }, {
-          value: 7,
-          label: '江苏',
-          children: [
-            { value: 8, label: '南京' },
-            { value: 9, label: '苏州' },
-            { value: 10, label: '无锡' }
-          ]
-        }]
-      }],
-      query: this.getQuery({
-        title: '',
-        key_word: '',
-        ...this.$route.query
-      }),
+      query: {
+        Search: '',
+        region: '',
+        IsEnable: null,
+        // "CreateOn": {
+        //   "BeginTime": "2021-07-24T08:13:59.722Z",
+        //   "EndTime": "2021-07-24T08:13:59.722Z"
+        // },
+        Skip: 0,
+        Take: 10
+      },
       pageData: {
         count: 0,
         data: []
-      },
-      filterText: '',
-      defaultProps: {
-        children: 'children',
-        label: 'label'
       }
     }
   },
   methods: {
-    fetch (query) {
-      let params = { page: 1, size: 20 } // JSON.parse(JSON.stringify(query))
-      this.UtilsAxios.handleFetchPost('/api/admin/user/page', (res) => {
-      }, params)
+    fetch () {
+      this.UtilsAxios.handleFetchPost('/api/PlatformTenant/List', (res) => {
+        this.pageData.count = res.TotalRecord
+        this.pageData.data = res.Items
+      }, this.query)
     },
     // 双击人员编辑
     handleRowDblclick (row, column, event) {
@@ -150,50 +127,38 @@ export default {
     handleCreate () {
       ms.navigator.push(this, Form, { params: null, title: '创建' })
     },
+    // 删除一家
+    handleDelect (row) {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.UtilsAxios.handleFetchPost('/api/PlatformTenant/Delete', (res) => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.fetch()
+        }, { Id: row.Id })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
 
-    filterNode (value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
-    },
-    handleDragStart (node, ev) {
-      console.log('drag start', node)
-    },
-    handleDragEnter (draggingNode, dropNode, ev) {
-      console.log('tree drag enter: ', dropNode.label)
-    },
-    handleDragLeave (draggingNode, dropNode, ev) {
-      console.log('tree drag leave: ', dropNode.label)
-    },
-    handleDragOver (draggingNode, dropNode, ev) {
-      console.log('tree drag over: ', dropNode.label)
-    },
-    handleDragEnd (draggingNode, dropNode, dropType, ev) {
-      console.log('tree drag end: ', dropNode && dropNode.label, dropType)
-    },
-    handleDrop (draggingNode, dropNode, dropType, ev) {
-      console.log('tree drop: ', dropNode.label, dropType)
-    },
-    allowDrop (draggingNode, dropNode, type) {
-      if (dropNode.data.label === '二级 3-1') {
-        return type !== 'inner'
-      } else {
-        return true
-      }
-    },
-    allowDrag (draggingNode) {
-      return draggingNode.data.label.indexOf('三级 3-2-2') === -1
-    }
-  },
-  watch: {
-    filterText (val) {
-      this.$refs.tree.filter(val)
+    // 搜索
+    handleSearch () {
+      fetch()
     }
   }
 }
 </script>
 
 <style lang="scss">
-.partner-list{
+.partner-list {
   width: 100%;
 }
 </style>
