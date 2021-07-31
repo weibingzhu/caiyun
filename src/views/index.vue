@@ -250,9 +250,12 @@ export default {
     },
 
     handleLogout () {
-      this.$router.push({
-        path: '/signin'
-      })
+      this.UtilsAxios.handleFetchPost('/api/Session/Logout', (res) => {
+        localStorage.setItem('token', '')
+        this.$router.push({
+          path: '/signin'
+        })
+      }, this.form)
     },
     // 公司搜索过滤
     filterMethod (keyWork) {

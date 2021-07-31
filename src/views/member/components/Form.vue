@@ -1,23 +1,29 @@
 <template >
   <el-form class="member-form" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
-    <el-form-item label="真实姓名" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
-      <el-input v-model.trim="form.title"></el-input>
+    <el-form-item label="真实姓名" prop="Name" :rules="[{ required: true, message: '请输入业主姓名' }]">
+      <el-input v-model.trim="form.Name"></el-input>
     </el-form-item>
-    <el-form-item label="昵称" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
-      <el-input v-model.trim="form.title"></el-input>
+    <el-form-item label="登录名称" prop="LoginName" :rules="[{ required: true, message: '请输入联系电话' }]">
+      <el-input v-model.trim="form.LoginName"></el-input>
     </el-form-item>
-    <el-form-item label="手机号码" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
+    <!-- <el-form-item label="手机号码" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
       <el-input v-model.trim="form.title"></el-input>
+    </el-form-item> -->
+    <el-form-item label="默认密码" prop="Password" :rules="[{ required: true, message: '请输入业主姓名' }]">
+      <el-input v-model.trim="form.Password"></el-input>
     </el-form-item>
-    <el-form-item label="角色" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
+    <el-form-item label="角色">
       <el-row type="flex" align="middle">
         <el-col>
-          <el-select v-model="value1" multiple placeholder="请选择">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-select v-model="form.Roles" multiple placeholder="请选择">
+            <el-option v-for="item in roles" :key="item.Id" :label="item.Name" :value="item.Id"></el-option>
           </el-select>
         </el-col>
-        <el-button type="text" size="mini" @click="headlePermission">分配权限</el-button>
+        <el-button type="text" size="mini" @click="headleRole">角色列表</el-button>
       </el-row>
+    </el-form-item>
+    <el-form-item label="立即启用" prop="IsEnable">
+      <el-checkbox v-model="form.IsEnable">立即启用</el-checkbox>
     </el-form-item>
   </el-form>
 </template>
@@ -30,31 +36,32 @@ export default {
   data () {
     return {
       form: {
-        title: '',
-        key_word: ''
+        Name: '',
+        LoginName: '',
+        Password: '',
+        Roles: [],
+        IsEnable: true
       },
-      options: [{
-        value: 'xx',
-        label: '管理员'
-      }, {
-        value: 'xxx',
-        label: '操作员'
-      }, {
-        value: 'xxxx',
-        label: '普通用户'
-      }],
-      value1: []
+      roles: []
     }
   },
   methods: {
     fetch () {
-
+      this.UtilsAxios.handleFetchPost('/api/SystemUser/FormPrep', (res) => {
+        this.roles = res.AvailableRoles
+      }, null)
+      if (this.params) {
+        this.form = this.params
+      }
     },
-    submit () {
-      // let data = JSON.parse(JSON.stringify(this.form))
+    handleSubmit () {
+      let url = `/api/SystemUser/${this.params ? 'Update' : 'Create'}`
+      this.UtilsAxios.handleFetchPost(url, (res) => {
+        this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
+      }, this.form)
     },
-    headlePermission () {
-      this.$router.push({ path: '/permission/index' })
+    headleRole () {
+      this.$router.push({ path: '/role/index' })
     }
   }
 }

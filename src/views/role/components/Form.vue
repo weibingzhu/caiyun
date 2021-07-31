@@ -1,14 +1,24 @@
 <template>
   <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
-    <el-form-item label="角色名称" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
-      <el-input v-model.trim="form.title"></el-input>
+    <el-form-item label="角色名称" prop="Name" :rules="[{ required: true, message: '请输入角色名称' }]">
+      <el-input v-model.trim="form.Name"></el-input>
     </el-form-item>
-    <el-form-item label="角色描述" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
-      <el-input v-model.trim="form.title"></el-input>
+    <el-form-item label="角色描述" prop="Description" :rules="[{ required: true, message: '请输入角色描述' }]">
+      <el-input v-model.trim="form.Description"></el-input>
     </el-form-item>
-    <el-form-item label="权限" prop="title" :rules="[{ required: true, message: '请输入联系电话' }]">
-      <el-input v-model.trim="form.title" disabled=false></el-input>
-      <el-tree :data="data" ref="tree" :filter-node-method="filterNode" show-checkbox node-key="id" default-expand-all :expand-on-click-node="false"></el-tree>
+    <el-form-item label="权限" prop="PermissionSet">
+      <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input>
+      <el-tree
+        :data="treeData"
+        ref="tree"
+        node-key="key"
+        :filter-node-method="filterNode"
+        @check-change="handleTreeCheckChange"
+        show-checkbox
+        default-expand-all
+        :expand-on-click-node="false"
+        :default-checked-keys="defaultCheckedKeys"
+      ></el-tree>
     </el-form-item>
   </el-form>
 </template>
@@ -21,54 +31,45 @@ export default {
   data () {
     return {
       form: {
-        title: '',
-        key_word: ''
+        Name: '',
+        Description: '',
+        PermissionSet: []
       },
-      filterText: '',
-      data: [{
-        id: 1,
-        label: '我的客户',
-        children: [{
-          id: 11,
-          label: '合同管理'
-        },
-        {
-          id: 12,
-          label: '客户列表'
-        }]
-      }, {
-        id: 2,
-        label: '初值化管理'
-      }, {
-        id: 3,
-        label: '右边差不多的菜单',
-        children: [{
-          id: 7,
-          label: '还有隐藏页面的权限'
-        }, {
-          id: 8,
-          label: '还有弹窗的页面权限'
-        }]
-      }, {
-        id: 3,
-        label: '系统配置',
-        children: [{
-          id: 7,
-          label: '货币汇率'
-        }, {
-          id: 8,
-          label: '系统配置'
-        }]
-      }]
-
+      defaultCheckedKeys: [],
+      treeData: [],
+      filterText: ''
     }
   },
   methods: {
     fetch () {
+      this.UtilsAxios.handleFetchPost('/api/SystemRole/FormPrep', (res) => {
+        this.treeData = res.AvailablePermissions
+      }, null)
+      if (this.params) {
+        this.form = this.params
+        this.defaultCheckedKeys = this.params.PermissionSet
+      }
+    },
+    handleSubmit () {
+      this.form.PermissionSet = this.$refs.tree.getCheckedKeys()
+      let url = `/api/SystemRole/${this.params ? 'Update' : 'Create'}`
+      this.UtilsAxios.handleFetchPost(url, (res) => {
+        this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
+      }, this.form)
+    },
+
+    handleTreeCheckChange () {
 
     },
-    submit () {
-      // let data = JSON.parse(JSON.stringify(this.form))
+
+    filterNode (value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
+    }
+  },
+  watch: {
+    filterText (val) {
+      this.$refs.tree.filter(val)
     }
   }
 }

@@ -148,12 +148,12 @@ export default {
         route: '/building/parking'
       }]
     },
-    {
-      title: '权限管理',
-      index: '021',
-      icon: '&#xe604;',
-      route: '/permission/index'
-    },
+    // {
+    //   title: '权限管理',
+    //   index: '021',
+    //   icon: '&#xe604;',
+    //   route: '/permission/index'
+    // },
     {
       title: '角色管理',
       index: '020',

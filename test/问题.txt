@@ -69,5 +69,8 @@ el-scrollbar/index: el-scrollbar 无效
 from 界面什么判断是 编辑还是创建
 from 界面编辑的时候，确定了才同步列表
 logon 不带token
+自定义树的最后一个节点
+this.$refs.tree.getNode(e.Code) 为什么不行
+form 添加的时候 list 没有刷新
 
 

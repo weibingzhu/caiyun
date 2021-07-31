@@ -98,8 +98,10 @@ export default {
     },
     logonSuccess2 (res) {
       this.UtilsAxios.handleFetchPost('/api/Session/GetSession', (res) => {
-        debugger
         console.log(res)
+        this.$router.push({
+          path: '/'
+        })
       }, null)
     },
 
