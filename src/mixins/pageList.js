@@ -22,8 +22,13 @@ export default {
   },
   computed: {
     isHistory () {
-      return this.$parent._routerViewCache !== undefined ? true : this.history
+      return this.isRouterView || this.history
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.isRouterView = true
+    })
   },
   data () {
     return {
@@ -59,11 +64,12 @@ export default {
     this.initial()
     this.handleResize()
     window.addEventListener('resize', this.handleResize, false)
-    this.$root.$on('show', this.handleResize)
+  },
+  activated () {
+    this.handleResize()
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.handleResize)
-    this.$root.$off('show', this.handleResize)
   },
   methods: {
     triggerFetch (query) {
@@ -140,7 +146,7 @@ export default {
       }
       if (data && data.total && this.query) {
         let query = this.query
-        let rows = query.rows ? Number(query.rows) : 50
+        let rows = query.rows ? Number(query.rows) : 20
         let page = query.page ? Number(query.page) : 1
         let layout = 'total, prev, pager, next, sizes, jumper'
         let pagerCount = 5
@@ -155,7 +161,7 @@ export default {
           pageSize: rows,
           currentPage: page,
           total: data.total,
-          pageSizes: [20, 30, 40, 50, 100]
+          pageSizes: [10, 15, 20, 30, 40, 50, 100]
         }
         return this.$paginationProps
       } else {

@@ -72,6 +72,7 @@
         </span>
       </div>
     </div>
+    <!--
     <el-dialog :visible.sync="uploadDialog" width="88%">
       <div slot="title">
         <el-row type="flex" align="middle">
@@ -164,9 +165,12 @@
           </div>
         </el-upload>
       </el-row>
-      <!-- <el-row>
+      -->
+      <!--
+        <el-row>
         内容table
       </el-row>-->
+      <!--
       <el-row>
         <el-row type="flex" align="middle">
           <el-col :span="24">
@@ -180,6 +184,7 @@
         </el-row>
       </el-row>
     </el-dialog>
+    -->
   </ms-frame-layout>
 </template>
 

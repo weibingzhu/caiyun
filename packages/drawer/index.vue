@@ -1,5 +1,6 @@
 <template>
-  <el-drawer
+  <component
+    :is="`el-${mode}`"
     v-bind="drawer"
     :title="drawerTitle || drawer.title"
     :visible="visible"
@@ -7,7 +8,34 @@
     @opened="handleOpened"
     @closed="handleClosed">
     <component v-if="titleSlot" slot="title" :is="titleSlot"></component>
-    <div class="ms-drawer--layout" v-loading="loading">
+    <div v-if="mode=='dialog'" class="ms-drawer--dialog-body" v-loading="loading">
+      <iframe v-if="to" :src="to" frameborder="0" @load="handleLoading(false)"></iframe>
+      <component
+        v-else
+        ref="component"
+        :is="component"
+        v-bind="componentProps || props"
+        @hook:mounted="handleMounted"
+        @loading="handleLoading"
+        @posting="handlePosting"
+      />
+    </div>
+    <template slot="footer" v-if="mode=='dialog' && isFormComponent">
+      <el-button
+        size="small"
+        nativeType="button"
+        @click="handleClose">
+        {{cancelText}}
+      </el-button>
+      <el-button
+        type="primary"
+        size="small"
+        nativeType="button"
+        @click="handleSubmit">
+        {{confirmText}}
+      </el-button>
+    </template>
+    <div v-if="mode=='drawer'" class="ms-drawer--layout" v-loading="loading">
       <div class="ms-drawer--body ms-scroller">
         <component
           ref="component"
@@ -43,19 +71,26 @@
         </el-button>
       </div>
     </div>
-    <div class="ms-drawer--resize" @mousedown.prevent="handleMouseDown"/>
-  </el-drawer>
+    <div v-if="mode=='drawer'" class="ms-drawer--resize" @mousedown.prevent="handleMouseDown"/>
+  </component>
 </template>
 
 <script>
 export default {
   componentName: 'MsDrawer',
   props: {
+    mode: {
+      type: String,
+      default: 'drawer'
+    },
     target: {
       type: Object
     },
     importComponent: {
       type: [Object, Function]
+    },
+    to: {
+      type: [Object, String]
     },
     props: {
       type: Object
@@ -86,6 +121,11 @@ export default {
   watch: {
     importComponent () {
       this.loadComponent()
+    },
+    $route (val, oldVal) {
+      if (val.path !== oldVal.path) {
+        this.visible = false
+      }
     }
   },
   data () {
@@ -262,6 +302,24 @@ export default {
     &--mask{
       pointer-events: none;
     }
+    &--dialog-body{
+      min-height:100px;
+      >.ms-page-list-layout{
+        min-height:72vh;
+      }
+    }
+    &.is-frame{
+      .el-dialog{
+        &__body{
+          padding:0;
+          iframe{
+            width:100%;
+            height:72vh;
+            display: block;
+          }
+        }
+      }
+    }
     .el-drawer{
       &__container{
         overflow:hidden;
@@ -273,6 +331,7 @@ export default {
         line-height:1;
         >span{
           font-size:1.2rem;
+          outline: none;
         }
         button{
           outline:none;
@@ -281,6 +340,24 @@ export default {
       }
       &__body{
         max-height:calc(100% - 55px);
+      }
+    }
+    .el-dialog{
+      &__header{
+        padding:15px;
+        padding-bottom:10px;
+      }
+      &__body{
+        padding-top:10px;
+        padding-bottom:10px;
+      }
+      &__title{
+        font-size:1.2rem;
+      }
+    }
+    &.el-dialog{
+      &.ms-drawer--large{
+        min-width: 90%;
       }
     }
   }

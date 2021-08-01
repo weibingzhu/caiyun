@@ -1,6 +1,9 @@
 <template>
   <div :class="['ms-frame-layout']">
-    <div class="ms-frame-layout--aside" :class="{'is-collapse': isCollapse}">
+    <div
+      class="ms-frame-layout--aside"
+      :class="{'is-collapse': isCollapse}"
+      :style="{backgroundColor: menuProps ? menuProps.backgroundColor : ''}">
       <div
         v-if="$slots['logo'] || $scopedSlots['logo']"
         class="ms-frame-layout--logo">
@@ -23,9 +26,9 @@
               <template slot="title">
                 <template v-if="item.icon">
                   <div style="display:inline" v-if="item.icon.indexOf('</i>')>-1" v-html="item.icon"></div>
-                  <i v-else :class="iconClass" v-html="item.icon"></i>
+                  <i v-else :class="item.iconClass || iconClass" v-html="item.icon"></i>
                 </template>
-                <i v-else></i>
+                <i v-else :class="item.iconClass || iconClass"></i>
                 <span slot="title">{{item.title}}</span>
               </template>
               <el-menu-item v-for="child in item.options"
@@ -43,9 +46,9 @@
               :key="item.index">
                 <template v-if="item.icon">
                   <div style="display:inline" v-if="item.icon.indexOf('</i>')>-1" v-html="item.icon"></div>
-                  <i v-else :class="iconClass" v-html="item.icon"></i>
+                  <i v-else :class="item.iconClass || iconClass" v-html="item.icon"></i>
                 </template>
-                <i v-else></i>
+                <i v-else :class="item.iconClass || iconClass"></i>
                 <span>{{item.title}}</span>
             </el-menu-item>
           </template>
@@ -67,13 +70,17 @@
           </template>
           <slot v-else name="header"></slot>
         </el-row>
-        <div class="ms-frame-layout--tabs" v-if="apps.length">
+        <div class="ms-frame-layout--tabs" v-if="isTabs && apps.length">
           <el-tabs :value="currentAppIndex + ''" @tab-click="handleTab" editable @edit="handleTabsEdit">
-            <el-tab-pane v-for="(item,index) in apps" :label="item.title" :name="index + ''" :key="index"></el-tab-pane>
+            <el-tab-pane v-for="(item,index) in apps" :label="item.title" :name="index + ''" :key="index + item.route.path"></el-tab-pane>
           </el-tabs>
+          <i class="el-icon-refresh ms-frame-layout--tabs-action" title="刷新" @click="refresh"></i>
           <el-dropdown trigger="click" @command="handleCommand">
-            <i class="el-icon-arrow-down ms-frame-layout--tabs-action"></i>
+            <i class="el-icon-arrow-down ms-frame-layout--tabs-action" title="更多"></i>
             <el-dropdown-menu slot="dropdown">
+              <!--
+              <el-dropdown-item command="refresh">刷新当前页签</el-dropdown-item>
+              -->
               <el-dropdown-item command="all">关闭所有页签</el-dropdown-item>
               <el-dropdown-item command="other" :disabled="apps.length == 1">关闭其他页签</el-dropdown-item>
               <el-dropdown-item :disabled="currentAppIndex ==  0" command="left">关闭左边页签</el-dropdown-item>
@@ -83,14 +90,22 @@
         </div>
       </div>
       <div class="ms-frame-layout--body">
-        <router-view v-if="!isCreateApp" class="ms-frame-layout--slot ms-scroller"></router-view>
+        <slot v-if="$slots['default'] || $scopedSlots['default']" v-bind="{include: keepAliveInclude, routerViewKey: routerViewKey}"></slot>
+        <template v-else>
+          <keep-alive :include="keepAliveInclude" :exclude="keepAliveExclude">
+            <router-view class="ms-frame-layout--slot ms-scroller" ref="routerView" v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
+          <router-view class="ms-frame-layout--slot ms-scroller" :key="routerViewKey" v-if="!$route.meta.keepAlive"></router-view>
+        </template>
       </div>
     </div>
-    <slot></slot>
+    <slot name="other"></slot>
   </div>
 </template>
 
 <script>
+let routerFromTab = false
+let replaceRoute = false
 export default {
   componentName: 'MsFrameLayout',
   provide () {
@@ -102,9 +117,6 @@ export default {
     isTabs: {
       type: Boolean,
       default: true
-    },
-    isCreateApp: {
-      type: Boolean
     },
     defaultRoute: {
       type: [Object],
@@ -124,59 +136,70 @@ export default {
       type: Object
     },
     iconClass: {
-      default: 'iconfont'
+      default: 'el-icon-folder'
     },
     asideCollapse: {
       type:Boolean,
       default: true
+    },
+    refreshRoute: {
+      default () {
+        return {
+          path: '/refresh',
+          component: {
+            beforeRouteEnter (to, from, next) {
+              next(vm => {
+                vm.$nextTick(() => {
+                  vm.$router.replace(from)
+                })
+              })
+            },
+            template: `<div></div>`
+          }
+        }
+      }
+    },
+    keepAliveExclude: {
+      type: Array
     }
   },
   watch: {
     $route (value) {
-      console.log('$route', value)
+      // console.log('route', value)
+      this.pushRouterViewInclude(this.getRouteInclude(value))
       if (this.isTabs) {
-        if (value.matched && value.matched.length) {
-          if (this.apps.every(item => {
-            if (this.isCreateApp) {
-              if (item.vm) {
-                if (item.vm.$router) {
-                  return item.vm.$router.getMatchedComponents(value.path).length === 0
-                } else {
-                  return item.route.path !== value.path
-                }
+        let _replaceRoute = replaceRoute
+        if (replaceRoute) {
+          replaceRoute = false
+        }
+        if (_replaceRoute && this.currentApp) {
+          this.currentApp.title = this.getAppTitle(value)
+          this.currentApp.route = value
+          this.apps = [...this.apps]
+        } else {
+          if (value.matched && value.matched.length) {
+            let app = this.apps.find(item => {
+              if (item.route.path === value.path) {
+                return true
               }
-              return true
-            } else {
-              return value.matched.every(item2 => {
-                return item.route.path !== (item2.path == '' ? value.path : item2.path)
-              })
-            }
-          })) {
-            if (this.isCreateApp) {
-              this.createRouter(value)
-            } else {
-              if (value && value.meta && value.meta.title) {
-                this.createRouter(value)
-              } else {
-                let currentApp = this.currentApp
-                currentApp.route = value
-                this.apps = [...this.apps]
-              }
-            }
-          } else {
-            let app = this.getAppByPath(value.path)
-            if (app) {
-              if (this.isCreateApp && app && app.vm && Object.keys(app.vm).length < 2) {
-                app.vm = this.createRouterApp(value)
-              }
-              this.currentApp = app
-              if (app.vm && app.vm.$route && app.vm.$route.fullPath !== value.fullPath && value.matched.length === 1) {
-                app.vm.$router.replace({
-                  path: value.path,
-                  query: value.query,
-                  params: value.params
+              if (item.route.matched.length == value.matched.length && item.route.matched.length > 1) {
+                return item.route.matched.every((item2,i) => {
+                  if (i < value.matched.length - 1) {
+                    return item2 == value.matched[i]
+                  }
+                  return true
                 })
               }
+              return false
+            })
+            if (app) {
+              app.route = value
+              let title = this.getAppTitle(value)
+              title && (app.title = title)
+              this.currentApp = app
+              this.refreshRouterViewInclude(value)
+            } else {
+              this.createRouter(value)
             }
           }
         }
@@ -198,20 +221,27 @@ export default {
     }
   },
   data () {
+    let apps = sessionStorage.getItem('--ms-apps') ? JSON.parse(sessionStorage.getItem('--ms-apps')) : []
+    apps.forEach(item => {
+      item.route = this.$router.resolve(item.route.fullPath).resolved
+    })
     return {
-      apps: sessionStorage.getItem('--ms-apps') ? JSON.parse(sessionStorage.getItem('--ms-apps')) : [],
-      currentAppIndex: 0,
-      isCollapse: document.ontouchstart !== undefined
+      apps,
+      isCollapse: document.ontouchstart !== undefined,
+      keepAliveInclude: [],
+      routerViewKey: Math.random().toString(36)
     }
   },
   computed: {
+    currentAppIndex () {
+      let index = this.apps.findIndex(item => item.vm.show)
+      return index > -1 ? index : 0
+    },
     currentApp: {
       get () {
-        let self = this
-        return this.apps.find((item, index) => {
+        return this.apps.find((item) => {
           if (item.vm) {
             if (item.vm.show) {
-              self.currentAppIndex = index
               return true
             }
           }
@@ -219,12 +249,9 @@ export default {
         })
       },
       set (value) {
-        this.apps.forEach((item, index) => {
+        this.apps.forEach((item) => {
           if (item.vm) {
             item.vm.show = value === item
-          }
-          if (value === item) {
-            this.currentAppIndex = index
           }
           if (value === item && item.route.path !== this.$route.path && this.$route.matched.length === 1) {
             this.$router.push(item.route)
@@ -250,125 +277,78 @@ export default {
     }
   },
   mounted () {
-    // console.log('fdasfdas', this.$router.resolve('/user2'))
-    if (window.top !== window) {
-      document.body.classList.add('is-iframe')
-    }
+    window.top !== window && document.body.classList.add('is-iframe')
     if (this.isTabs) {
-      if (!this.isCreateApp) {
-        this.$router.beforeEach((to, from, next) => {
-          let app = this.getAppByPath(from.path)
-          if (app) {
-            app.route = from
-          }
-          next()
-        })
-      } else {
-        const Router = this.findVueRouter()
-        if (Router) {
-          const originalPush = Router.prototype.push
-          Router.prototype.push = function push (location, onResolve, onReject) {
-            if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
-            return originalPush.call(this, location).catch(err => err)
-          }
-        }
-        this.$router.beforeEach((to, from, next) => {
-          if (to.path === from.path) {
-            let app = this.currentApp
-            app.vm.$router.push({
-              path: to.path,
-              params: to.params,
-              query: to.query
-            })
-          }
-          next()
-        })
+      const originalReplace = this.$router.replace
+      this.$router.replace = function replace (location, onResolve, onReject) {
+        return originalReplace.call(this, location, () => {
+          replaceRoute = true
+          onResolve && onResolve()
+        }, onReject)
       }
+      this.$router.afterEach((to, from) => {
+        let app = this.getAppByPath(from.path)
+        if (app) {
+          app.route = from
+        }
+      })
+      this.refreshRoute && this.$router.addRoutes([this.refreshRoute])
     }
-    let app = this.currentApp
   },
   methods: {
-    findVueRouter () {
-      return window.Vue._installedPlugins.find(item => item.name === 'VueRouter')
+    getRouteInclude (route) {
+      let result = []
+      if (route.meta && route.meta.keepAlive && route.matched.length) {
+        route.matched.forEach(item => {
+          Object.values(item.components).forEach(component => {
+            component.name && result.indexOf(component.name) == -1 && result.push(component.name)
+          })
+        })
+      }
+      return result
+    },
+    pushRouterViewInclude (value) {
+      if (value.length) {
+        let include = [
+          ...this.keepAliveInclude,
+          ...value.filter(item => this.keepAliveInclude.indexOf(item) == -1)
+        ]
+        if (JSON.stringify(include) !== JSON.stringify(this.keepAliveInclude)) {
+          this.keepAliveInclude = include
+        }
+      }
+    },
+    removeRouterViewInclude (route) {
+      let include = this.getRouteInclude(route)
+      if (include.length && !routerFromTab) {
+        this.keepAliveInclude = this.keepAliveInclude.filter(item => include.indexOf(item) == -1)
+      }
+      return include
+    },
+    refreshRouterViewInclude (route) {
+      let include = this.removeRouterViewInclude(route)
+      if (include.length && !routerFromTab) {
+        this.$nextTick(() => {
+          this.keepAliveInclude = [
+            ...this.keepAliveInclude,
+            ...include
+          ]
+        })
+      }
     },
     createRouter (value) {
-      let $vm = null
-      if (this.isCreateApp) {
-        $vm = this.createRouterApp(value)
-      } else {
-        $vm = {show: false}
-      }
       this.pushApp({
-        vm: $vm,
-        title: value.meta && value.meta.title ? typeof value.meta.title === 'function' ? value.meta.title(value) : value.meta.title : value.fullPath,
+        vm: {show: false},
+        title: this.getAppTitle(value),
         route: value
       })
     },
-    createRouterApp (route) {
-      let el = document.createElement('div')
-      this.$el.querySelector('.ms-frame-layout--body').appendChild(el)
-      const Router = this.findVueRouter()
-      let router = new Router({
-        routes: this.$router.options.routes.filter(item => {
-          if (item.path === route.path) {
-            return true
-          } else if (item.children && item.children.length) {
-            return JSON.stringify(item.children).indexOf(`"${route.path}"`) > -1
-          }
-          return false
-        })
-      })
-      let self = this
-      return new window.Vue({ // eslint-disable-line
-        el,
-        router: router,
-        store: this.$store,
-        template: `<router-view class="app-router-view ms-scroller" :class="{'is-active': show}"></router-view>`,
-        mounted () {
-          this.$router.beforeEach((to, from, next) => {
-            console.log('beforeEach', to, from)
-            if (!to.matched || to.matched.length === 0) {
-              self.$router.push({
-                path: to.path,
-                params: to.params,
-                query: to.query
-              })
-            } else {
-              next()
-            }
-          })
-          this.$router.afterEach((to, from) => {
-            let app1 = self.getAppByPath(to.path)
-            let app2 = self.getAppByPath(from.path)
-            if (app1 && app1 === app2) {
-              app1.route = to
-              self.apps = [...self.apps]
-            }
-          })
-          this.$emit('ready')
-        },
-        watch: {
-          show (value) {
-            this.$emit(value ? 'show' : 'hidden')
-          }
-        },
-        data () {
-          return {
-            show: false
-          }
-        },
-        destroyed () {
-          this.$el.parentNode.removeChild(this.$el)
-        }
-      })
+    getAppTitle (value) {
+      return value.meta && value.meta.title ? typeof value.meta.title === 'function' ? value.meta.title(value) : value.meta.title : value.fullPath
     },
     getAppByPath (path) {
       return this.apps.find(item => {
-        if (item.vm && item.vm.$router) {
-          return item.vm.$router.getMatchedComponents(path).length > 0
-        } else {
-          return item.route.path === path
-        }
+        return item.route.path === path
       })
     },
     pushApp (value) {
@@ -387,23 +367,51 @@ export default {
       }
       this.currentApp = value
     },
+    refresh () {
+      if (this.$route && this.$route.meta && this.$route.meta.keepAlive) {
+        this.removeRouterViewInclude(this.$route)
+        this.$router.replace({
+          path: '/refresh'
+        })
+      } else {
+        this.routerViewKey = Math.random().toString(36)
+      }
+    },
+    routerPush (...arg) {
+      routerFromTab = true
+      return this.$router.push(...arg).finally(() => {
+        routerFromTab = false
+      })
+    },
     removeApp (value) {
+      if (value.route && value.route.matched.length) {
+        let include = [...this.keepAliveInclude]
+        value.route.matched.forEach(item => {
+          Object.values(item.components).forEach(component => {
+            component.name && (include = include.filter(item => item !== component.name))
+          })
+        })
+        if (JSON.stringify(include) !== JSON.stringify(this.keepAliveInclude)) {
+          this.keepAliveInclude = include
+        }
+      }
       let apps = [...this.apps]
       let index = apps.findIndex(item => item === value)
       apps = apps.filter(item => item !== value)
       let currentApp = null
-      if (apps[index]) {
-        currentApp = apps[index]
-      } else if (apps[index - 1]) {
-        currentApp = apps[index - 1]
+      if (index === this.currentAppIndex) {
+        if (apps[index]) {
+          currentApp = apps[index]
+        } else if (apps[index - 1]) {
+          currentApp = apps[index - 1]
+        }
       }
       this.apps = apps
-      value.vm && value.vm.$destroy && value.vm.$destroy()
-      currentApp && this.$router.push(currentApp.route)
+      currentApp && this.routerPush(currentApp.route)
     },
-    handleTab (tab, event) {
+    handleTab (tab) {
       let app = this.apps[parseInt(tab.name)]
-      this.$router.push(app.route)
+      this.routerPush(app.route)
     },
     handleTabsEdit (targetName, action) {
       if (action === 'remove') {
@@ -416,48 +424,43 @@ export default {
       }
     },
     handleCommand (value) {
-      if (value === 'all') {
+      if (value === 'refresh') {
+        this.refresh()
+      } else if (value === 'all') {
         this.apps = this.apps.filter(item => {
           if (this.defaultRoute && this.defaultRoute.path === item.route.path) {
             return true
           } else {
-            item.vm && item.vm.$destroy && item.vm.$destroy()
             return false
           }
         })
         if (this.apps && this.apps[0]) {
           this.currentApp = this.apps[0]
+          this.routerPush(this.currentApp.route)
         } else {
           this.defaultRoute && this.$router.push(this.defaultRoute)
         }
       } else if (value === 'other') {
         this.apps = this.apps.filter(item => {
-          if (item !== this.currentApp) {
-            item.vm && item.vm.$destroy && item.vm.$destroy()
-          }
           return item === this.currentApp
         })
+        this.currentApp = this.apps[0]
       } else if (value === 'left') {
         this.apps = this.apps.filter((item, index) => {
           if (index < this.currentAppIndex) {
-            item.vm && item.vm.$destroy && item.vm.$destroy()
             return false
           }
           return true
         })
+        this.currentApp = this.apps[0]
       } else {
         this.apps = this.apps.filter((item, index) => {
           if (index > this.currentAppIndex) {
-            item.vm && item.vm.$destroy && item.vm.$destroy()
             return false
           }
           return true
         })
       }
-    },
-    updateAppTitle (vm, title) {
-      let app = this.apps.find(item => item.vm === vm)
-      app && (app.title = title)
     }
   }
 }
@@ -536,6 +539,7 @@ export default {
       &-action{
         padding: 10px;
         cursor: pointer;
+        font-size:1.3em;
       }
       .el-tabs{
         flex:auto;
@@ -627,22 +631,6 @@ export default {
         &__title{
           height: 3.2rem;
           line-height: 3.2rem;
-          i{
-            font-size:1.4px;
-            margin-right: 5px;
-            width: 20px;
-            display: inline-block;
-            font-style:normal;
-            &:first-child{
-              &:empty{
-                text-align:center;
-                &:before{
-                  content: '⚪';
-                  font-size:1.1em;
-                }
-              }
-            }
-          }
         }
       }
     }
@@ -677,13 +665,14 @@ export default {
       background-color:$--color-white;
       height: 100%;
       box-sizing: border-box;
-      position:relative;
-      background-clip: content-box;
       position: absolute;
       width: 100%;
-      padding: 10px;
+      padding-right: 10px;
+      border: 10px solid transparent;
+      border-right:0;
       left:0;
       top:0;
+      background-clip: content-box;
     }
   }
   .is-iframe{
@@ -692,23 +681,6 @@ export default {
     }
     .v-modal{
       background:#fff;
-    }
-  }
-  .app-router-view{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    visibility: hidden;
-    box-sizing: border-box;
-    padding: 10px;
-    background-color:$--color-white;
-    background-clip: content-box;
-    box-shadow: inset 0 0 0 10px $--background-color-base;
-    &.is-active{
-      visibility: visible;
-      z-index: 1;
     }
   }
   div.ms-dialog{
