@@ -44,7 +44,7 @@ Object.keys(filters).forEach(key => {
 */
 router.beforeEach((to, from, next) => {
   store.commit('LOADING', true)
-  // todo   ???
+  // todo 先获取sisson，如果不可以跳到登录界面  ???
   next()
 })
 router.afterEach(() => {

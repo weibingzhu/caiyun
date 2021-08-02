@@ -49,11 +49,9 @@ export default {
     fetch () {
       if (this.params) this.form = this.params
     },
-    handleSubmit () {
+    submit () {
       let url = `/api/PlatformTenant/${this.params ? 'Update' : 'Create'}`
-      this.UtilsAxios.handleFetchPost(url, (res) => {
-        this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
-      }, this.form)
+      return this.$axios({ url, method: 'POST', data: this.form })
     }
   }
 }

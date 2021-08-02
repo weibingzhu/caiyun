@@ -50,20 +50,10 @@ export default {
         this.defaultCheckedKeys = this.params.PermissionSet
       }
     },
-    handleSubmit1 () {
-      this.form.PermissionSet = this.$refs.tree.getCheckedKeys()
-      let url = `/api/SystemRole/${this.params ? 'Update' : 'Create'}`
-      this.UtilsAxios.handleFetchPost(url, (res) => {
-        this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
-      }, this.form)
-    },
     submit () { // 表单校验通过后调用的方法，一般是请求后台接口的方法
       this.form.PermissionSet = this.$refs.tree.getCheckedKeys()
-      return this.$axios({
-        url: `/api/SystemRole/${this.params ? 'Update' : 'Create'}`,
-        method: 'POST',
-        data: this.form
-      })
+      let url = `/api/SystemRole/${this.params ? 'Update' : 'Create'}`
+      return this.$axios({ url, method: 'POST', data: this.form })
     },
 
     handleTreeCheckChange () {

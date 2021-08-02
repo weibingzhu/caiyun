@@ -70,10 +70,10 @@ export default {
       },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
-        mobile: [
+        LoginName: [
           { required: true, message: '账号不可为空', trigger: 'blur' }
         ],
-        smsCode: [
+        Password: [
           { required: true, message: '密码不可为空', trigger: 'blur' }
         ]
       },
@@ -88,7 +88,7 @@ export default {
         if (valid) {
           this.UtilsAxios.handleFetchPost('/api/Session/Login', (res) => {
             localStorage.setItem('token', res)
-            this.logonSuccess2(res)
+            this.logonSucceedGetSession(res)
           }, this.form)
         } else {
           this.dialogVisible = true
@@ -96,12 +96,10 @@ export default {
         }
       })
     },
-    logonSuccess2 (res) {
+    // 登录成功后，获取session
+    logonSucceedGetSession (res) {
       this.UtilsAxios.handleFetchPost('/api/Session/GetSession', (res) => {
-        console.log(res)
-        this.$router.push({
-          path: '/'
-        })
+        this.$router.push({ path: '/' })
       }, null)
     },
 

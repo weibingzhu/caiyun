@@ -8,7 +8,7 @@
     </el-form-item>
     <!-- <el-form-item label="手机号码" prop="title" :rules="[{ required: true, message: '请输入业主姓名' }]">
       <el-input v-model.trim="form.title"></el-input>
-    </el-form-item> -->
+    </el-form-item>-->
     <el-form-item label="默认密码" prop="Password" :rules="[{ required: true, message: '请输入业主姓名' }]">
       <el-input v-model.trim="form.Password"></el-input>
     </el-form-item>
@@ -54,11 +54,9 @@ export default {
         this.form = this.params
       }
     },
-    handleSubmit () {
+    submit () {
       let url = `/api/SystemUser/${this.params ? 'Update' : 'Create'}`
-      this.UtilsAxios.handleFetchPost(url, (res) => {
-        this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
-      }, this.form)
+      return this.$axios({ url, method: 'POST', data: this.form })
     },
     headleRole () {
       this.$router.push({ path: '/role/index' })
