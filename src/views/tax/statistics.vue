@@ -102,6 +102,7 @@ import ChartPolyline from '@/views/components/chart/Polyline'
 import ChartPieDoughnut from '@/views/components/chart/PieDoughnut'
 import ChartAreaStack from '@/views/components/chart/AreaStack'
 export default {
+  name: 'TaxStatistics',
   components: {
     ChartCategoryStack,
     ChartPolyline,

@@ -94,5 +94,19 @@ setting 灰色掉的一定要给tip说明，什么才能点亮它
   let web = calcMonth(webHistory)
 
 
+  /api/yzh/puppeterr/list 可以了 ，，当是 /api/yzh/sikulix/list 还没有
+
+
+  // 任务页面
+  1 跟进权限显示
+  2 APP 和 WEB的切换
+  3 默认时间排序
+  4 分页
+  5 搜索功能完整
+  6 任务历史显示
+  7 图片预览 闭关bug
+  8 ‘时间’可以切换按月份查和按提交的时间查，按月份的话要提供选择月份的地方
+
+
 
 

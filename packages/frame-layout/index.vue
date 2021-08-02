@@ -473,6 +473,7 @@ export default {
     position:absolute;
     background-color: $frame-layout--theme-color;
     &--logo{
+      height: auto !important;
       text-align:center;
       height:$frame-layout--logo-height;
       box-sizing: border-box;

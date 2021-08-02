@@ -79,12 +79,12 @@ export default {
         }
       }
     },
-    afterSubmit () { // 提交成功后处理
+    afterSubmit (res) { // 提交成功后处理
       if (this.done) {
         const cb = () => {
           this.msDrawer.handleClose()
         }
-        this.done(cb.bind(this))
+        this.done(cb.bind(this), res)
       } else {
         history.back()
       }
@@ -96,7 +96,7 @@ export default {
           if (node.scrollIntoView) {
             let rect = node.getBoundingClientRect()
             if (rect.top < 0) {
-              node.scrollIntoView({behavior: "smooth"})
+              node.scrollIntoView({behavior: 'smooth'})
             }
           }
           let inputs = node.querySelectorAll('input,textarea')

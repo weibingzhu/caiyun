@@ -71,7 +71,14 @@ export default {
     },
     // 手动添加人员
     handleCreate () {
-      ms.navigator.push(this, Form, { params: null, title: '创建' })
+      ms.navigator.push(this, Form, {
+        params: null,
+        title: '创建'
+        // done: (cb, res) => {
+        //   console.log('res', res)
+        //   cb()
+        // }
+      })
     },
     // 双击人员编辑
     handleRowDblclick (row, column, event) {

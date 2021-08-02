@@ -36,7 +36,7 @@ export default {
       title: '数据采集',
       index: '03',
       icon: '&#xe604;',
-      route: '/data/adopt'
+      route: '/data/Purchase?module=Purchase&tax_or_acc=true'
     },
     {
       title: '自动化管理',

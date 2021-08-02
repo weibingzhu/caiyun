@@ -40,37 +40,21 @@ chart-pie 的 tip 显示位置 税务进度页面第一个圈圈
 task/index 关不了
 
 // 头部的tab
-二级路由显示到 tab 把一级给替换了
-二级路由在里面切换时，头部的tab跟着切换了 （应该显示‘数据采集’，里面任意切换）
-刷新 tab 显示不对
-tab 会挺破右边
 拖动改变tab的位置
 
-// 任务页面
-  1 跟进权限显示
-  2 APP 和 WEB的切换
-  3 默认时间排序
-  4 分页
-  5 搜索功能完整
-  6 任务历史显示
-  7 图片预览 闭关bug
-  8 ‘时间’可以切换按月份查和按提交的时间查，按月份的话要提供选择月份的地方
-
-// data-adopt 和 tab的结合，二级路由不行，得换组件拉
-
-el-scrollbar/index: el-scrollbar 无效
-
-/api/yzh/puppeterr/list 可以了 ，，当是 /api/yzh/sikulix/list 还没有
-
-双击logo 页面切换过去了，tab的title没有修改
 
 
-左边的树，应该出现滚动条时，变成浏览器的滚动条
-from 界面什么判断是 编辑还是创建
-from 界面编辑的时候，确定了才同步列表
-logon 不带token
+
+
+双击logo 页面切换过去了，tab的title没有修改      !!!
+
+
+左边的树，应该出现滚动条时，变成浏览器的滚动条    !!! css
+
+from 界面编辑的时候，确定了才同步列表             !!!json
+
+logon 不带token                                 !!! router.beforeEach((to, from, next)
+
 自定义树的最后一个节点
-this.$refs.tree.getNode(e.Code) 为什么不行
-form 添加的时候 list 没有刷新
 
 

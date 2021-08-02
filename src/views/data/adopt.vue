@@ -108,6 +108,7 @@
         </el-button-group>
       </template>
       <div slot="table">
+        <router-view></router-view>
         asdas
         <!-- <router-view :key="$route.path" class="sub-view"></router-view> -->
         <!-- <sales-list></sales-list> -->
@@ -147,7 +148,6 @@ export default {
       })
     }
   },
-
   methods: {
     fetch (query) {
       this.selectCompanyId = query.companyId
@@ -155,6 +155,7 @@ export default {
       this.$store.commit('SELECT_COMPANY_ID', this.selectCompanyId)
       let period = query.period || this.Utils.getStorePeriodObj(this)
       let url = '/api/yzh/accaux/trace/search' // 所有模块的数据状态
+      // this.$router.replace({path: '/data/Purchase?module=Purchase&tax_or_acc=true'})
       return this.UtilsAxios.handleFetchPost(url, (res) => {
         console.log('res', res)
       }, { cond: { company: this.selectCompanyId, 'period.m': period.m, 'period.y': period.y }, select: '_id company' })
@@ -170,7 +171,7 @@ export default {
         let tax_or_acc = this.$store.state.tax_or_acc
         let path = `/data/${moduleName}`
         let query = { companyId: this.selectCompanyId, module: moduleName, tax_or_acc }
-        this.$router.push({ path, query })
+        this.$router.replace({ path, query })
       }, 300) // 大概时间300ms
     },
 

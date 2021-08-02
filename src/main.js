@@ -20,6 +20,11 @@ import * as MS from '../packages'
 import common from '@/utils/common.js'
 import _ from 'lodash'
 
+const afterSubmit = ms.mixins.form.methods.afterSubmit
+ms.mixins.form.methods.afterSubmit = function (res) {
+  this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
+  afterSubmit.call(this, res)
+}
 window.$mixins = mixins
 
 Vue.prototype.$axios = axios
@@ -39,6 +44,7 @@ Object.keys(filters).forEach(key => {
 */
 router.beforeEach((to, from, next) => {
   store.commit('LOADING', true)
+  // todo   ???
   next()
 })
 router.afterEach(() => {
