@@ -79,7 +79,7 @@ export default {
       })
     },
     handleTab () {
-      let query = Object.assign(this.query, {page: 1})
+      let query = Object.assign(this.query, {Skip: 0})
       this.$router.replace({
         path: this.$route.path,
         query
@@ -104,7 +104,7 @@ export default {
       }
     },
     indexMethod (index) {
-      let result = (Number(this.query.page) - 1) * Number(this.query.rows) + (index + 1)
+      let result = Number(this.query.Skip) + Number(this.query.Take) // (Number(this.query.page) - 1) * Number(this.query.rows) + (index + 1)
       if (result > 999) {
         return '999+'
       }
@@ -138,7 +138,7 @@ export default {
           ...query
         }
       }
-      return Object.assign({page: 1, rows: 20}, this.params || {}, this.$route && this.isHistory ? this.$route.query : {}, query)
+      return Object.assign({Skip: 0, Take: 20}, this.params || {}, this.$route && this.isHistory ? this.$route.query : {}, query)
     },
     getPaginationProps (data = {}) { // 获取分页默认props
       if (data.count !== undefined) {
@@ -146,8 +146,8 @@ export default {
       }
       if (data && data.total && this.query) {
         let query = this.query
-        let rows = query.rows ? Number(query.rows) : 20
-        let page = query.page ? Number(query.page) : 1
+        let rows = query.Take ? Number(query.Take) : 20
+        let page = query.Skip ? Number(query.Skip) : 0
         let layout = 'total, prev, pager, next, sizes, jumper'
         let pagerCount = 5
         if (process.browser && document.ontouchstart !== undefined) {
@@ -189,13 +189,14 @@ export default {
       }
     },
     handleCurrentChange (value) { // 修改页数事件
-      if (value != this.query.page) { //eslint-disable-line
-        let query = Object.assign({}, this.query, {page: value})
+      let Skip = Number(this.query.Take) * (value - 1)
+      if (Skip != Number(this.query.Skip)) { //eslint-disable-line
+        let query = Object.assign({}, this.query, { Skip })
         this.updateRoute && this.updateRoute(query)
       }
     },
     handleSizeChange (value) { // 修改分页条数事件
-      let query = Object.assign({}, this.query, {page: 1, rows: value})
+      let query = Object.assign({}, this.query, {Skip: 0, Take: value})
       this.updateRoute && this.updateRoute(query)
     },
     updateRoute (query) { // 更新URL地址
@@ -215,7 +216,7 @@ export default {
       }
     },
     handleSubmit () { // 表单提交事件
-      this.query.page = 1
+      this.query.Skip = 0
       this.updateRoute(this.query)
     },
     getFormProps (props) { // 获取默认表单props
@@ -229,7 +230,7 @@ export default {
       }, props)
     },
     handleReset () {
-      this.query = Object.assign({page: 1, rows: 20}, this.$$query)
+      this.query = Object.assign({Skip: 0, Take: 20}, this.$$query)
       this.triggerFetch(this.query)
       // this.$refs.query && this.$refs.query.resetFields && this.$refs.query.resetFields()
     },
@@ -272,7 +273,7 @@ export default {
   },
   beforeRouteUpdate (to, from, next) { // 监听route地址变化
     if (to.path === from.path) {
-      this.query = Object.assign({}, this.$$query, to.query, {page: to.query.page || 1, rows: to.query.rows || 20})
+      this.query = Object.assign({}, this.$$query, to.query, {Skip: to.query.Skip || 0, Take: to.query.Take || 20})
       this.triggerFetch(this.query)
     }
     next()

@@ -95,7 +95,7 @@ export default {
   ],
   data () {
     return {
-      query: {
+      query: this.getQuery({
         Search: '',
         region: '',
         IsEnable: null,
@@ -103,9 +103,9 @@ export default {
         //   "BeginTime": "2021-07-24T08:13:59.722Z",
         //   "EndTime": "2021-07-24T08:13:59.722Z"
         // },
-        Skip: 0,
-        Take: 10
-      },
+        ...this.$route.query
+      }),
+
       pageData: {
         count: 0,
         data: []
