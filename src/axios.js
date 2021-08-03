@@ -8,9 +8,8 @@ const $axios = axios.create({
 })
 let count = 0
 $axios.interceptors.request.use(config => {
-  // Do something before request is sent
   let token = localStorage.getItem('token')
-  if (config.headers && token) {
+  if (config.headers && token && config.url !== '/api/Session/Login') { // 登录必须不带token
     // config.headers['x-admin-token'] = token
     // config.headers['Authorization'] = 'Bearer ' + token // zn99 style
     config.headers['Authorization'] = 'Token ' + token // .net

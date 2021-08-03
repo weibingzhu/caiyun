@@ -22,7 +22,10 @@ import _ from 'lodash'
 
 const afterSubmit = ms.mixins.form.methods.afterSubmit
 ms.mixins.form.methods.afterSubmit = function (res) {
-  this.$message({ type: 'success', message: res ? '创建成功' : '修改成功' })
+  this.$message({
+    type: 'success',
+    message: res ? '创建成功' : '修改成功'
+  })
   afterSubmit.call(this, res)
 }
 window.$mixins = mixins
@@ -42,10 +45,21 @@ Object.keys(filters).forEach(key => {
 /*
 页面进度条控制
 */
+let tempRouterIndex = 0
 router.beforeEach((to, from, next) => {
-  store.commit('LOADING', true)
-  // todo 先获取sisson，如果不可以跳到登录界面  ???
-  next()
+  if (++tempRouterIndex === 1) { // 第一次打开|刷新的时候，先获取sisson，如果拿不到，跳到登录界面
+    axios({
+      url: '/api/Session/GetSession',
+      method: 'POST'
+    }).then((res) => {
+      next()
+    }).catch((res) => {
+      router.push({ path: '/signin' })
+    })
+  } else {
+    store.commit('LOADING', true)
+    next()
+  }
 })
 router.afterEach(() => {
   window.$$timer = setTimeout(() => {
@@ -72,7 +86,7 @@ let initRootFontSize = function () {
   if (fontSize < 12) {
     fontSize = 12
   }
-  document.documentElement.style.fontSize = `${fontSize}px`// 计算设计稿和实际像素的缩放比。向上取整1px = 0.01rem
+  document.documentElement.style.fontSize = `${fontSize}px` // 计算设计稿和实际像素的缩放比。向上取整1px = 0.01rem
 }
 window.addEventListener('resize', initRootFontSize)
 initRootFontSize()
@@ -85,6 +99,8 @@ window.$$root = new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
 })

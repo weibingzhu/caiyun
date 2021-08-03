@@ -76,7 +76,8 @@
         <div class="e-frame-layout--nav-item">
           <router-link class="e-frame-layout--nav-trigger" :to="{path:'/php', query: {state: '1'}}">
             <icon>&#xe604;</icon>
-            {{$store.state.user? ($store.state.user.person ? $store.state.user.person.name: '请登录') : '请登录'}}
+            <!-- {{$store}} | {{store.state}} -->
+            {{$store.state.user? $store.state.user.UserName : '请登录'}}
           </router-link>
         </div>
         <div class="e-frame-layout--nav-item">
@@ -263,9 +264,7 @@ export default {
     // 双击左边栏的logo
     handleDblclickLogo () {
       clearTimeout(this.isDbClick) // 清除
-      this.$router.push({
-        path: '/'
-      })
+      this.$router.push({ path: '/' })
     },
     // 切换右边的菜单大小
     handleClickLogo () {
@@ -277,7 +276,7 @@ export default {
 
     handleLogout () {
       this.UtilsAxios.handleFetchPost('/api/Session/Logout', (res) => {
-        localStorage.setItem('token', '')
+        localStorage.setItem('token', null)
         this.$router.push({
           path: '/signin'
         })

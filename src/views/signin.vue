@@ -87,8 +87,9 @@ export default {
       this.$refs[formName].validate((valid) => { // 为表单绑定验证功能
         if (valid) {
           this.UtilsAxios.handleFetchPost('/api/Session/Login', (res) => {
-            localStorage.setItem('token', res)
+            localStorage.setItem('token', res) // {UserId,UserName}
             this.logonSucceedGetSession(res)
+            this.logonSucceedOtherData(res)
           }, this.form)
         } else {
           this.dialogVisible = true
@@ -99,8 +100,14 @@ export default {
     // 登录成功后，获取session
     logonSucceedGetSession (res) {
       this.UtilsAxios.handleFetchPost('/api/Session/GetSession', (res) => {
+        this.$store.commit('USRE', res)
         this.$router.push({ path: '/' })
       }, null)
+    },
+
+    logonSucceedOtherData () {
+      // 代账公司ID ，名称，属区；
+      // 该账号下的所有公司[{id，taxId，name，资质}]
     },
 
     logonSuccess (res) {
