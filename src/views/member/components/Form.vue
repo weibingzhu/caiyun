@@ -59,7 +59,7 @@ export default {
       return this.$axios({ url, method: 'POST', data: this.form })
     },
     headleRole () {
-      this.$router.push({ path: '/role/index' })
+      this.$router.push({ path: '/role/list' })
     }
   }
 }

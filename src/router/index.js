@@ -171,22 +171,22 @@ let routes = [
     }
   },
   {
-    path: '/member/index',
-    component: () => import('@/views//member/index.vue'),
+    path: '/member/list',
+    component: () => import('@/views//member/list.vue'),
     meta: {
       title: '成员管理'
     }
   },
   {
-    path: '/permission/index',
-    component: () => import('@/views/permission/index.vue'),
+    path: '/permission/list',
+    component: () => import('@/views/permission/list.vue'),
     meta: {
       title: '权限设置'
     }
   },
   {
-    path: '/role/index',
-    component: () => import('@/views/role/index.vue'),
+    path: '/role/list',
+    component: () => import('@/views/role/list.vue'),
     meta: {
       title: '角色管理'
     }

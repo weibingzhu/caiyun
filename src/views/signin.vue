@@ -83,14 +83,21 @@ export default {
   },
   methods: {
     onSubmit (formName) {
-      // this.form['device'] = { 'type': 'mozilla/5.0+(windows+nt+10.0;+win64;+x64)+applewebkit/537.36+(khtml,+like+gecko)+chrome/89.0.4389.114+safari/537.36', 'address': { 'ip': '113.118.227.107', 'location': { 'lat': 22.53332, 'lng': 113.93041 }, 'ad_info': { 'nation': '中国', 'province': '广东省', 'city': '深圳市', 'district': '南山区', 'adcode': 440305 } } }
       this.$refs[formName].validate((valid) => { // 为表单绑定验证功能
         if (valid) {
-          this.UtilsAxios.handleFetchPost('/api/Session/Login', (res) => {
-            localStorage.setItem('token', res) // {UserId,UserName}
+          this.$axios({
+            url: '/api/Session/Login',
+            method: 'POST',
+            data: this.form
+          }).then((res) => {
+            localStorage.setItem('token', res) // res = {UserId,UserName}
             this.logonSucceedGetSession(res)
             this.logonSucceedOtherData(res)
-          }, this.form)
+          }).catch((res) => {
+            let message = this._.get(res, 'response.data.Message')
+            if (!message) message = '登录异常，请重新登录'
+            this.$message({ type: 'error', message })
+          })
         } else {
           this.dialogVisible = true
           return false
