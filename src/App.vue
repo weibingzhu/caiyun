@@ -13,6 +13,7 @@
             ></el-image>
           </div>
           <el-switch
+            v-if="visitorType === 2"
             size="mini"
             v-model="type"
             :active-text="scope.isCollapse?'':'报税'"
@@ -212,6 +213,7 @@ export default {
   name: 'App',
   data () {
     return {
+      visitorType: 3,
       isDbClick: '',
       uploadError: '',
       uploadType: '',
@@ -225,7 +227,13 @@ export default {
       asideCollapse: false
     }
   },
+  mounted () {
+    this.fetch()
+  },
   methods: {
+    fetch () {
+      this.menus = visitor['visitor' + this.visitorType].menus
+    },
     // 选择公司
     handleSelect (e) {
       this.companyNameChars = e ? e.length : 20
@@ -254,11 +262,6 @@ export default {
         message: this.type ? ' 报税月份：2020-07' : ' 记账月份：2020-07'
       })
       this.$store.commit('TAX_OR_ACC', this.type)
-      if (this.type) {
-        // this.menus = visitor.visitor1_acc.menus
-      } else {
-        // this.menus = visitor.visitor1_tax.menus
-      }
     },
 
     // 双击左边栏的logo
@@ -275,12 +278,13 @@ export default {
     },
 
     handleLogout () {
-      this.UtilsAxios.handleFetchPost('/api/Session/Logout', (res) => {
+      let url = '/api/Session/Logout'
+      this.$axios({ url, method: 'POST' }).finally(() => {
         localStorage.setItem('token', null)
         this.$router.push({
           path: '/signin'
         })
-      }, this.form)
+      })
     },
     // 公司搜索过滤
     filterMethod (keyWork) {

@@ -24,7 +24,8 @@
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="handleImport">导入成员</el-dropdown-item>
-            <el-dropdown-item @click.native="handleExport">导出成员</el-dropdown-item>
+            <el-dropdown-item @click.native="handleExport('select')">导出选中成员</el-dropdown-item>
+            <el-dropdown-item @click.native="handleExport('all')">导出全部成员</el-dropdown-item>
             <el-dropdown-item @click.native="handleDownload">模板下载</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -85,24 +86,42 @@ export default {
     fetch () {
       this.UtilsAxios.handleFetchPost('/api/SystemUser/List', (res) => {
         this.pageData.count = res.TotalRecord
-        for (const item of res.Items) {
-          item['roleNames'] = res.AvailableRoles.reduce((ns, r) => {
-            if (item.Roles && item.Roles.includes(r.Id)) ns.push(r.Name)
-            return ns
-          }, [])
-        }
+        res = this._paresRoleNames(res)
         this.pageData.data = res.Items
       }, this.query)
     },
+
     // 导入excel
     handleImport (e) {
       this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
     },
+
+    // 获取角色名称
+    _paresRoleNames (res) {
+      for (const item of res.Items) {
+        item['roleNames'] = res.AvailableRoles.reduce((ns, r) => {
+          if (item.Roles && item.Roles.includes(r.Id)) ns.push(r.Name)
+          return ns
+        }, [])
+      }
+      return res
+    },
+
     // 导出现有员工
-    handleExport () {
-      let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
-      let datas = [{ name: 'xxx', phone: '158959595958', position: '秘书' }, { name: 'yyy', phone: '158959595958', position: '程序员' }]
-      ExcelUtils.export(handers, datas, '员工excel.xlsx')
+    handleExport (type) {
+      let handers = [{ title: '登录名称', path: 'LoginName' }, { title: '真实名称', path: 'Name' }, { title: '状态', path: 'IsEnable' }, { title: '角色', path: 'roleNames' }]
+      let temp = JSON.parse(JSON.stringify(this.query))
+      let queryExprot = Object(temp, { Take: 10000 })
+      if (type === 'all') {
+        this.UtilsAxios.handleFetchPost('/api/SystemUser/List', (res) => {
+          res = this._paresRoleNames(res)
+          ExcelUtils.export(handers, res.Items, '员工excel.xlsx')
+        }, queryExprot)
+      } else {
+        // asdf
+      }
+
+      //
     },
     // 下载模板
     handleDownload () {

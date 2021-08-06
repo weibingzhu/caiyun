@@ -28,7 +28,7 @@
 
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
           <h3 class="login-title">欢迎登录</h3>
-          <el-form-item label="代账公司ID" prop="TenantCode">
+          <el-form-item label="代账公司" prop="TenantCode">
             <el-input type="text" placeholder="请输入代账公司ID" v-model="form.TenantCode" />
           </el-form-item>
           <el-form-item label="账号" prop="LoginName">
