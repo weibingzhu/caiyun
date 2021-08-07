@@ -39,13 +39,6 @@ let routes = [
     },
     component: () => import('@/views/php.vue')
   },
-  // {
-  //   path: '/data/adopt',
-  //   meta: {
-  //     title: '数据采集'
-  //   },
-  //   component: () => import('@/views/data/adopt.vue')
-  // },
   {
     path: '/data/personal/adopt',
     component: () => import('@/views/data/personal/adopt.vue'),
@@ -92,16 +85,9 @@ let routes = [
     path: '/data',
     component: () => import('@/views/data/adopt.vue'),
     meta: {
-      title: '一般人数据'
+      title: '数据采集'
     },
     children: [
-      // {
-      //   path: 'adopt',
-      //   meta: {
-      //     title: '数据采集'
-      //   },
-      //   component: () => import('@/views/data/adopt.vue')
-      // },
       {
         path: 'Sales',
         meta: {
@@ -118,14 +104,23 @@ let routes = [
       },
       {
         path: 'PurchaseCustoms',
+        meta: {
+          title: '海关缴款书'
+        },
         component: () => import('@/views/data/purchaseCustoms/list.vue')
       },
       {
         path: 'SalesCustoms',
+        meta: {
+          title: '海关报关单'
+        },
         component: () => import('@/views/data/salesCustoms/list.vue')
       },
       {
         path: 'ManualBill',
+        meta: {
+          title: '手工票据'
+        },
         component: () => import('@/views/data/manualBill/list.vue')
       },
       {
@@ -137,6 +132,9 @@ let routes = [
       },
       {
         path: 'Charge',
+        meta: {
+          title: '费用'
+        },
         component: () => import('@/views/data/charge/list.vue')
       }
     ]
@@ -282,10 +280,6 @@ let routes = [
       title: '合伙人数据'
     }
   },
-  // {
-  //   path: '/test/sheetjs',
-  //   component: () => import('@/test/sheetjs.vue')
-  // },
   {
     path: '/task/index',
     component: () => import('@/views/task/index.vue'),

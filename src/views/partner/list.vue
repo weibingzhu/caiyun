@@ -79,7 +79,6 @@
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button @click="handleDelect(scope.row)" type="text" size="small">删除</el-button>
           <el-button @click="handleRowDblclick(scope.row)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>

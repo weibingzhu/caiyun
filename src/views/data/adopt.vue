@@ -62,7 +62,7 @@
           </span>
           <el-badge value class="item">
             <el-tooltip class="item" effect="dark" content="asd fjaldsfj asdfasdfasdfsa" placement="bottom-end">
-              <el-button class="w-100" ref="btnManualBil" size="small" type="primary" @click="headleCreateTabale">生成税表</el-button>
+              <el-button class="w-100" ref="btnTableGeneral" size="small" type="primary"  @click="handleClickModule('TableGeneral')">生成税表</el-button>
             </el-tooltip>
           </el-badge>
         </el-button-group>
@@ -109,30 +109,17 @@
       </template>
       <div slot="table">
         <router-view></router-view>
-        asdas
-        <!-- <router-view :key="$route.path" class="sub-view"></router-view> -->
-        <!-- <sales-list></sales-list> -->
-        <!-- <purchase-list></purchase-list> -->
-        <!-- <purchase-list></purchase-list> -->
-        <!-- <purchase-customs-list></purchase-customs-list> -->
       </div>
     </e-page-list-layout>
   </div>
 </template>
 
 <script>
-import PurchaseList from './purchase/list'
-import SalesList from './sales/list'
-import PurchaseCustomsList from './purchaseCustoms/list.vue'
-
 export default {
   mixins: [
     $mixins.pageList
   ],
   components: {
-    PurchaseList,
-    PurchaseCustomsList,
-    SalesList
   },
   data () {
     return {
@@ -155,7 +142,6 @@ export default {
       this.$store.commit('SELECT_COMPANY_ID', this.selectCompanyId)
       let period = query.period || this.Utils.getStorePeriodObj(this)
       let url = '/api/yzh/accaux/trace/search' // 所有模块的数据状态
-      // this.$router.replace({path: '/data/Purchase?module=Purchase&tax_or_acc=true'})
       return this.UtilsAxios.handleFetchPost(url, (res) => {
         console.log('res', res)
       }, { cond: { company: this.selectCompanyId, 'period.m': period.m, 'period.y': period.y }, select: '_id company' })
@@ -181,11 +167,6 @@ export default {
     handleDblClickModule (module, name) {
       clearTimeout(this.isDbClick) // 清除
       console.log('asdf')
-    },
-
-    // 税表
-    headleCreateTabale () {
-      this.$router.push({ path: `/data/general/TableGeneral`, query: { companyId: this.selectCompanyId } })
     }
   }
 }

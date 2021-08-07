@@ -31,7 +31,15 @@
         </el-dropdown>
       </el-form>
     </template>
-    <el-table slot="table" v-bind="getTableProps()" v-on="getTableListeners()" stripe @row-dblclick="handleRowDblclick" :data="pageData.data">
+    <el-table
+      slot="table"
+      ref="membersTable"
+      v-bind="getTableProps()"
+      v-on="getTableListeners()"
+      stripe
+      @row-dblclick="handleRowDblclick"
+      :data="pageData.data"
+    >
       <el-table-column type="selection" width="58"></el-table-column>
       <el-table-column label="成员昵称" prop="LoginName"></el-table-column>
       <el-table-column label="真实姓名" prop="Name"></el-table-column>
@@ -71,6 +79,7 @@ export default {
   ],
   data () {
     return {
+      excelHanders: [{ title: '登录名称', path: 'LoginName' }, { title: '真实名称', path: 'Name' }, { title: '状态', path: 'IsEnable' }, { title: '角色', path: 'roleNames' }],
       query: this.getQuery({
         Search: '',
         IsEnable: null,
@@ -109,19 +118,17 @@ export default {
 
     // 导出现有员工
     handleExport (type) {
-      let handers = [{ title: '登录名称', path: 'LoginName' }, { title: '真实名称', path: 'Name' }, { title: '状态', path: 'IsEnable' }, { title: '角色', path: 'roleNames' }]
       let temp = JSON.parse(JSON.stringify(this.query))
       let queryExprot = Object(temp, { Take: 10000 })
       if (type === 'all') {
         this.UtilsAxios.handleFetchPost('/api/SystemUser/List', (res) => {
           res = this._paresRoleNames(res)
-          ExcelUtils.export(handers, res.Items, '员工excel.xlsx')
+          ExcelUtils.export(this.excelHanders, res.Items, '员工excel.xlsx')
         }, queryExprot)
-      } else {
-        // asdf
+      } else { // 选中的
+        let selection = this.$refs.membersTable.selection
+        ExcelUtils.export(this.excelHanders, selection, '员工excel.xlsx')
       }
-
-      //
     },
     // 下载模板
     handleDownload () {

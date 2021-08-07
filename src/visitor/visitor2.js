@@ -2,100 +2,55 @@ export default {
   index: '/',
   menus: [
     {
-      title: '我的客户',
-      index: '01',
+      title: '公司信息',
+      index: '020',
       icon: '&#xe604;',
-      options: [{
-        title: '合同管理',
-        index: '01-01',
-        route: '/customer/contract'
-      },
-      {
-        title: '客户列表',
-        index: '01-02',
-        route: '/customer/list'
-      },
-      {
-        title: '流失客户',
-        index: '01-03',
-        route: '/customer/leave'
-      },
-      {
-        title: '工商年审',
-        index: '01-04',
-        route: '/customer/yearCheck'
-      }]
+      route: '/role/list'
     },
     {
-      title: '初值化管理',
-      index: '02',
+      title: '基础数据',
+      index: '020',
       icon: '&#xe604;',
-      route: '/init/index'
+      route: '/role/list'
     },
     {
-      title: '数据采集',
-      index: '03',
-      icon: '&#xe604;',
-      route: '/data/Purchase?module=Purchase&tax_or_acc=true'
-    },
-    {
-      title: '自动化管理',
-      index: '019',
-      icon: '&#xe604;',
-      options: [{
-        title: '机器人状态',
-        index: '019-01',
-        route: '/data/personal/adopt'
-      },
-      {
-        title: '任务列表',
-        index: '019-02',
-        route: '/data/general/adopt'
-      }]
-    },
-    {
-      title: '税务管理',
-      index: '04',
+      title: '税务信息',
+      index: '0183',
       icon: '&#xe604;',
       options: [{
         title: '个税',
-        index: '03-01',
-        route: '/data/personal/adopt'
+        index: '0183-01',
+        route: '/partner/list'
       },
       {
-        title: '一般人增值税',
-        index: '03-02',
-        route: '/data/general/adopt'
-      },
-      {
-        title: '小规模增值税',
-        index: '03-03',
-        route: '/data/small/adopt'
+        title: '增值税',
+        index: '0183-02',
+        route: '/partner/data'
       },
       {
         title: '企业所得',
-        index: '03-04',
-        route: '/data/company/adopt'
-      },
-      {
-        title: '汇算清缴',
-        index: '04-05',
-        route: '/data/year/adopt'
+        index: '01-03',
+        route: '/customer/leave'
       }]
     },
     {
-      title: '账务管理',
-      index: '05',
+      title: '账务信息',
+      index: '0183',
       icon: '&#xe604;',
       options: [{
-        title: '凭证账簿',
-        index: '05-01',
-        route: '/acc/voucherBook'
+        title: '合伙人列表',
+        index: '0183-01',
+        route: '/partner/list'
       },
       {
-        title: '报表管理',
-        index: '05-02',
-        route: '/acc/report'
+        title: '合伙人数据',
+        index: '0183-02',
+        route: '/partner/data'
+      },
+      {
+        title: '流失的客户',
+        index: '01-03',
+        route: '/customer/leave'
       }]
     },
     {
@@ -119,42 +74,6 @@ export default {
       }]
     },
     {
-      title: '个税管理',
-      index: '0117',
-      icon: '&#xe604;',
-      options: [{
-        title: '非居民所得申报',
-        index: '0117-04',
-        route: '/tax/declareNonResident'
-      },
-      {
-        title: '往期修改',
-        index: '0117-06',
-        route: '/tax/fix'
-      }]
-    },
-    {
-      title: '资产管理',
-      index: '0113',
-      icon: '&#xe604;',
-      options: [{
-        title: '固定资产购买',
-        index: '0113-01',
-        route: '/payroll/info'
-      },
-      {
-        title: '固定资产折旧',
-        index: '0113-01',
-        route: '/building/parking'
-      }]
-    },
-    // {
-    //   title: '权限管理',
-    //   index: '021',
-    //   icon: '&#xe604;',
-    //   route: '/permission/list'
-    // },
-    {
       title: '角色管理',
       index: '020',
       icon: '&#xe604;',
@@ -165,21 +84,6 @@ export default {
       index: '020',
       icon: '&#xe604;',
       route: '/member/list'
-    },
-    {
-      title: '系统配置',
-      index: '0153',
-      icon: '&#xe604;',
-      options: [{
-        title: '货币汇率',
-        index: '0153-01',
-        route: '/setting/rate'
-      },
-      {
-        title: '系统设置',
-        index: '0153-02',
-        route: '/setting/system'
-      }]
     }
   ]
 }

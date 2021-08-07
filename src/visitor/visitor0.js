@@ -2,39 +2,7 @@ export default {
   index: '/',
   menus: [
     {
-      title: '公司信息',
-      index: '020',
-      icon: '&#xe604;',
-      route: '/role/list'
-    },
-    {
-      title: '基础数据',
-      index: '020',
-      icon: '&#xe604;',
-      route: '/role/list'
-    },
-    {
-      title: '税务信息',
-      index: '0183',
-      icon: '&#xe604;',
-      options: [{
-        title: '个税',
-        index: '0183-01',
-        route: '/partner/list'
-      },
-      {
-        title: '增值税',
-        index: '0183-02',
-        route: '/partner/data'
-      },
-      {
-        title: '企业所得',
-        index: '01-03',
-        route: '/customer/leave'
-      }]
-    },
-    {
-      title: '账务信息',
+      title: '合伙人管理',
       index: '0183',
       icon: '&#xe604;',
       options: [{
