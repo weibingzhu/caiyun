@@ -229,6 +229,7 @@ export default {
   },
   methods: {
     fetch () {
+      this.visitorType = this.$store.state.user.Edition
       this.menus = visitor['visitor' + this.visitorType].menus
     },
     // 选择公司
