@@ -11,7 +11,7 @@
           ></el-image>
         </div>
         <el-switch
-          v-if="visitorType === 2"
+          v-if="visitorType === 1"
           size="mini"
           v-model="type"
           :active-text="scope.isCollapse?'':'报税'"
