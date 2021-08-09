@@ -1,204 +1,203 @@
 <template>
-  <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index" :asideCollapse="asideCollapse" ref="frameLayout">
-    <template slot="logo" slot-scope="scope">
-      <div>
+  <div class="home-index">
+    <ms-frame-layout title="后台管理系统" :menus="menus" class="home-index" :asideCollapse="asideCollapse" ref="frameLayout">
+      <template slot="logo" slot-scope="scope">
         <div>
-          <el-image
-            @dblclick="handleDblclickLogo"
-            @click="handleClickLogo"
-            style="width: 100%; height: 70px"
-            :src="scope.isCollapse?'/static/images/left-logo-collapse.jpg':'/static/images/left-logo.jpg'"
-          ></el-image>
-        </div>
-        <el-switch
-          v-if="visitorType === 1"
-          size="mini"
-          v-model="type"
-          :active-text="scope.isCollapse?'':'报税'"
-          :inactive-text="scope.isCollapse?'':'记账'"
-          @change="handleSwitch"
-        ></el-switch>
-      </div>
-    </template>
-    <div slot="title" class="tittle">
-      <!-- TODO -->
-      <!-- <el-tag size="small" type="success" v-if="qualification === 1">一般人</el-tag> -->
-      <!-- <el-tag type="success">一般人</el-tag> -->
-      <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
-      <el-tag>小规模</el-tag>
-      <!-- {{selectCompanyId}} -->
-      <el-popover placement="bottom-start" width="300" trigger="hover">
-        <div>
-          <div style=" text-align: right;">
-            <el-link
-              type="primary"
-              href="https://etax.shenzhen.chinatax.gov.cn/bszm-web/apps/views/beforeLogin/indexBefore/pageIndex.html#/?taxId=91440300697101134F&pw=asdasdf"
-              target="_blank"
-            >进入税局</el-link>|
-            <el-link type="primary">寄快递(EMS)</el-link>
-          </div>
           <div>
-            公司简介和必要得字段这个后面
-            如果是 管理员 显示 专员名字
+            <el-image
+              @dblclick="handleDblclickLogo"
+              @click="handleClickLogo"
+              style="width: 100%; height: 70px"
+              :src="scope.isCollapse?'/static/images/left-logo-collapse.jpg':'/static/images/left-logo.jpg'"
+            ></el-image>
           </div>
+          <el-switch
+            v-if="visitorType === 1"
+            size="mini"
+            v-model="type"
+            :active-text="scope.isCollapse?'':'报税'"
+            :inactive-text="scope.isCollapse?'':'记账'"
+            @change="handleSwitch"
+          ></el-switch>
         </div>
-        <el-select
-          class="selectCompany"
-          :style="'width:' + companyNameChars+ 'px'"
-          slot="reference"
-          placeholder="请选择要操作的公司"
-          size="small"
-          filterable
-          :filter-method="filterMethod"
-          v-model="selectCompanyId"
-          @change="handleSelect"
-        >
-          <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.label"></el-option>
-        </el-select>
-      </el-popover>
-      <el-date-picker
-        @change="handleChangePeriod"
-        :clearable="false"
-        class="main-period"
-        v-model="period"
-        size="small"
-        type="month"
-        placeholder="操作属期"
-      ></el-date-picker>
-    </div>
-    <div slot="nav" class="nav">
-      <div class="e-frame-layout--nav-item">
-        <router-link class="e-frame-layout--nav-trigger" :to="{path:'/message', query: {state: '1'}}">
-          <icon>&#xe60c;</icon>消息
-        </router-link>
-      </div>
-      <div class="e-frame-layout--nav-item">
-        <router-link class="e-frame-layout--nav-trigger" :to="{path:'/php', query: {state: '1'}}">
-          <icon>&#xe604;</icon>
-          <!-- {{$store}} | {{store.state}} -->
-          {{$store.state.user? $store.state.user.UserName : '请登录'}}
-        </router-link>
-      </div>
-      <div class="e-frame-layout--nav-item">
-        <span class="e-frame-layout--nav-trigger" @click="handleLogout">
-          <icon>&#xe6a9;</icon>退出
-        </span>
-      </div>
-    </div>
-    <!--
-  <el-dialog :visible.sync="uploadDialog" width="88%">
-    <div slot="title">
-      <el-row type="flex" align="middle">
-        <el-col>
-          Excel上传:
-          <el-select placeholder="请选择要操作的公司" size="small" filterable :filter-method="filterMethod" v-model="selectCompanyId" @change="handleSelect">
-            <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          <el-date-picker
-            @change="handleChangePeriod"
-            :clearable="false"
-            class="main-period"
-            v-model="period"
-            size="small"
-            type="month"
-            placeholder="操作属期"
-          ></el-date-picker>&nbsp;&nbsp;
-          <el-checkbox v-model="isPreview">直接上传</el-checkbox>
-          <el-tooltip class="item" effect="dark" placement="bottom">
-            <div slot="content">
-              上传Excel说明：
-              <br />1 有头Excel(excel中有公司名称或税号和月份的)
-              <br />2 无头Excel，必须选择公司，月份，种类
-              <br />3 '直接上传'上传时不在下面预览
+      </template>
+      <div slot="title" class="tittle">
+        <!-- TODO -->
+        <!-- <el-tag size="small" type="success" v-if="qualification === 1">一般人</el-tag> -->
+        <!-- <el-tag type="success">一般人</el-tag> -->
+        <!-- <el-tag size="small" else="qualification === 2">小规模</el-tag> -->
+        <el-tag>小规模</el-tag>
+        <!-- {{selectCompanyId}} -->
+        <el-popover placement="bottom-start" width="300" trigger="hover">
+          <div>
+            <div style=" text-align: right;">
+              <el-link
+                type="primary"
+                href="https://etax.shenzhen.chinatax.gov.cn/bszm-web/apps/views/beforeLogin/indexBefore/pageIndex.html#/?taxId=91440300697101134F&pw=asdasdf"
+                target="_blank"
+              >进入税局</el-link>|
+              <el-link type="primary">寄快递(EMS)</el-link>
             </div>
-            <i class="el-icon-question"></i>
-          </el-tooltip>
-        </el-col>
-        <span class="tilte-right-area">
-          <el-dropdown size="small">
-            <el-button size="small">
-              模板下载
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="asdf">银行对账单</el-dropdown-item>
-              <el-dropdown-item commonad="asdf">海关报关单</el-dropdown-item>
-              <el-dropdown-item>海关缴款书</el-dropdown-item>
-              <el-dropdown-item>费用</el-dropdown-item>
-              <el-dropdown-item>个税人员信息</el-dropdown-item>
-              <el-dropdown-item>个税人员工资</el-dropdown-item>
-              <el-dropdown-item>银行汇票</el-dropdown-item>
-              <el-dropdown-item>固定资产</el-dropdown-item>
-              <el-dropdown-item>手工票据</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </span>
-      </el-row>
-    </div>
-    <div class="load-error">{{uploadError}}</div>
-    <input ref="uploadInput" accept=".xlsx, .xls" type="file" style="display:none" @change="handleClickUploadInput($event)" />
-    <el-row type="flex" align="middle">
-      <el-col :span="24">
-        <el-button-group style="display:flex; width:100%">
-          <el-button ref="btnPurchase" size="small" @click="handleUpload('purchase')">进项</el-button>
-          <el-button ref="btnSales" size="small" @click="handleUpload('sales')">销项</el-button>
-          <el-button ref="btnBank" size="small">银行对账单</el-button>
-          <el-button ref="btnPayroll" size="small" @click="handleUpload('person')">人员信息</el-button>
-          <el-button ref="btnPayroll" size="small" @click="handleUpload('personTax')">人员工资</el-button>
-          <el-button ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
-          <el-button ref="btnSalesCustoms" size="small">海关报关单</el-button>
-          <el-button ref="btnCharge" size="small">费用</el-button>
-          <el-button ref="btnFixedAsset" size="small">固定资产</el-button>
-          <el-button ref="btnManualBil" size="small">手工票据</el-button>
-          <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
-        </el-button-group>
-      </el-col>
-      <el-dropdown size="small">
-        <el-button size="small" type="primary">
-          更多
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="handleUpload('foreigners')">外籍人员信息</el-dropdown-item>
-          <el-dropdown-item @click.native="handleUpload('tax')">无住所工资薪金</el-dropdown-item>
-          <el-dropdown-item @click.native="handleUpload('yearAwards')">全年一次性奖金</el-dropdown-item>
-          <el-dropdown-item>银行汇票</el-dropdown-item>
-          <el-dropdown-item>固定资产</el-dropdown-item>
-          <el-dropdown-item>手工票据</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </el-row>
-    <el-row>
-      <el-upload class="upload-demo22" drag multiple :auto-upload="false" :on-change="handleUploadChange">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-          ，或单击上面对应类型上传
+            <div>
+              公司简介和必要得字段这个后面
+              如果是 管理员 显示 专员名字
+            </div>
+          </div>
+          <el-select
+            class="selectCompany"
+            :style="'width:' + companyNameChars+ 'px'"
+            slot="reference"
+            placeholder="请选择要操作的公司"
+            size="small"
+            filterable
+            :filter-method="filterMethod"
+            v-model="selectCompanyId"
+            @change="handleSelect"
+          >
+            <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.label"></el-option>
+          </el-select>
+        </el-popover>
+        <el-date-picker
+          @change="handleChangePeriod"
+          :clearable="false"
+          class="main-period"
+          v-model="period"
+          size="small"
+          type="month"
+          placeholder="操作属期"
+        ></el-date-picker>
+      </div>
+      <div slot="nav" class="nav">
+        <div class="e-frame-layout--nav-item">
+          <router-link class="e-frame-layout--nav-trigger" :to="{path:'/message', query: {state: '1'}}">
+            <icon>&#xe60c;</icon>消息
+          </router-link>
         </div>
-      </el-upload>
-    </el-row>
-    -->
-    <!--
-      <el-row>
-      内容table
-    </el-row>-->
-    <!--
-    <el-row>
+        <div class="e-frame-layout--nav-item">
+          <router-link class="e-frame-layout--nav-trigger" :to="{path:'/php', query: {state: '1'}}">
+            <icon>&#xe604;</icon>
+            <!-- {{$store}} | {{store.state}} -->
+            {{$store.state.user? $store.state.user.UserName : '请登录'}}
+          </router-link>
+        </div>
+        <div class="e-frame-layout--nav-item">
+          <span class="e-frame-layout--nav-trigger" @click="handleLogout">
+            <icon>&#xe6a9;</icon>退出
+          </span>
+        </div>
+      </div>
+    </ms-frame-layout>
+    <el-dialog :visible.sync="uploadDialog" width="88%">
+      <div slot="title">
+        <el-row type="flex" align="middle">
+          <el-col>
+            Excel上传:
+            <el-select placeholder="请选择要操作的公司" size="small" filterable :filter-method="filterMethod" v-model="selectCompanyId" @change="handleSelect">
+              <el-option v-for="item in allCompanies" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+            <el-date-picker
+              @change="handleChangePeriod"
+              :clearable="false"
+              class="main-period"
+              v-model="period"
+              size="small"
+              type="month"
+              placeholder="操作属期"
+            ></el-date-picker>&nbsp;&nbsp;
+            <el-checkbox v-model="isPreview">直接上传</el-checkbox>
+            <el-tooltip class="item" effect="dark" placement="bottom">
+              <div slot="content">
+                上传Excel说明：
+                <br />1 有头Excel(excel中有公司名称或税号和月份的)
+                <br />2 无头Excel，必须选择公司，月份，种类
+                <br />3 '直接上传'上传时不在下面预览
+              </div>
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+          </el-col>
+          <span class="tilte-right-area">
+            <el-dropdown size="small">
+              <el-button size="small">
+                模板下载
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="asdf">银行对账单</el-dropdown-item>
+                <el-dropdown-item commonad="asdf">海关报关单</el-dropdown-item>
+                <el-dropdown-item>海关缴款书</el-dropdown-item>
+                <el-dropdown-item>费用</el-dropdown-item>
+                <el-dropdown-item>个税人员信息</el-dropdown-item>
+                <el-dropdown-item>个税人员工资</el-dropdown-item>
+                <el-dropdown-item>银行汇票</el-dropdown-item>
+                <el-dropdown-item>固定资产</el-dropdown-item>
+                <el-dropdown-item>手工票据</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </span>
+        </el-row>
+      </div>
+      <div class="load-error">{{uploadError}}</div>
+      <input ref="uploadInput" accept=".xlsx, .xls" type="file" style="display:none" @change="handleClickUploadInput($event)" />
       <el-row type="flex" align="middle">
         <el-col :span="24">
-          <el-button native-type="submit" size="small">重新上传</el-button>
+          <el-button-group style="display:flex; width:100%">
+            <el-button ref="btnPurchase" size="small" @click="handleUpload('purchase')">进项</el-button>
+            <el-button ref="btnSales" size="small" @click="handleUpload('sales')">销项</el-button>
+            <el-button ref="btnBank" size="small">银行对账单</el-button>
+            <el-button ref="btnPayroll" size="small" @click="handleUpload('person')">人员信息</el-button>
+            <el-button ref="btnPayroll" size="small" @click="handleUpload('personTax')">人员工资</el-button>
+            <el-button ref="btnPurchaseCustoms" size="small">海关缴款书</el-button>
+            <el-button ref="btnSalesCustoms" size="small">海关报关单</el-button>
+            <el-button ref="btnCharge" size="small">费用</el-button>
+            <el-button ref="btnFixedAsset" size="small">固定资产</el-button>
+            <el-button ref="btnManualBil" size="small">手工票据</el-button>
+            <el-button ref="btnTicket" size="small">银行承兑汇票</el-button>
+          </el-button-group>
         </el-col>
-        <span>
-          <el-button native-type="submit" size="small">定位错误</el-button>
-          <el-button native-type="submit" size="small">放弃上传</el-button>
-          <el-button native-type="submit" type="primary" size="small">确认上传</el-button>
-        </span>
+        <el-dropdown size="small">
+          <el-button size="small" type="primary">
+            更多
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="handleUpload('foreigners')">外籍人员信息</el-dropdown-item>
+            <el-dropdown-item @click.native="handleUpload('tax')">无住所工资薪金</el-dropdown-item>
+            <el-dropdown-item @click.native="handleUpload('yearAwards')">全年一次性奖金</el-dropdown-item>
+            <el-dropdown-item>银行汇票</el-dropdown-item>
+            <el-dropdown-item>固定资产</el-dropdown-item>
+            <el-dropdown-item>手工票据</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-row>
-    </el-row>
-  </el-dialog>
-    -->
-  </ms-frame-layout>
+      <el-row>
+        <el-upload class="upload-demo22" drag multiple :auto-upload="false" :on-change="handleUploadChange">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+            ，或单击上面对应类型上传
+          </div>
+        </el-upload>
+      </el-row>
+
+      <!--
+      <el-row>
+      内容table
+      </el-row>-->
+      <el-row>
+        <el-row type="flex" align="middle">
+          <el-col :span="24">
+            <el-button native-type="submit" size="small">重新上传</el-button>
+          </el-col>
+          <span>
+            <el-button native-type="submit" size="small">定位错误</el-button>
+            <el-button native-type="submit" size="small">放弃上传</el-button>
+            <el-button native-type="submit" type="primary" size="small">确认上传</el-button>
+          </span>
+        </el-row>
+      </el-row>
+    </el-dialog>
+  </div>
 </template>
 
 <script>

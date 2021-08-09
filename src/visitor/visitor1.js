@@ -7,22 +7,27 @@ export default {
       icon: '&#xe604;',
       options: [{
         title: '客户列表',
-        index: '01-02',
+        index: '01-01',
         route: '/customer/list'
       },
       {
+        title: '客户登录账号',
+        index: '01-02',
+        route: '/customer/member/list'
+      },
+      {
         title: '合同管理',
-        index: '01-01',
+        index: '01-03',
         route: '/customer/contract'
       },
       {
         title: '流失客户',
-        index: '01-03',
+        index: '01-04',
         route: '/customer/leave'
       },
       {
         title: '工商年审',
-        index: '01-04',
+        index: '01-05',
         route: '/customer/yearCheck'
       }]
     },

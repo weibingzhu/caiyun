@@ -1,0 +1,158 @@
+<template>
+  <ms-page-list-layout class="member-index">
+    <template slot="search">
+      <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
+        <el-form-item label="搜索">
+          <el-input placeholder="请输入关键字" v-model.trim="query.Search" size="small"></el-input>
+        </el-form-item>
+        <el-button native-type="submit" size="small" @click="handleCreate">添加账号</el-button>
+      </el-form>
+    </template>
+    <el-table
+      slot="table"
+      ref="membersTable"
+      v-bind="getTableProps()"
+      v-on="getTableListeners()"
+      stripe
+      @row-dblclick="handleRowDblclick"
+      :data="pageData.data"
+    >
+      <el-table-column type="selection" width="58"></el-table-column>
+      <el-table-column label="成员昵称" prop="LoginName"></el-table-column>
+      <el-table-column label="真实姓名" prop="Name"></el-table-column>
+      <el-table-column label="邮箱">
+        <template v-slot="scope">46345955@qq.com</template>
+      </el-table-column>
+      <el-table-column label="手机号">
+        <template v-slot="scope">14578562559</template>
+      </el-table-column>
+      <el-table-column label="部门">
+        <template v-slot="scope">服务部</template>
+      </el-table-column>
+      <el-table-column label="分配权限" prop="roleNames"></el-table-column>
+      <el-table-column label="入职时间">
+        <template v-slot="scope">1212-12-12</template>
+      </el-table-column>
+      <el-table-column label="状 态" prop="IsEnable">
+        <template v-slot="scope">{{scope.row.IsEnable? '正常': '未激活'}}</template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template v-slot="scope">
+          <el-button @click="handleDelect(scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="handleRowDblclick(scope.row)" type="text" size="small">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </ms-page-list-layout>
+</template>
+
+<script>
+import ExcelUtils from '@/excel/utils'
+import ExcelManager from '@/excel/Manager'
+const Form = () => import('./components/Form')
+export default {
+  mixins: [
+    ms.mixins.pageList
+  ],
+  data () {
+    return {
+      excelHanders: [{ title: '登录名称', path: 'LoginName' }, { title: '真实名称', path: 'Name' }, { title: '状态', path: 'IsEnable' }, { title: '角色', path: 'roleNames' }],
+      query: this.getQuery({
+        Search: '',
+        IsEnable: null,
+        ...this.$route.query
+      }),
+      pageData: {
+        count: 0,
+        data: []
+      }
+    }
+  },
+  methods: {
+    fetch () {
+      this.UtilsAxios.handleFetchPost('/api/SpCustomerService/List', (res) => {
+        this.pageData.count = res.TotalRecord
+        res = this._paresRoleNames(res)
+        this.pageData.data = res.Items
+      }, this.query)
+    },
+
+    // 导入excel
+    handleImport (e) {
+      this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
+    },
+
+    // 获取角色名称
+    _paresRoleNames (res) {
+      for (const item of res.Items) {
+        item['roleNames'] = res.AvailableRoles.reduce((ns, r) => {
+          if (item.Roles && item.Roles.includes(r.Id)) ns.push(r.Name)
+          return ns
+        }, [])
+      }
+      return res
+    },
+
+    // 导出现有员工
+    handleExport (type) {
+      let temp = JSON.parse(JSON.stringify(this.query))
+      let queryExprot = Object(temp, { Take: 10000 })
+      if (type === 'all') {
+        this.UtilsAxios.handleFetchPost('/api/SpCustomerService/List', (res) => {
+          res = this._paresRoleNames(res)
+          ExcelUtils.export(this.excelHanders, res.Items, '员工excel.xlsx')
+        }, queryExprot)
+      } else { // 选中的
+        let selection = this.$refs.membersTable.selection
+        ExcelUtils.export(this.excelHanders, selection, '员工excel.xlsx')
+      }
+    },
+    // 下载模板
+    handleDownload () {
+      let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
+      let datas = []
+      ExcelUtils.export(handers, datas, '员工excel模板.xlsx')
+    },
+    // 解析excel TODO 相同字段替换问题（就是多次上传什么覆盖问题）
+    async handleClickUploadInput (e) {
+      const file = e.target.files && e.target.files[0]
+      let model = await ExcelManager.parse(file)
+      console.log('model:', model)
+    },
+    // 双击人员编辑
+    handleRowDblclick (row, column, event) {
+      ms.navigator.push(this, Form, { params: row, title: '编辑' })
+    },
+    // 手动添加人员
+    handleCreate () {
+      ms.navigator.push(this, Form, { params: null, title: '创建' })
+    },
+    handleDelect (row) {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.UtilsAxios.handleFetchPost('/api/SpCustomerService/Delete', (res) => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.fetch()
+        }, { Id: row.Id })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.member-index {
+  width: 100%;
+}
+</style>

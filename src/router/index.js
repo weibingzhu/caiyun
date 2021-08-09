@@ -288,6 +288,13 @@ let routes = [
     }
   },
   {
+    path: '/customer/member/list',
+    component: () => import('@/views/customer-member/list.vue'),
+    meta: {
+      title: '客户登录账号'
+    }
+  },
+  {
     path: '/signin',
     component: () => import('@/views/signin.vue'),
     meta: {
