@@ -1,6 +1,6 @@
 <template>
   <div class="pruchaseCustoms-list">
-    <e-page-list-layout>
+    <ms-page-list-layout>
       <template slot="search">
         <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
@@ -50,7 +50,7 @@
         </el-table-column>
         <el-table-column label="状态" prop="provider.name"></el-table-column>
       </el-table>
-    </e-page-list-layout>
+    </ms-page-list-layout>
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
     Form
   },
   mixins: [
-    $mixins.pageList
+    ms.mixins.pageList
   ],
   data () {
     return {

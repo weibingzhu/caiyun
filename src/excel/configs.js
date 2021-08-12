@@ -5,11 +5,7 @@ import bank from './bank/configs'
 /**
  * 特殊excel的所有比配
  */
-export default []
-  .concat(personal)
-  .concat(sales)
-  .concat(purchase)
-  .concat(bank)
+export default [...personal, ...sales, ...purchase, ...bank]
 
 /**
   该结构体一个不能少

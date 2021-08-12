@@ -1,6 +1,6 @@
 <template>
   <div class="customer-contract">
-    <e-page-list-layout>
+    <ms-page-list-layout>
       <template slot="search">
         <el-form slot="search" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="创建/签约时间">
@@ -17,7 +17,7 @@
             <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
           </el-form-item>
           <el-button size="small">搜索</el-button>
-          <el-button @click="$router.push({path: '/customer/contract-form'})" size="small">创建</el-button>
+          <el-button @click="handleCreate" size="small">创建</el-button>
         </el-form>
       </template>
       <el-table
@@ -140,14 +140,17 @@
           </template>
         </el-table-column>
       </el-table>
-    </e-page-list-layout>
+    </ms-page-list-layout>
   </div>
 </template>
 
 <script>
+
+import Form from './Form'
+
 export default {
   mixins: [
-    $mixins.pageList
+    ms.mixins.pageList
   ],
   data () {
     return {
@@ -236,6 +239,13 @@ export default {
         res.data.length = 100
         this.pageData = res
       }, params)
+    },
+
+    handleCreate () {
+      ms.navigator.push(this, Form, { params: null, title: '创建' })
+    },
+    handleEdit (row, column, event) {
+      ms.navigator.push(this, Form, { params: row, title: '编辑' })
     },
 
     handleUpdate (row) {

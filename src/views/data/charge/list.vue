@@ -1,14 +1,13 @@
 <template>
   <div class="charge-list">
-    <e-page-list-layout>
+    <ms-page-list-layout>
       <template slot="search">
         <el-form slot="search" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
             <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
           </el-form-item>
           <span class="operating-area">
-            <el-button size="small">确认无数据</el-button>
-            <el-button size="small">添加费用</el-button>
+            <el-button size="small" @click="handleCreate">添加</el-button>
             <el-button size="small">执行规则</el-button>
             <el-dropdown size="small" @command="handleCommand">
               <el-button type="primary" size="small">
@@ -16,7 +15,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc" >导出数据</el-dropdown-item>
+                <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc">导出数据</el-dropdown-item>
                 <el-dropdown-item>上传数据</el-dropdown-item>
                 <el-dropdown-item>模板下载</el-dropdown-item>
                 <el-dropdown-item>已删除数据</el-dropdown-item>
@@ -43,9 +42,7 @@
           <template slot-scope="scope">{{scope.row.invoice.type}}</template>
         </el-table-column>
         <el-table-column label="认证日期" prop="date" sortable>
-          <template slot-scope="scope">
-            {{scope.row.date ? scope.row.date.substr(0,10) : ''}}
-          </template>
+          <template slot-scope="scope">{{scope.row.date ? scope.row.date.substr(0,10) : ''}}</template>
         </el-table-column>
         <el-table-column label="发票代码" prop="invoice.code" sortable></el-table-column>
         <el-table-column label="发票号码" prop="invoice.no" sortable></el-table-column>
@@ -54,18 +51,21 @@
         <el-table-column label="销行名称" prop="buyer.name"></el-table-column>
         <el-table-column label="发票状态" prop="invoice.status"></el-table-column>
       </el-table>
-    </e-page-list-layout>
+    </ms-page-list-layout>
   </div>
 </template>
 
 <script>
+
 import PgUp from '../../components/PgUp'
+const Form = () => import('./components/Form')
+
 export default {
   components: {
     PgUp
   },
   mixins: [
-    $mixins.pageList
+    ms.mixins.pageList
   ],
   data () {
     return {
@@ -92,8 +92,10 @@ export default {
     fetch (query) {
       this.selectCompanyId = query.companyId
       let period = query.period || this.Utils.getStorePeriodObj(this)
-      let params = { cond: { 'period.y': period.y, 'period.m': period.m },
-        select: 'date payType result buyer.name buyer.xname invoice insteadService total productName productVer softAmount collectionRetreat invokingAPI.status accFold goodsType goodsEntries manual active taxInfo' }
+      let params = {
+        cond: { 'period.y': period.y, 'period.m': period.m },
+        select: 'date payType result buyer.name buyer.xname invoice insteadService total productName productVer softAmount collectionRetreat invokingAPI.status accFold goodsType goodsEntries manual active taxInfo'
+      }
       this._fetch(params)
     },
     _fetch (p) {
@@ -102,6 +104,12 @@ export default {
         this.pageData = res
       }, p)
     },
+
+    // 创建一条数据
+    handleCreate () {
+      ms.navigator.push(this, Form, { params: null, title: '创建' })
+    },
+
     handleShowCrawlerStatus () {
       this.isShowCrawlerList = !this.isShowCrawlerList
     },

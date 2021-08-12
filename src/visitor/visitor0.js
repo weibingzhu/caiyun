@@ -14,11 +14,6 @@ export default {
         title: '合伙人数据',
         index: '0183-02',
         route: '/partner/data'
-      },
-      {
-        title: '流失的客户',
-        index: '01-03',
-        route: '/customer/leave'
       }]
     },
     {

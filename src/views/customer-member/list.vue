@@ -1,44 +1,61 @@
 <template>
-  <ms-page-list-layout class="member-index">
+  <ms-page-list-layout class="partner-list">
     <template slot="search">
       <el-form v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
+        <el-form-item label="业务属区">
+          <e-area-cascader v-model="query.region" filterable expand-trigger="hover"></e-area-cascader>
+        </el-form-item>
         <el-form-item label="搜索">
           <el-input placeholder="请输入关键字" v-model.trim="query.Search" size="small"></el-input>
         </el-form-item>
-        <el-button native-type="submit" size="small" @click="handleCreate">添加账号</el-button>
+        <el-form-item label prop="IsEnable">
+          <el-checkbox v-model="query.IsEnable">是否启用</el-checkbox>
+        </el-form-item>
+        <el-button native-type="search" size="small" @click="handleSearch">搜索</el-button>
+        <el-button native-type="submit" size="small" @click="handleCreate">添加</el-button>
       </el-form>
     </template>
-    <el-table
-      slot="table"
-      ref="membersTable"
-      v-bind="getTableProps()"
-      v-on="getTableListeners()"
-      stripe
-      @row-dblclick="handleRowDblclick"
-      :data="pageData.data"
-    >
-      <el-table-column type="selection" width="58"></el-table-column>
-      <el-table-column label="成员昵称" prop="LoginName"></el-table-column>
-      <el-table-column label="真实姓名" prop="Name"></el-table-column>
-      <el-table-column label="邮箱">
-        <template v-slot="scope">46345955@qq.com</template>
+    <el-table slot="table" v-bind="getTableProps()" v-on="getTableListeners()" stripe @row-dblclick="handleRowDblclick" :data="pageData.data">
+      <el-table-column label="公司全名" prop="Name">
+        <template v-slot="scope">
+          <el-tooltip effect="dark" content="公司 税号" placement="top-start">
+            <span>{{Name}}</span>
+          </el-tooltip>
+        </template>
       </el-table-column>
-      <el-table-column label="手机号">
+      <el-table-column label="登录XXX">
         <template v-slot="scope">14578562559</template>
       </el-table-column>
-      <el-table-column label="部门">
-        <template v-slot="scope">服务部</template>
+      <el-table-column label="登录名称">
+        <template v-slot="scope">14578562559</template>
       </el-table-column>
-      <el-table-column label="分配权限" prop="roleNames"></el-table-column>
-      <el-table-column label="入职时间">
-        <template v-slot="scope">1212-12-12</template>
+      <el-table-column label="联系电话">
+        <template v-slot="scope">14578562559</template>
       </el-table-column>
-      <el-table-column label="状 态" prop="IsEnable">
-        <template v-slot="scope">{{scope.row.IsEnable? '正常': '未激活'}}</template>
+      <el-table-column label="公司属区">
+        <template v-slot="scope">
+          <el-tooltip effect="dark" content="公司地址：xxxxxxxxxxxxxxxx" placement="top-start">
+            <span>深圳</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="状 态">
+        <template v-slot="scope">
+          <template v-if="scope.$index % 3">未激活</template>
+          <template v-else-if="scope.$index % 5">离职</template>
+          <template v-else>正常</template>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" prop="IsEnable"></el-table-column>
+      <el-table-column label="创建人">
+        <template v-slot="scope">
+          <el-tooltip effect="dark" content="2020-20-10 12:12:45" placement="top-start">
+            <span>黄晓明</span>
+          </el-tooltip>
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button @click="handleDelect(scope.row)" type="text" size="small">删除</el-button>
           <el-button @click="handleRowDblclick(scope.row)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
@@ -47,8 +64,6 @@
 </template>
 
 <script>
-import ExcelUtils from '@/excel/utils'
-import ExcelManager from '@/excel/Manager'
 const Form = () => import('./components/Form')
 export default {
   mixins: [
@@ -56,12 +71,17 @@ export default {
   ],
   data () {
     return {
-      excelHanders: [{ title: '登录名称', path: 'LoginName' }, { title: '真实名称', path: 'Name' }, { title: '状态', path: 'IsEnable' }, { title: '角色', path: 'roleNames' }],
       query: this.getQuery({
         Search: '',
+        region: '',
         IsEnable: null,
+        // "CreateOn": {
+        //   "BeginTime": "2021-07-24T08:13:59.722Z",
+        //   "EndTime": "2021-07-24T08:13:59.722Z"
+        // },
         ...this.$route.query
       }),
+
       pageData: {
         count: 0,
         data: []
@@ -72,52 +92,8 @@ export default {
     fetch () {
       this.UtilsAxios.handleFetchPost('/api/SpCustomerService/List', (res) => {
         this.pageData.count = res.TotalRecord
-        res = this._paresRoleNames(res)
         this.pageData.data = res.Items
       }, this.query)
-    },
-
-    // 导入excel
-    handleImport (e) {
-      this.$refs.uploadInput.dispatchEvent(new MouseEvent('click'))
-    },
-
-    // 获取角色名称
-    _paresRoleNames (res) {
-      for (const item of res.Items) {
-        item['roleNames'] = res.AvailableRoles.reduce((ns, r) => {
-          if (item.Roles && item.Roles.includes(r.Id)) ns.push(r.Name)
-          return ns
-        }, [])
-      }
-      return res
-    },
-
-    // 导出现有员工
-    handleExport (type) {
-      let temp = JSON.parse(JSON.stringify(this.query))
-      let queryExprot = Object(temp, { Take: 10000 })
-      if (type === 'all') {
-        this.UtilsAxios.handleFetchPost('/api/SpCustomerService/List', (res) => {
-          res = this._paresRoleNames(res)
-          ExcelUtils.export(this.excelHanders, res.Items, '员工excel.xlsx')
-        }, queryExprot)
-      } else { // 选中的
-        let selection = this.$refs.membersTable.selection
-        ExcelUtils.export(this.excelHanders, selection, '员工excel.xlsx')
-      }
-    },
-    // 下载模板
-    handleDownload () {
-      let handers = [{ title: '姓名', path: 'name' }, { title: '电话', path: 'phone' }, { title: '职位', path: 'position' }]
-      let datas = []
-      ExcelUtils.export(handers, datas, '员工excel模板.xlsx')
-    },
-    // 解析excel TODO 相同字段替换问题（就是多次上传什么覆盖问题）
-    async handleClickUploadInput (e) {
-      const file = e.target.files && e.target.files[0]
-      let model = await ExcelManager.parse(file)
-      console.log('model:', model)
     },
     // 双击人员编辑
     handleRowDblclick (row, column, event) {
@@ -127,6 +103,7 @@ export default {
     handleCreate () {
       ms.navigator.push(this, Form, { params: null, title: '创建' })
     },
+    // 删除一家
     handleDelect (row) {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -146,13 +123,18 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+
+    // 搜索
+    handleSearch () {
+      fetch()
     }
   }
 }
 </script>
 
 <style lang="scss">
-.member-index {
+.partner-list {
   width: 100%;
 }
 </style>

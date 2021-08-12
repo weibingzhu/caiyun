@@ -11,23 +11,18 @@ export default {
         route: '/customer/list'
       },
       {
-        title: '客户登录账号',
+        title: '客户超管',
         index: '01-02',
         route: '/customer/member/list'
       },
       {
         title: '合同管理',
         index: '01-03',
-        route: '/customer/contract'
+        route: '/customer/contract/list'
       },
       {
-        title: '流失客户',
+        title: '工商年审(备忘)',
         index: '01-04',
-        route: '/customer/leave'
-      },
-      {
-        title: '工商年审',
-        index: '01-05',
         route: '/customer/yearCheck'
       }]
     },

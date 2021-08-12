@@ -6,8 +6,16 @@
           <el-form-item label="搜索">
             <el-input placeholder="请输入关键字" v-model.trim="keyWork"></el-input>
           </el-form-item>
+          <el-form-item label="状态" prop="">
+            <el-select v-model="ddd" multiple placeholder="请选择状态">
+              <el-option key="tttt" label="未激活" value="2"></el-option>
+              <el-option key="tttt" label="已激活" value="2"></el-option>
+              <el-option key="1111" label="已流失" value="1"></el-option>
+              <el-option key="1111" label="回头客" value="1"></el-option>
+            </el-select>
+          </el-form-item>
           <el-button size="small">搜索</el-button>
-          <el-button size="small" @click="$router.push({path: '/customer/contract-form'})">添加</el-button>
+          <el-button size="small" @click="$router.push({path: '/init/index'})">添加</el-button>
         </el-form>
       </template>
       <el-table
@@ -47,7 +55,7 @@
             {{props.row.operatorNames}}
           </template>
         </el-table-column>
-
+        <el-table-column label="状态" prop="qualification" min-width="10%" />
         <el-table-column label="类型" prop="qualification" min-width="10%" />
         <el-table-column label="合同日期" prop="qualification" min-width="10%">
           <template slot-scope="scope">
@@ -59,6 +67,7 @@
             <el-button size="mini">提醒</el-button>
           </template>
         </el-table-column>
+        <el-table-column label="工商年审" prop="qualification" min-width="10%" />
         <el-table-column label="操作员" prop="operatorNames" min-width="10%">
           <template slot-scope="scope">
             <el-tag size="mini"
@@ -72,12 +81,11 @@
           </template>
         </el-table-column>
 
-        <!-- <el-table-column label="操作" fixed="right" min-width="10%">
+        <el-table-column label="操作" fixed="right" min-width="10%">
           <template slot-scope="scope">
-            <el-button type="text"  @click="$router.push({path: ''})">继续</el-button>
-            <el-button type="text"  @click="$router.push({path: ''})">回退</el-button>
+            <el-button type="text"  @click="$router.push({path: ''})">编辑</el-button>
           </template>
-        </el-table-column>-->
+        </el-table-column>
       </el-table>
     </e-page-list-layout>
   </div>

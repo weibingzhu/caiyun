@@ -33,7 +33,6 @@ export default {
 
     },
     submit () {
-      // let data = JSON.parse(JSON.stringify(this.form))
     }
   }
 }

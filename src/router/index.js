@@ -190,24 +190,10 @@ let routes = [
     }
   },
   {
-    path: '/customer/contract',
-    component: () => import('@/views/customer/contract.vue'),
+    path: '/customer/contract/list',
+    component: () => import('@/views/customer/contract/list.vue'),
     meta: {
       title: '合同管理'
-    }
-  },
-  {
-    path: '/customer/contract',
-    component: () => import('@/views/customer/contract.vue'),
-    meta: {
-      title: '合同管理'
-    }
-  },
-  {
-    path: '/customer/contract-form',
-    component: () => import('@/views/customer/contract-form.vue'),
-    meta: {
-      title: '合同编辑'
     }
   },
   {
@@ -291,7 +277,7 @@ let routes = [
     path: '/customer/member/list',
     component: () => import('@/views/customer-member/list.vue'),
     meta: {
-      title: '客户登录账号'
+      title: '客户超管'
     }
   },
   {

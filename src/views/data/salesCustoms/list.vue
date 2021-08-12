@@ -1,6 +1,6 @@
 <template>
   <div class="salesCustoms-list">
-    <e-page-list-layout>
+    <ms-page-list-layout>
       <template slot="search">
         <el-form slot="search" v-bind="getFormProps()" @submit.native.prevent="handleSubmit">
           <el-form-item label="搜索">
@@ -8,9 +8,7 @@
           </el-form-item>
           <pg-up :selectCompanyId="selectCompanyId"></pg-up>
           <span class="operating-area">
-            <el-button size="small">新加发票</el-button>
-            <el-button size="small">提取发票</el-button>
-            <el-button size="small" @click="handleShowCrawlerStatus">提取状态</el-button>
+            <el-button size="small" @click="handleCreate">新加</el-button>
             <el-button size="small">执行规则</el-button>
             <span v-if="$store.state.tax_or_acc">
               <!-- <el-button size="small" @click="headleCreateTabale">生成税表</el-button> -->
@@ -21,7 +19,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc" >一键报税</el-dropdown-item>
+                <el-dropdown-item command="asdf" v-if="$store.state.tax_or_acc">一键报税</el-dropdown-item>
                 <el-dropdown-item>螺蛳粉</el-dropdown-item>
                 <el-dropdown-item>双皮奶</el-dropdown-item>
                 <el-dropdown-item>蚵仔煎</el-dropdown-item>
@@ -47,9 +45,7 @@
           <template slot-scope="scope">{{scope.row.invoice.type}}</template>
         </el-table-column>
         <el-table-column label="认证日期" prop="date" sortable>
-          <template slot-scope="scope">
-            {{scope.row.date ? scope.row.date.substr(0,10) : ''}}
-          </template>
+          <template slot-scope="scope">{{scope.row.date ? scope.row.date.substr(0,10) : ''}}</template>
         </el-table-column>
         <el-table-column label="发票代码" prop="invoice.code" sortable></el-table-column>
         <el-table-column label="发票号码" prop="invoice.no" sortable></el-table-column>
@@ -58,21 +54,27 @@
         <el-table-column label="销行名称" prop="buyer.name"></el-table-column>
         <el-table-column label="发票状态" prop="invoice.status"></el-table-column>
       </el-table>
-    </e-page-list-layout>
+    </ms-page-list-layout>
+    <el-dialog :visible.sync="showFormDialog"  width="88%">
+      <sales-customs-form></sales-customs-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import PgUp from '../../components/PgUp'
+import salesCustomsForm from './components/Form'
 export default {
   components: {
-    PgUp
+    PgUp,
+    salesCustomsForm
   },
   mixins: [
-    $mixins.pageList
+    ms.mixins.pageList
   ],
   data () {
     return {
+      showFormDialog: true,
       selectCompanyId: '',
       keyWork: '',
       query: this.getQuery({
@@ -96,8 +98,10 @@ export default {
     fetch (query) {
       this.selectCompanyId = query.companyId
       let period = query.period || this.Utils.getStorePeriodObj(this)
-      let params = { cond: { 'period.y': period.y, 'period.m': period.m },
-        select: 'date payType result buyer.name buyer.xname invoice insteadService total productName productVer softAmount collectionRetreat invokingAPI.status accFold goodsType goodsEntries manual active taxInfo' }
+      let params = {
+        cond: { 'period.y': period.y, 'period.m': period.m },
+        select: 'date payType result buyer.name buyer.xname invoice insteadService total productName productVer softAmount collectionRetreat invokingAPI.status accFold goodsType goodsEntries manual active taxInfo'
+      }
       this._fetch(params)
     },
     _fetch (p) {
@@ -106,6 +110,11 @@ export default {
         this.pageData = res
       }, p)
     },
+
+    handleCreate () {
+      this.showFormDialog = !this.showFormDialog
+    },
+
     handleShowCrawlerStatus () {
       this.isShowCrawlerList = !this.isShowCrawlerList
     },
